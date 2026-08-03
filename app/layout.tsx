@@ -7,22 +7,22 @@ import { Toaster } from 'sonner'
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cortify.ai'),
-  title: 'Cortify — Elevate Every Conversation with AI-Powered Insights',
+  metadataBase: new URL('https://kompilex.ai'),
+  title: 'KompileX — Elevate Every Conversation with AI-Powered Insights',
   description:
     'Real-time transcription, intelligent analysis, and conversational mastery—all in one powerful desktop app. Analyze meetings, train with AI, detect persuasion techniques.',
   keywords:
     'AI transcription software, real-time conversation analysis, meeting transcription app, debate analysis tool, fact-checking software, sales call analyzer, AI communication coach',
   openGraph: {
     type: 'website',
-    url: 'https://cortify.ai',
-    title: 'Cortify — Elevate Every Conversation with AI-Powered Insights',
+    url: 'https://kompilex.ai',
+    title: 'KompileX — Elevate Every Conversation with AI-Powered Insights',
     description:
       'Real-time transcription, intelligent analysis, and conversational mastery—all in one powerful desktop app.',
     images: ['/images/og-image.png'],
   },
   icons: {
-    icon: '/images/cortify.svg',
+    icon: '/images/kompilex.svg',
   },
 }
 

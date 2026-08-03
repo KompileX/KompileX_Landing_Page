@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Setting up cortify.ai..."
+echo "🚀 Setting up kompilex.ai..."
 
 # Check for required tools
 command -v bun >/dev/null 2>&1 || { echo "❌ Bun is required. Install from https://bun.sh"; exit 1; }

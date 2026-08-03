@@ -1,4 +1,4 @@
-🎯 CORTIFY WEBSITE - COMPLETE CONTENT PLAN
+🎯 KOMPILEX WEBSITE - COMPLETE CONTENT PLAN
 Website Structure & Content
 1. HERO SECTION (Homepage)
 Headline:
@@ -20,7 +20,7 @@ Title: "Capture & Understand Every Word"
 Description:
 
 
-Transform any conversation, lecture, or meeting into actionable insights. Cortify captures audio from your microphone or system audio (YouTube, Zoom, Teams) and provides real-time AI-powered transcription with speaker identification.
+Transform any conversation, lecture, or meeting into actionable insights. KompileX captures audio from your microphone or system audio (YouTube, Zoom, Teams) and provides real-time AI-powered transcription with speaker identification.
 
 ✅ Real-time transcription with 95%+ accuracy
 ✅ System audio capture (meetings, videos, podcasts)
@@ -51,7 +51,7 @@ Title: "Detect Manipulation & Persuasion Tactics"
 Description:
 
 
-Cortify analyzes conversations in real-time to identify:
+KompileX analyzes conversations in real-time to identify:
 
 🕵️ Persuasion techniques (social proof, scarcity, authority)
 🚨 Logical fallacies (strawman, ad hominem, slippery slope)
@@ -103,7 +103,7 @@ Title: "Real-Time Fact Verification"
 Description:
 
 
-Cortify verifies claims as they're spoken:
+KompileX verifies claims as they're spoken:
 
 ✅ Fact-checking with citations
 ❌ Identifies false statements
@@ -112,7 +112,7 @@ Cortify verifies claims as they're spoken:
 
 Stay informed with truth in real-time.
 3. USE CASES SECTION
-Who Benefits from Cortify?
+Who Benefits from KompileX?
 🎓 Students & Educators
 
 • Transcribe lectures automatically
@@ -160,7 +160,7 @@ Screenshot: startingUi+optionSelection.png
 Step 2: 🔴 Start Capture
 
 
-Click record and start speaking or select system audio. Cortify begins real-time transcription instantly.
+Click record and start speaking or select system audio. KompileX begins real-time transcription instantly.
 Step 3: 📊 Get Insights
 
 
@@ -233,22 +233,22 @@ Team Tier ($49/month):
 ✅ Admin controls
 ✅ Custom integrations
 8. FAQ SECTION
-Q: What platforms does Cortify support?
+Q: What platforms does KompileX support?
 
 
-A: Cortify is available for Windows and macOS as a native desktop application.
-Q: Does Cortify work offline?
+A: KompileX is available for Windows and macOS as a native desktop application.
+Q: Does KompileX work offline?
 
 
 A: Basic transcription requires internet, but analysis and playback work offline once captured.
 Q: How accurate is the transcription?
 
 
-A: Cortify achieves 95%+ accuracy using Deepgram's state-of-the-art speech recognition.
-Q: Can I use Cortify for Zoom/Teams meetings?
+A: KompileX achieves 95%+ accuracy using Deepgram's state-of-the-art speech recognition.
+Q: Can I use KompileX for Zoom/Teams meetings?
 
 
-A: Yes! Cortify captures system audio from any application on your computer.
+A: Yes! KompileX captures system audio from any application on your computer.
 Q: Is my data private?
 
 

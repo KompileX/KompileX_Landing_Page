@@ -67,7 +67,7 @@ export default function WaitlistSection() {
           Join the Waitlist
         </h2>
         <p className="max-w-xl text-sm text-center bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-          Be among the first to experience Cortify. Limited spots available.
+          Be among the first to experience KompileX. Limited spots available.
         </p>
       </div>
 

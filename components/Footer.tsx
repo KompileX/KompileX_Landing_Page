@@ -47,7 +47,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             <Link href="/" className="text-xl font-bold hover:opacity-80 transition-opacity w-fit">
-              Cortify
+              KompileX
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
               AI-powered transcription and argument analysis for every conversation. Think clearer, respond smarter.
@@ -119,7 +119,7 @@ export default function Footer() {
         <Separator className="my-10 bg-transparent" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <span>© {year} Cortify. All rights reserved.</span>
+          <span>© {year} KompileX. All rights reserved.</span>
           <span className="text-xs">Built for thinkers, debaters & lifelong learners.</span>
         </div>
       </div>

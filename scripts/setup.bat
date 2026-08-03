@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-echo 🚀 Setting up cortify.ai...
+echo 🚀 Setting up kompilex.ai...
 
 REM Check for Bun
 where bun >nul 2>nul

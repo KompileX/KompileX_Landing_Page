@@ -10,14 +10,14 @@ import { motion } from "motion/react"
 
 const faqs = [
   {
-    question: "What platforms does Cortify support?",
+    question: "What platforms does KompileX support?",
     answer:
-      "Cortify works with all major video conferencing and streaming platforms including Zoom, Google Meet, Microsoft Teams, Discord, YouTube Live, and more. Our browser extension captures audio from any web-based platform automatically.",
+      "KompileX works with all major video conferencing and streaming platforms including Zoom, Google Meet, Microsoft Teams, Discord, YouTube Live, and more. Our browser extension captures audio from any web-based platform automatically.",
   },
   {
-    question: "Does Cortify work offline?",
+    question: "Does KompileX work offline?",
     answer:
-      "Currently, Cortify requires an internet connection for real-time AI processing and fact-checking. We are working on an offline mode for basic transcription that will be available in a future update.",
+      "Currently, KompileX requires an internet connection for real-time AI processing and fact-checking. We are working on an offline mode for basic transcription that will be available in a future update.",
   },
   {
     question: "How accurate is the transcription and analysis?",
@@ -25,9 +25,9 @@ const faqs = [
       "Our transcription achieves 95%+ accuracy for clear audio in English, with support for multiple accents. Argument analysis and fact-checking leverage state-of-the-art AI models with continuous improvement through user feedback.",
   },
   {
-    question: "Can I use Cortify for Zoom or Teams meetings?",
+    question: "Can I use KompileX for Zoom or Teams meetings?",
     answer:
-      "Yes! Cortify integrates seamlessly with Zoom and Microsoft Teams. You can use our browser extension to capture meeting audio, or connect via our desktop app. All participants are notified when recording is active.",
+      "Yes! KompileX integrates seamlessly with Zoom and Microsoft Teams. You can use our browser extension to capture meeting audio, or connect via our desktop app. All participants are notified when recording is active.",
   },
   {
     question: "How is my data protected?",
@@ -58,7 +58,7 @@ export default function FAQSection() {
           FAQ
         </h4>
         <p className="max-w-xl text-center text-sm bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-          Everything you need to know about Cortify.
+          Everything you need to know about KompileX.
         </p>
       </div>
       <div className="flex w-full max-w-2xl">

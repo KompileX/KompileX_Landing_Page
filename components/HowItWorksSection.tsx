@@ -23,7 +23,7 @@ const steps = [
     icon: Mic,
     title: 'Start Recording',
     description:
-      'Begin your conversation, lecture, meeting, or debate. Cortify captures audio in real-time with support for Zoom, Google Meet, Teams, YouTube and Discord.',
+      'Begin your conversation, lecture, meeting, or debate. KompileX captures audio in real-time with support for Zoom, Google Meet, Teams, YouTube and Discord.',
     badge: 'Capture',
     color: 'text-foreground',
     bg: 'bg-muted',

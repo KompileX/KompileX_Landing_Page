@@ -43,7 +43,7 @@ module.exports = {
           DEFAULT: 'var(--card)',
           foreground: 'var(--card-foreground)',
         },
-        // existing Cortify brand colors
+        // existing KompileX brand colors
         'dark': '#0d1117',
         'dark-surface': '#161b22',
         'brand': {

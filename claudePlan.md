@@ -1,6 +1,6 @@
-Cortify Landing Page Comprehensive Redesign Plan
+KompileX Landing Page Comprehensive Redesign Plan
 Context
-The current Cortify landing page is a minimal MVP with basic sections (hero, 3 features, waitlist form). The user has provided a detailed webPlan.md that specifies a complete, production-ready landing page with:
+The current KompileX landing page is a minimal MVP with basic sections (hero, 3 features, waitlist form). The user has provided a detailed webPlan.md that specifies a complete, production-ready landing page with:
 
 13 screenshots showcasing the actual desktop app features
 6 detailed feature sections (Listen & Analyze, AI Training, Decode Mode, P2P Debate, Analysis Hub, Smart Live Facts)
@@ -11,7 +11,7 @@ Technology Stack showcase
 FAQ section
 Updated color scheme (purple/blue + cyan/green accents instead of just blue)
 Distinctive typography (Syne display font + Inter body)
-The goal is to transform the landing page from a simple waitlist capture page into a comprehensive product showcase that accurately represents the full feature set of the Cortify desktop application.
+The goal is to transform the landing page from a simple waitlist capture page into a comprehensive product showcase that accurately represents the full feature set of the KompileX desktop application.
 
 Critical Requirements:
 
@@ -24,7 +24,7 @@ Implementation Approach
 Phase 1: Update SEO & Meta Information
 File: index.html (lines 1-30)
 
-Update <title> to match webPlan.md: "Cortify — Elevate Every Conversation with AI-Powered Insights"
+Update <title> to match webPlan.md: "KompileX — Elevate Every Conversation with AI-Powered Insights"
 Update meta description to emphasize transcription + analysis + training
 Keep existing Syne+Inter font imports (already added)
 No changes needed to theme toggle or styles import
@@ -99,7 +99,7 @@ Structure:
 
 
 Use Cases Container
-├── Section Header: "Who Benefits from Cortify?"
+├── Section Header: "Who Benefits from KompileX?"
 └── 6 Persona Cards (3x2 grid on desktop, 1 col mobile)
     ├── Icon (emoji or custom SVG)
     ├── Persona Title
@@ -193,10 +193,10 @@ FAQ Container
         └── Answer (collapsible content)
 5 FAQs (from webPlan lines 235-255):
 
-What platforms does Cortify support?
-Does Cortify work offline?
+What platforms does KompileX support?
+Does KompileX work offline?
 How accurate is the transcription?
-Can I use Cortify for Zoom/Teams meetings?
+Can I use KompileX for Zoom/Teams meetings?
 Is my data private?
 JavaScript: Add accordion toggle functionality to main.ts
 
@@ -491,4 +491,4 @@ The implementation will be considered successful when:
 ✅ No console errors or warnings
 ✅ Page loads in < 3 seconds on 3G connection
 ✅ Lighthouse scores meet targets (Performance > 90, Accessibility > 95)
-This plan provides a comprehensive roadmap for transforming the Cortify landing page from a simple MVP into a production-ready product showcase that accurately represents the full feature set of the desktop application.
+This plan provides a comprehensive roadmap for transforming the KompileX landing page from a simple MVP into a production-ready product showcase that accurately represents the full feature set of the desktop application.

@@ -1,10 +1,10 @@
-# Cortify Landing Page
+# KompileX Landing Page
 
 AI-powered communication intelligence platform landing page.
 
 ## Overview
 
-This is the public-facing landing page for Cortify - showcasing features, collecting waitlist signups, and driving downloads. The landing page connects to a production API for waitlist management.
+This is the public-facing landing page for KompileX - showcasing features, collecting waitlist signups, and driving downloads. The landing page connects to a production API for waitlist management.
 
 ## Tech Stack
 
@@ -16,7 +16,7 @@ This is the public-facing landing page for Cortify - showcasing features, collec
 ## Project Structure
 
 ```
-cortify-landing-page/
+kompilex-landing-page/
 ├── .env                    # Production API configuration
 ├── .env.example           # Environment template
 ├── index.html             # Main landing page
@@ -90,7 +90,7 @@ The landing page requires the following environment variable:
 
 Example `.env`:
 ```env
-VITE_API_BASE_URL=https://api.cortify.ai/api
+VITE_API_BASE_URL=https://api.kompilex.ai/api
 ```
 
 ## Features
@@ -123,4 +123,4 @@ The build process:
 
 ## License
 
-All rights reserved © 2026 Cortify
+All rights reserved © 2026 KompileX

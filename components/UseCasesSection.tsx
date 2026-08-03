@@ -116,10 +116,10 @@ export default function UseCasesSection() {
           className="mb-16 text-center flex flex-col gap-3"
         >
           <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-            Who Benefits from Cortify?
+            Who Benefits from KompileX?
           </h2>
           <p className="max-w-xl mx-auto text-sm text-muted-foreground">
-            From students to professionals, Cortify empowers everyone to communicate better.
+            From students to professionals, KompileX empowers everyone to communicate better.
           </p>
         </motion.div>
 

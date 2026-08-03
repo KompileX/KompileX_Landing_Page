@@ -203,7 +203,7 @@ export default function FeaturesSection() {
             {/* <span className="text-gradient-animate">Every Need</span> */}
           </h2>
           <p className="max-w-2xl mx-auto text-base text-muted-foreground">
-            From real-time transcription to AI training modes, Cortify provides everything you need to master communication.
+            From real-time transcription to AI training modes, KompileX provides everything you need to master communication.
           </p>
         </motion.div>
 

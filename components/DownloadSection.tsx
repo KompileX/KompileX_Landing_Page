@@ -45,7 +45,7 @@ export default function DownloadSection() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("https://app.cortify.ai/api/releases/latest")
+    fetch("https://app.kompilex.ai/api/releases/latest")
       .then((r) => r.json())
       .then((data) => {
         setReleases(data.releases || {})
@@ -73,7 +73,7 @@ export default function DownloadSection() {
       {/* Header */}
       <div className="flex flex-col items-center justify-center gap-3">
         <h2 className="text-3xl font-bold text-transparent sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text">
-          Download Cortify
+          Download KompileX
         </h2>
         <p className="max-w-xl text-sm text-center text-transparent bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text">
           Install the desktop app and start mastering every conversation with AI.

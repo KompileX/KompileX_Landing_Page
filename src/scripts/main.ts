@@ -1,5 +1,5 @@
 // ============================================
-// Cortify Landing Page - Main Script
+// KompileX Landing Page - Main Script
 // ============================================
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
@@ -172,17 +172,17 @@ async function handleWaitlistSubmit(event: Event): Promise<void> {
       
       // Show success toast with description and action button
       gooeyToast.success(`Welcome, ${name}! 🎉`, {
-        description: `You're #${data.data.position} on the waitlist! We'll notify you when Cortify launches.`,
+        description: `You're #${data.data.position} on the waitlist! We'll notify you when KompileX launches.`,
         showProgress: true,
         duration: 6000,
         action: {
           label: 'Share with Friends',
           onClick: () => {
             // Copy share link to clipboard
-            const shareUrl = `https://cortify.ai?ref=${data.data?.id}`;
+            const shareUrl = `https://kompilex.ai?ref=${data.data?.id}`;
             navigator.clipboard.writeText(shareUrl).then(() => {
               gooeyToast.info('Link Copied!', {
-                description: 'Share Cortify with your friends and move up the waitlist.',
+                description: 'Share KompileX with your friends and move up the waitlist.',
                 showProgress: true,
                 duration: 3000
               });

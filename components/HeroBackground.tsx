@@ -99,7 +99,7 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
 
     const id = idRef.current++
     const angle = Math.random() * Math.PI * 2
-    const offset = 24 + Math.random() * 28
+    const offset = 40 + Math.random() * 34
 
     const next: FloatingIcon = {
       id,
@@ -297,14 +297,14 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
             style={{ left: icon.x, top: icon.y }}
           >
             <div
-              className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 backdrop-blur-md ${
+              className={`flex items-center gap-2 rounded-2xl border px-4 py-2.5 backdrop-blur-md ${
                 isLight
                   ? 'border-violet-200/70 bg-white/80 shadow-[0_4px_16px_rgba(139,92,246,0.2)]'
                   : 'border-white/15 bg-white/5 shadow-[0_0_16px_rgba(140,69,255,0.4)]'
               }`}
             >
-              <icon.Icon className={`size-3.5 ${isLight ? 'text-violet-500' : 'text-[#b794ff]'}`} />
-              <span className={`whitespace-nowrap text-[11px] font-medium ${isLight ? 'text-violet-700' : 'text-white/80'}`}>
+              <icon.Icon className={`size-6 ${isLight ? 'text-violet-500' : 'text-[#b794ff]'}`} />
+              <span className={`whitespace-nowrap text-sm font-medium ${isLight ? 'text-violet-700' : 'text-white/80'}`}>
                 {icon.name}
               </span>
             </div>

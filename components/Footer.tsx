@@ -35,7 +35,7 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-background">
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-16">
+      <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -115,7 +115,7 @@ export default function Footer() {
           </div>
         </motion.div>
 
-        <Separator className="my-10 bg-transparent" />
+        <Separator className="my-6 bg-transparent" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <span>© {year} KompileX. All rights reserved.</span>

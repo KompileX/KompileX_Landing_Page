@@ -104,7 +104,7 @@ const itemVariants = {
 
 export default function UseCasesSection() {
   return (
-    <section id="industries" className="w-full py-20 lg:py-32">
+    <section id="industries" className="w-full py-14 lg:py-20">
       <div className="max-w-screen-xl mx-auto px-4 md:px-8">
 
         {/* Header */}
@@ -113,7 +113,7 @@ export default function UseCasesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-16 text-center flex flex-col gap-3"
+          className="mb-10 text-center flex flex-col gap-3"
         >
           <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
             Industries We Serve

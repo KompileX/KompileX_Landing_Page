@@ -59,7 +59,7 @@ const itemVariants = {
 
 export default function AboutSection() {
   return (
-    <section id="about" className="w-full py-20 lg:py-32">
+    <section id="about" className="w-full py-14 lg:py-20">
       <div className="max-w-screen-xl mx-auto px-4 md:px-8">
 
         {/* Header */}
@@ -68,7 +68,7 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-14 flex flex-col items-center gap-4 text-center"
+          className="mb-10 flex flex-col items-center gap-4 text-center"
         >
           <Badge variant="outline" className="text-xs font-semibold uppercase tracking-wide">
             About Us
@@ -89,7 +89,7 @@ export default function AboutSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="mb-16 grid grid-cols-2 gap-6 sm:grid-cols-4"
+          className="mb-10 grid grid-cols-2 gap-6 sm:grid-cols-4"
         >
           {stats.map((stat) => (
             <motion.div

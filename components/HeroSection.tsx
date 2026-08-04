@@ -170,7 +170,7 @@ export default function HeroSection() {
       </motion.section>
 
       {/* ── Tech ticker ── */}
-      <div className="w-full py-16">
+      <div className="w-full py-8">
         <div className="max-w-screen-xl mx-auto px-4 md:px-8">
           <div className="flex items-center gap-5">
             <div className="flex-1 md:flex-none">

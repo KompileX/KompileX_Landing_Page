@@ -44,7 +44,7 @@ export default function FAQSection() {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: 0.5, type: "spring", bounce: 0 }}
-      className="relative w-full max-w-screen-xl mx-auto px-4 py-28 gap-5 md:px-8 flex flex-col justify-center items-center"
+      className="relative w-full max-w-screen-xl mx-auto px-4 py-14 lg:py-20 gap-5 md:px-8 flex flex-col justify-center items-center"
     >
       {/* Blue glow background - left side */}
       <div className="w-full h-full absolute top-0 flex justify-end items-center pointer-events-none">

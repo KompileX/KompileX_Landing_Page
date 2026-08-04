@@ -37,7 +37,7 @@ export default function ContactSection() {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: 0.2, type: 'spring', bounce: 0 }}
-      className="relative w-full max-w-screen-xl mx-auto px-4 py-28 md:px-8 flex flex-col items-center gap-10"
+      className="relative w-full max-w-screen-xl mx-auto px-4 py-14 lg:py-20 md:px-8 flex flex-col items-center gap-10"
     >
       {/* Blue glow background */}
       <div className="w-full h-full absolute top-0 flex justify-end items-center pointer-events-none">

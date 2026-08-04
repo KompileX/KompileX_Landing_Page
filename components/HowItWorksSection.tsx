@@ -105,7 +105,7 @@ export default function HowItWorksSection() {
   const o2 = useTransform(scrollYProgress, [0, 0.5, 0.63, 1], [0, 0, 1, 1])
 
   return (
-    <section id="process" className="w-full py-20 lg:py-32">
+    <section id="process" className="w-full py-14 lg:py-20">
       <div className="max-w-screen-xl mx-auto px-4 md:px-8">
         {/* Header */}
         <motion.div
@@ -113,7 +113,7 @@ export default function HowItWorksSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-16 text-center flex flex-col gap-3"
+          className="mb-10 text-center flex flex-col gap-3"
         >
           <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
             How We Work

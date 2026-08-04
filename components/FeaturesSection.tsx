@@ -64,7 +64,7 @@ const itemVariants = {
 
 export default function FeaturesSection() {
   return (
-    <section id="services" className="w-full py-20 lg:py-32 bg-background">
+    <section id="services" className="w-full py-14 lg:py-20 bg-background">
       <div className="px-4 mx-auto max-w-screen-xl md:px-8">
 
         {/* Header */}
@@ -73,7 +73,7 @@ export default function FeaturesSection() {
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring' as const, bounce: 0 }}
-          className="mb-16 text-center"
+          className="mb-10 text-center"
         >
           <h2 className="mb-4 text-3xl font-bold sm:text-4xl text-foreground">
             What We Build

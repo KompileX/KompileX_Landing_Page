@@ -139,7 +139,16 @@ function RisingLetter({
 }
 
 export default function Footer() {
-  const reduced = useReducedMotion() ?? false
+  // useReducedMotion() reads the media query synchronously on the client's very
+  // first render (even during hydration), while SSR has no window and always
+  // yields false — a genuine mismatch if the device prefers reduced motion.
+  // Stay false until mounted so the first client render matches the server,
+  // then adopt the real value.
+  const rawReducedMotion = useReducedMotion() ?? false
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  const reduced = mounted && rawReducedMotion
+
   const time = useDhakaTime()
   const year = new Date().getFullYear()
 
@@ -259,7 +268,8 @@ export default function Footer() {
 
           {/* ---------- Tagline marquee ---------- */}
           <div className="mt-10 flex select-none overflow-hidden border-y py-3">
-            <div className={`flex shrink-0 ${reduced ? '' : 'animate-marquee'}`}>
+            {/* prefers-reduced-motion is handled in CSS (see .animate-marquee in globals.css) */}
+            <div className="flex shrink-0 animate-marquee">
               {Array.from({ length: 2 }).map((_, group) => (
                 <div key={group} className="flex shrink-0" aria-hidden={group > 0}>
                   {Array.from({ length: 4 }).map((__, i) => (

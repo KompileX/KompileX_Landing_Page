@@ -176,7 +176,7 @@ export default function StackSection() {
       id="work"
       ref={container}
       className="relative bg-background py-14 lg:py-20"
-      style={{ height: `${cards.length * 100}vh` }}
+      style={{ height: `${cards.length * 75}vh` }}
     >
       <div className="mx-auto mb-10 max-w-screen-xl px-4 text-center md:px-8">
         <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">

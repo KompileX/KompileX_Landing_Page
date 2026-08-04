@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTheme } from '@/context/ThemeContext'
@@ -19,13 +19,32 @@ export default function Navbar() {
   const { theme, toggleTheme } = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const lastScrollY = useRef(0)
 
   if (typeof window !== 'undefined') {
     document.body.style.overflow = mobileOpen ? 'hidden' : 'unset'
   }
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 24)
+    lastScrollY.current = window.scrollY
+
+    const handleScroll = () => {
+      const currentY = window.scrollY
+      const delta = currentY - lastScrollY.current
+
+      if (currentY <= 24) {
+        setScrolled(false)
+      } else if (delta > 4) {
+        // Scrolling down -> shrink to the compact pill.
+        setScrolled(true)
+      } else if (delta < -4) {
+        // Scrolling up -> expand back to full width.
+        setScrolled(false)
+      }
+
+      lastScrollY.current = currentY
+    }
+
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)

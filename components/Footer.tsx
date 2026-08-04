@@ -75,6 +75,37 @@ function useDhakaTime() {
   return time
 }
 
+/* ---------- Procedural cloud skyline (no image asset, theme-aware via CSS vars) ---------- */
+
+function FooterClouds() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 1600 480"
+      preserveAspectRatio="xMidYMax slice"
+      className="absolute inset-0 h-full w-full"
+    >
+      <defs>
+        <filter id="footerCloudTexture" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.06" numOctaves="2" seed="5" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="24" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+      <g filter="url(#footerCloudTexture)">
+        <path
+          fill="var(--footer-cloud-back)"
+          opacity="0.9"
+          d="M0,480 L0,190 Q70,140 150,210 Q260,300 380,420 Q480,400 600,420 Q720,400 850,420 Q970,400 1100,420 Q1220,400 1340,420 Q1430,330 1490,230 Q1540,160 1600,200 L1600,480 Z"
+        />
+        <path
+          fill="var(--footer-cloud-front)"
+          d="M0,480 L0,380 Q70,260 150,290 Q230,310 300,400 Q380,220 460,270 Q540,320 620,400 Q700,240 790,275 Q880,320 970,390 Q1050,230 1140,270 Q1220,330 1300,400 Q1380,260 1460,290 Q1530,320 1600,350 L1600,480 Z"
+        />
+      </g>
+    </svg>
+  )
+}
+
 /* ---------- One letter of the rising wordmark ---------- */
 
 function RisingLetter({
@@ -157,13 +188,6 @@ export default function Footer() {
           curtain ? 'fixed bottom-0 left-0 z-0' : 'relative'
         }`}
       >
-        {/* ---------- Generated background art ---------- */}
-        <div aria-hidden className="pointer-events-none absolute inset-0">
-          <div className="footer-mesh absolute inset-0" />
-          <div className="footer-grain absolute inset-0" />
-          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
-        </div>
-
         <div ref={contentRef} className="relative">
           <div className="mx-auto w-full max-w-screen-xl px-4 pt-14 md:px-8 lg:pt-20">
             {/* ---------- Brand + link columns ---------- */}
@@ -215,8 +239,8 @@ export default function Footer() {
               ))}
             </div>
 
-            {/* ---------- Email mega-link + back to top ---------- */}
-            <div className="mt-14 flex flex-col gap-6 border-t pt-10 sm:flex-row sm:items-end sm:justify-between">
+            {/* ---------- Email mega-link ---------- */}
+            <div className="mt-14 flex flex-col gap-6 border-t pt-10">
               <div className="flex flex-col gap-2">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
                   / Start a project
@@ -230,17 +254,6 @@ export default function Footer() {
                   </span>
                 </a>
               </div>
-
-              <button
-                type="button"
-                onClick={scrollToTop}
-                className="group flex w-fit items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Back to top
-                <span className="flex size-7 items-center justify-center rounded-full border transition group-hover:-translate-y-0.5 group-hover:border-foreground">
-                  <ArrowUp className="size-3.5" />
-                </span>
-              </button>
             </div>
           </div>
 
@@ -263,32 +276,52 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ---------- Meta row ---------- */}
-          <div className="mx-auto w-full max-w-screen-xl px-4 py-4 md:px-8">
-            <div className="flex flex-col items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground sm:flex-row">
+          {/* ---------- Wordmark zone: giant letters bleed to the edges, BACK TO TOP
+               and the meta row float on top of them, exactly like the reference footers ---------- */}
+          <div className="relative overflow-hidden pt-10 pb-4 sm:pt-14 sm:pb-6 lg:pt-20 lg:pb-8">
+            <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+              <FooterClouds />
+              <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent sm:h-20" />
+            </div>
+
+            <div
+              aria-label={WORDMARK}
+              role="img"
+              className="relative z-[5] flex w-full justify-center overflow-hidden pointer-events-none leading-[0.78]"
+            >
+              <span
+                className="flex whitespace-nowrap font-bold uppercase tracking-[-0.045em] text-foreground"
+                style={{ fontSize: 'clamp(4rem, 24vw, 21rem)' }}
+              >
+                {WORDMARK.split('').map((char, i) => (
+                  <RisingLetter
+                    key={`${char}-${i}`}
+                    char={char}
+                    index={i}
+                    total={WORDMARK.length}
+                    progress={progress}
+                    reduced={reduced}
+                  />
+                ))}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={scrollToTop}
+              className="group absolute right-4 top-3 z-10 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground md:right-8 md:top-4"
+            >
+              Back to top
+              <span className="flex size-7 items-center justify-center rounded-full border bg-background/70 backdrop-blur transition group-hover:-translate-y-0.5 group-hover:border-foreground">
+                <ArrowUp className="size-3.5" />
+              </span>
+            </button>
+
+            <div className="absolute inset-x-4 bottom-2 z-10 flex flex-col items-center justify-between gap-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground sm:flex-row md:inset-x-8">
               <span>Copyright KompileX. All rights reserved</span>
               <span className="hidden md:inline">Built in Dhaka, shipped worldwide</span>
               <span>©{year}</span>
             </div>
-          </div>
-
-          {/* ---------- Rising wordmark ---------- */}
-          <div aria-label={WORDMARK} className="flex w-full justify-center px-2 leading-[0.78]">
-            <span
-              className="flex whitespace-nowrap font-bold uppercase tracking-[-0.045em] text-foreground"
-              style={{ fontSize: 'clamp(3.5rem, 15.5vw, 17rem)' }}
-            >
-              {WORDMARK.split('').map((char, i) => (
-                <RisingLetter
-                  key={`${char}-${i}`}
-                  char={char}
-                  index={i}
-                  total={WORDMARK.length}
-                  progress={progress}
-                  reduced={reduced}
-                />
-              ))}
-            </span>
           </div>
         </div>
       </footer>

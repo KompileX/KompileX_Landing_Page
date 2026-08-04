@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Moon, Sun, Menu, X } from 'lucide-react'
 
 const navItems = [
+  { label: 'About', href: '#about' },
   { label: 'Features', href: '#features' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'Works', href: '#how-it-works' },

@@ -1,10 +1,11 @@
 'use client'
 
-import { useRef, type ReactNode } from 'react'
+import { useRef } from 'react'
 import { motion, useScroll, useTransform, type MotionValue } from 'motion/react'
-import { Mic, BrainCircuit, ShieldCheck, Users, ArrowUpRight, type LucideIcon } from 'lucide-react'
+import { BarChart3, CalendarCheck2, Lock, Workflow, ArrowUpRight, type LucideIcon } from 'lucide-react'
 
 interface StackCardData {
+  tag: string
   title: string
   description: string
   Icon: LucideIcon
@@ -12,48 +13,57 @@ interface StackCardData {
   bg: string
   fg: string
   chip: string
+  href: string
 }
 
 const cards: StackCardData[] = [
   {
-    title: 'Capture every word, live',
+    tag: 'SaaS Dashboard',
+    title: 'Pulse Analytics',
     description:
-      'Real-time transcription and speaker identification turn any meeting, call, or debate into a searchable, fact-checked record as it happens.',
-    Icon: Mic,
-    points: ['95%+ live transcription accuracy', 'System audio + mic capture', 'Instant speaker identification'],
+      'A real-time analytics dashboard that turns raw event streams into live charts and alerts, built end-to-end for a fast-moving startup team.',
+    Icon: BarChart3,
+    points: ['React + TypeScript frontend', 'Node.js & PostgreSQL backend', 'Deployed on AWS with CI/CD'],
     bg: 'linear-gradient(145deg, #b9a6ff 0%, #8c6bff 100%)',
     fg: '#140630',
     chip: 'rgba(20,6,48,0.08)',
+    href: '#',
   },
   {
-    title: 'Train against an AI that adapts',
+    tag: 'Marketplace Platform',
+    title: 'Nimbus Booking',
     description:
-      'Practice negotiation, sales, and interrogation scenarios against opponents that scale with you, then get scored on strategy and delivery.',
-    Icon: BrainCircuit,
-    points: ['Adaptive difficulty per session', 'Custom & story scenarios', 'Performance scoring & feedback'],
+      'A multi-tenant booking and marketplace platform connecting vendors and customers, with payments and scheduling handled end to end.',
+    Icon: CalendarCheck2,
+    points: ['Next.js full-stack app', 'Stripe payments integration', 'Multi-tenant architecture'],
     bg: 'linear-gradient(145deg, #7fe3e0 0%, #35b6c9 100%)',
     fg: '#052224',
     chip: 'rgba(5,34,36,0.08)',
+    href: '#',
   },
   {
-    title: 'Catch manipulation before it lands',
+    tag: 'Security Tooling',
+    title: 'Cipher Vault',
     description:
-      'Persuasion tactics, logical fallacies, and emotional manipulation are flagged in real time so you always know what is actually being argued.',
-    Icon: ShieldCheck,
-    points: ['Live fallacy & tactic detection', 'Source-cited fact verification', 'Instant misinformation alerts'],
+      'A zero-knowledge credential manager for engineering teams, designed with encryption and access auditing at the core of every feature.',
+    Icon: Lock,
+    points: ['Go backend services', 'Zero-knowledge encryption model', 'SOC2-ready infrastructure'],
     bg: 'linear-gradient(145deg, #ffd684 0%, #ffb24d 100%)',
     fg: '#301a02',
     chip: 'rgba(48,26,2,0.08)',
+    href: '#',
   },
   {
-    title: 'Bring your whole team in',
+    tag: 'Internal Tool',
+    title: 'Flowline CRM',
     description:
-      'Peer-to-peer rooms sync transcription and analysis for every participant, while every session is archived into a searchable knowledge base.',
-    Icon: Users,
-    points: ['WebRTC P2P audio streaming', 'Synced live scoring for all users', 'Full history, tagged & searchable'],
+      'A lightweight CRM built for small sales teams who outgrew spreadsheets, with real-time sync across web and mobile.',
+    Icon: Workflow,
+    points: ['React Native + web from one codebase', 'GraphQL API layer', 'Real-time sync across devices'],
     bg: 'linear-gradient(145deg, #ff9fc0 0%, #ff6f9c 100%)',
     fg: '#33071a',
     chip: 'rgba(51,7,26,0.08)',
+    href: '#',
   },
 ]
 
@@ -91,7 +101,7 @@ function StackCard({
               className="inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide"
               style={{ backgroundColor: card.chip }}
             >
-              {String(i + 1).padStart(2, '0')} / {String(cards.length).padStart(2, '0')}
+              {card.tag} · {String(i + 1).padStart(2, '0')}/{String(cards.length).padStart(2, '0')}
             </span>
 
             <h3 className="text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-[2.4rem]">
@@ -114,13 +124,14 @@ function StackCard({
               ))}
             </ul>
 
-            <button
+            <a
+              href={card.href}
               className="mt-3 inline-flex w-fit items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
               style={{ backgroundColor: card.fg }}
             >
-              Explore this
+              View project
               <ArrowUpRight className="h-4 w-4" />
-            </button>
+            </a>
           </div>
 
           {/* Icon panel */}
@@ -153,10 +164,10 @@ export default function StackSection() {
     <section ref={container} className="relative bg-background py-20 lg:py-28">
       <div className="mx-auto mb-14 max-w-screen-xl px-4 text-center md:px-8">
         <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
-          Everything Stacks in Your Favor
+          Projects We&apos;ve Shipped
         </h2>
         <p className="mx-auto max-w-xl text-base text-muted-foreground">
-          Scroll to see how KompileX layers transcription, training, and analysis into one workflow.
+          A small team building real products end to end — scroll to see a few things we&apos;ve built together.
         </p>
       </div>
 

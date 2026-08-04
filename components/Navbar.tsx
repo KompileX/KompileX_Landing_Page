@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTheme } from '@/context/ThemeContext'
@@ -17,16 +17,36 @@ const navItems = [
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   if (typeof window !== 'undefined') {
     document.body.style.overflow = mobileOpen ? 'hidden' : 'unset'
   }
 
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 24)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border py-4 max-md:backdrop-blur-sm max-md:bg-background/90 md:border-none">
+    <header
+      className={`sticky top-0 z-50 max-md:border-b max-md:border-border max-md:backdrop-blur-sm max-md:bg-background/90 transition-all duration-[650ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+        scrolled
+          ? 'py-2 md:bg-transparent md:border-transparent'
+          : 'py-4 md:bg-background md:border-b md:border-border'
+      }`}
+    >
       <div className="mx-auto w-full max-w-7xl px-4">
         {/* Floating pill */}
-        <div className={`mx-auto flex max-w-2xl items-center justify-between md:rounded-xl md:border md:border-border md:bg-background/80 md:p-2.5 md:backdrop-blur-sm ${theme === 'light' ? 'md:shadow-[0_2px_16px_rgba(0,0,0,0.07)]' : ''}`}>
+        <div
+          className={`mx-auto flex w-full items-center justify-between border border-transparent md:backdrop-blur-md transition-all duration-[650ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] will-change-[max-width,margin,padding,border-radius,box-shadow] ${
+            scrolled
+              ? 'md:max-w-3xl md:mt-3 md:rounded-2xl md:border-border md:bg-background/90 md:p-2.5 md:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.18)]'
+              : 'md:max-w-7xl md:mt-0 md:rounded-none md:border-transparent md:bg-transparent md:p-0 md:shadow-none'
+          } ${theme === 'light' && scrolled ? 'md:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.1)]' : ''}`}
+        >
 
           {/* Logo */}
           <Link href="/" className="transition hover:opacity-80">

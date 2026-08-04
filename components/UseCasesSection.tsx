@@ -3,91 +3,91 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { motion } from 'motion/react'
-import { GraduationCap, Briefcase, Mic2, Radio, Newspaper, Scale, CheckIcon } from 'lucide-react'
+import { Rocket, Landmark, HeartPulse, ShoppingCart, GraduationCap, Building2, CheckIcon } from 'lucide-react'
 
 const useCases = [
   {
+    icon: Rocket,
+    title: 'Startups & SaaS',
+    badge: 'Startups',
+    color: 'text-foreground',
+    bg: 'bg-muted',
+    border: 'border-border',
+    items: [
+      'MVP to production in weeks, not months',
+      'Fractional CTO-style technical guidance',
+      'Scalable architecture from day one',
+      'Fast iteration as requirements evolve',
+    ],
+  },
+  {
+    icon: Landmark,
+    title: 'Fintech',
+    badge: 'Fintech',
+    color: 'text-foreground',
+    bg: 'bg-muted',
+    border: 'border-border',
+    items: [
+      'Secure payment & ledger systems',
+      'Compliance-aware data handling',
+      'Auditable transaction pipelines',
+      'Integrations with banking & payment APIs',
+    ],
+  },
+  {
+    icon: HeartPulse,
+    title: 'Healthcare',
+    badge: 'Health',
+    color: 'text-foreground',
+    bg: 'bg-muted',
+    border: 'border-border',
+    items: [
+      'Patient-data-safe architecture',
+      'Scheduling & records platforms',
+      'Telehealth-ready infrastructure',
+      'Careful, privacy-first data design',
+    ],
+  },
+  {
+    icon: ShoppingCart,
+    title: 'E-commerce',
+    badge: 'Retail',
+    color: 'text-foreground',
+    bg: 'bg-muted',
+    border: 'border-border',
+    items: [
+      'Custom storefronts & checkout flows',
+      'Inventory & order management',
+      'Payment gateway integrations',
+      'Performance tuned for conversion',
+    ],
+  },
+  {
     icon: GraduationCap,
-    title: 'Students & Educators',
+    title: 'EdTech',
     badge: 'Education',
     color: 'text-foreground',
     bg: 'bg-muted',
     border: 'border-border',
     items: [
-      'Transcribe lectures automatically',
-      'Generate study notes and flashcards',
-      'Fact-check educational content',
-      'Research mode with clip library',
+      'Course & content management systems',
+      'Progress tracking & analytics',
+      'Video & live-session platforms',
+      'Accessible, multi-device experiences',
     ],
   },
   {
-    icon: Briefcase,
-    title: 'Business Professionals',
-    badge: 'Business',
+    icon: Building2,
+    title: 'Enterprise',
+    badge: 'Enterprise',
     color: 'text-foreground',
     bg: 'bg-muted',
     border: 'border-border',
     items: [
-      'Meeting transcription & minutes',
-      'Sales call analysis',
-      'Negotiation preparation',
-      'Presentation feedback',
-    ],
-  },
-  {
-    icon: Mic2,
-    title: 'Debaters & Public Speakers',
-    badge: 'Speaking',
-    color: 'text-foreground',
-    bg: 'bg-muted',
-    border: 'border-border',
-    items: [
-      'Argument strength analysis',
-      'Fallacy detection',
-      'Speech coaching',
-      'Performance tracking',
-    ],
-  },
-  {
-    icon: Radio,
-    title: 'Content Creators & Podcasters',
-    badge: 'Content',
-    color: 'text-foreground',
-    bg: 'bg-muted',
-    border: 'border-border',
-    items: [
-      'Interview transcription',
-      'Topic analysis',
-      'Clip management',
-      'Content insights',
-    ],
-  },
-  {
-    icon: Newspaper,
-    title: 'Journalists & Researchers',
-    badge: 'Research',
-    color: 'text-foreground',
-    bg: 'bg-muted',
-    border: 'border-border',
-    items: [
-      'Interview recording & analysis',
-      'Fact verification',
-      'Quote extraction',
-      'Source organization',
-    ],
-  },
-  {
-    icon: Scale,
-    title: 'Legal & Compliance',
-    badge: 'Legal',
-    color: 'text-foreground',
-    bg: 'bg-muted',
-    border: 'border-border',
-    items: [
-      'Deposition transcription',
-      'Statement analysis',
-      'Evidence documentation',
-      'Audit trails',
+      'Internal tools & workflow automation',
+      'Legacy system modernization',
+      'SSO & role-based access control',
+      'Long-term support & maintenance',
     ],
   },
 ]
@@ -104,7 +104,7 @@ const itemVariants = {
 
 export default function UseCasesSection() {
   return (
-    <section className="w-full py-20 lg:py-32">
+    <section id="industries" className="w-full py-14 lg:py-20">
       <div className="max-w-screen-xl mx-auto px-4 md:px-8">
 
         {/* Header */}
@@ -113,13 +113,13 @@ export default function UseCasesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-16 text-center flex flex-col gap-3"
+          className="mb-10 text-center flex flex-col gap-3"
         >
           <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-            Who Benefits from KompileX?
+            Industries We Serve
           </h2>
           <p className="max-w-xl mx-auto text-sm text-muted-foreground">
-            From students to professionals, KompileX empowers everyone to communicate better.
+            Different industries, same approach — senior engineering focused on what actually moves your product forward.
           </p>
         </motion.div>
 

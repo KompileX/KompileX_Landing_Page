@@ -1,35 +1,35 @@
 import Navbar from '@/components/Navbar'
 import HeroSection from '@/components/HeroSection'
+import AboutSection from '@/components/AboutSection'
 import FeaturesSection from '@/components/FeaturesSection'
-import UseCasesSection from '@/components/UseCasesSection'
+import StackSection from '@/components/StackSection'
 import HowItWorksSection from '@/components/HowItWorksSection'
 import TechStackSection from '@/components/TechStackSection'
-import PricingSection from '@/components/PricingSection'
+import UseCasesSection from '@/components/UseCasesSection'
 import FAQSection from '@/components/FAQSection'
-import WaitlistSection from '@/components/WaitlistSection'
-import DownloadSection from '@/components/DownloadSection'
+import ContactSection from '@/components/ContactSection'
 import Footer from '@/components/Footer'
-import { ImagePreviewProvider } from '@/components/ImagePreviewModal'
 import { ToastProvider } from '@/components/Toast'
 
 export default function HomePage() {
   return (
     <ToastProvider>
-      <ImagePreviewProvider>
+      {/* Curtain: this block scrolls away over the fixed footer below it. */}
+      <div className="relative z-10 bg-background">
         <Navbar />
         <main>
           <HeroSection />
+          <AboutSection />
           <FeaturesSection />
-          <UseCasesSection />
+          <StackSection />
           <HowItWorksSection />
           <TechStackSection />
-          <PricingSection />
+          <UseCasesSection />
           <FAQSection />
-          <DownloadSection />
-          {/* <WaitlistSection /> */}
+          <ContactSection />
         </main>
-        <Footer />
-      </ImagePreviewProvider>
+      </div>
+      <Footer />
     </ToastProvider>
   )
 }

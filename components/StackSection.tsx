@@ -70,25 +70,36 @@ const cards: StackCardData[] = [
 function StackCard({
   i,
   card,
+  total,
   progress,
-  range,
-  targetScale,
 }: {
   i: number
   card: StackCardData
+  total: number
   progress: MotionValue<number>
-  range: [number, number]
-  targetScale: number
 }) {
-  const scale = useTransform(progress, range, [1, targetScale])
+  const stepStart = i / total
+  const stepEnd = (i + 1) / total
+  const settleStart = stepStart === 0 ? -0.0001 : stepStart - 1 / total
+  const inputRange = [settleStart, stepStart, stepEnd]
+
+  const isLast = i === total - 1
+
+  // Waiting in the stack -> settled at the front -> lifted away off the top.
+  // The last card has nothing left to reveal behind it, so it settles and stays put.
+  const y = useTransform(progress, inputRange, [`${i * 2}vh`, '0vh', isLast ? '0vh' : '-120vh'])
+  const scale = useTransform(progress, inputRange, [1 - i * 0.05, 1, 1])
   const { Icon } = card
 
   return (
-    <div className="sticky top-16 md:top-20 h-screen flex items-center justify-center px-4 md:px-8">
+    <div
+      className="absolute inset-0 flex items-center justify-center px-4 md:px-8"
+      style={{ zIndex: total - i }}
+    >
       <motion.div
         style={{
+          y,
           scale,
-          top: `calc(-6vh + ${i * 22}px)`,
           background: card.bg,
           color: card.fg,
         }}
@@ -161,7 +172,12 @@ export default function StackSection() {
   })
 
   return (
-    <section id="work" ref={container} className="relative bg-background py-14 lg:py-20">
+    <section
+      id="work"
+      ref={container}
+      className="relative bg-background py-14 lg:py-20"
+      style={{ height: `${cards.length * 100}vh` }}
+    >
       <div className="mx-auto mb-10 max-w-screen-xl px-4 text-center md:px-8">
         <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
           Projects We&apos;ve Shipped
@@ -171,19 +187,11 @@ export default function StackSection() {
         </p>
       </div>
 
-      {cards.map((card, i) => {
-        const targetScale = 1 - (cards.length - i) * 0.05
-        return (
-          <StackCard
-            key={card.title}
-            i={i}
-            card={card}
-            progress={scrollYProgress}
-            range={[i * (1 / cards.length), 1]}
-            targetScale={targetScale}
-          />
-        )
-      })}
+      <div className="sticky top-16 md:top-20 h-screen">
+        {cards.map((card, i) => (
+          <StackCard key={card.title} i={i} card={card} total={cards.length} progress={scrollYProgress} />
+        ))}
+      </div>
     </section>
   )
 }

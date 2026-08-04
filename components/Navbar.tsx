@@ -9,9 +9,9 @@ import { Moon, Sun, Menu, X } from 'lucide-react'
 
 const navItems = [
   { label: 'About', href: '#about' },
-  { label: 'Features', href: '#features' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Works', href: '#how-it-works' },
+  { label: 'Services', href: '#services' },
+  { label: 'Work', href: '#work' },
+  { label: 'Process', href: '#process' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -81,22 +81,9 @@ export default function Navbar() {
               {theme === 'dark' ? <Moon className="size-4" /> : <Sun className="size-4" />}
             </Button>
 
-            {/* Join Waitlist */}
-            {/* <a
-              href="#waitlist"
-              className="relative cursor-pointer rounded-lg bg-gradient-to-b from-[#190d2e] to-[#4a208a] px-3 py-2 text-sm font-medium text-white shadow-[0px_0px_12px_#8c45ff]"
-            >
-              <div className="absolute inset-0 rounded-lg">
-                <div className="absolute inset-0 rounded-lg border border-white/20 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
-                <div className="absolute inset-0 rounded-lg border border-white/40 [mask-image:linear-gradient(to_top,black,transparent)]" />
-                <div className="absolute inset-0 rounded-lg shadow-[0_0_10px_rgb(140,69,255,0.7)_inset]" />
-              </div>
-              <span className="relative">Join Waitlist</span>
-            </a> */}
-
-            {/* Download */}
+            {/* Contact CTA */}
             <a
-              href="#download"
+              href="#contact"
               className="relative cursor-pointer rounded-lg bg-gradient-to-b from-[#190d2e] to-[#4a208a] px-3 py-2 text-sm font-medium text-white shadow-[0px_0px_12px_#8c45ff]"
             >
               <div className="absolute inset-0 rounded-lg">
@@ -104,7 +91,7 @@ export default function Navbar() {
                 <div className="absolute inset-0 rounded-lg border border-white/40 [mask-image:linear-gradient(to_top,black,transparent)]" />
                 <div className="absolute inset-0 rounded-lg shadow-[0_0_10px_rgb(140,69,255,0.7)_inset]" />
               </div>
-              <span className="relative">Download</span>
+              <span className="relative">Contact Us</span>
             </a>
 
             {/* Mobile hamburger */}

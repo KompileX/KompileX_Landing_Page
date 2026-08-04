@@ -3,37 +3,30 @@ import HeroSection from '@/components/HeroSection'
 import AboutSection from '@/components/AboutSection'
 import FeaturesSection from '@/components/FeaturesSection'
 import StackSection from '@/components/StackSection'
-import UseCasesSection from '@/components/UseCasesSection'
 import HowItWorksSection from '@/components/HowItWorksSection'
 import TechStackSection from '@/components/TechStackSection'
-import PricingSection from '@/components/PricingSection'
+import UseCasesSection from '@/components/UseCasesSection'
 import FAQSection from '@/components/FAQSection'
-import WaitlistSection from '@/components/WaitlistSection'
-import DownloadSection from '@/components/DownloadSection'
+import ContactSection from '@/components/ContactSection'
 import Footer from '@/components/Footer'
-import { ImagePreviewProvider } from '@/components/ImagePreviewModal'
 import { ToastProvider } from '@/components/Toast'
 
 export default function HomePage() {
   return (
     <ToastProvider>
-      <ImagePreviewProvider>
-        <Navbar />
-        <main>
-          <HeroSection />
-          <AboutSection />
-          <FeaturesSection />
-          <StackSection />
-          <UseCasesSection />
-          <HowItWorksSection />
-          <TechStackSection />
-          <PricingSection />
-          <FAQSection />
-          <DownloadSection />
-          {/* <WaitlistSection /> */}
-        </main>
-        <Footer />
-      </ImagePreviewProvider>
+      <Navbar />
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <FeaturesSection />
+        <StackSection />
+        <HowItWorksSection />
+        <TechStackSection />
+        <UseCasesSection />
+        <FAQSection />
+        <ContactSection />
+      </main>
+      <Footer />
     </ToastProvider>
   )
 }

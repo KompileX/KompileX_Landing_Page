@@ -5,45 +5,34 @@ import { Button } from '@/components/ui/button'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
 
-export default function WaitlistSection() {
+const CONTACT_EMAIL = 'hello@kompilex.dev'
+
+export default function ContactSection() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [details, setDetails] = useState('')
 
-  async function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (!name.trim() || !email.trim()) {
+    if (!name.trim() || !email.trim() || !details.trim()) {
       toast.warning('Please fill in all fields.')
       return
     }
-    setLoading(true)
-    try {
-      const res = await fetch(`${process.env.VITE_API_BASE_URL}/waitlist`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), email: email.trim() }),
-      })
-      if (res.ok) {
-        toast.success("You're on the waitlist!", {
-          description: "We'll be in touch soon. Check your email for confirmation.",
-        })
-        setName('')
-        setEmail('')
-      } else {
-        const data = await res.json().catch(() => ({}))
-        const msg = (data as { message?: string }).message || 'Something went wrong. Please try again.'
-        toast.error('Submission failed', { description: msg })
-      }
-    } catch {
-      toast.error('Network error', { description: 'Please check your connection and try again.' })
-    } finally {
-      setLoading(false)
-    }
+
+    const subject = encodeURIComponent(`New project inquiry from ${name.trim()}`)
+    const body = encodeURIComponent(
+      `Name: ${name.trim()}\nEmail: ${email.trim()}\n\nProject details:\n${details.trim()}`
+    )
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
+
+    toast.success('Opening your email client...', {
+      description: `Your message is prefilled — just hit send to ${CONTACT_EMAIL}.`,
+    })
   }
 
   return (
     <motion.section
-      id="waitlist"
+      id="contact"
       initial={{ y: 20, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
@@ -61,13 +50,13 @@ export default function WaitlistSection() {
       <div className="flex flex-col items-center gap-3 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-medium text-muted-foreground">
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          Limited Early Access
+          Let&apos;s build something
         </div>
         <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-          Join the Waitlist
+          Start a Project
         </h2>
         <p className="max-w-xl text-sm text-center bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-          Be among the first to experience KompileX. Limited spots available.
+          Tell us what you&apos;re building. We reply to every inquiry within a day or two.
         </p>
       </div>
 
@@ -89,12 +78,25 @@ export default function WaitlistSection() {
           className="w-full px-4 py-3 rounded-md bg-input border text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-ring transition-colors"
           required
         />
-        <Button type="submit" disabled={loading} className="w-full" size="lg">
-          {loading ? 'Joining...' : 'Join the Waitlist'}
+        <textarea
+          value={details}
+          onChange={(e) => setDetails(e.target.value)}
+          placeholder="A little about your project..."
+          rows={4}
+          className="w-full px-4 py-3 rounded-md bg-input border text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-1 focus:ring-ring transition-colors resize-none"
+          required
+        />
+        <Button type="submit" className="w-full" size="lg">
+          Send Message
         </Button>
       </form>
 
-      <p className="text-sm text-muted-foreground">No spam ever. Unsubscribe anytime.</p>
+      <p className="text-sm text-muted-foreground">
+        Or email us directly at{' '}
+        <a href={`mailto:${CONTACT_EMAIL}`} className="text-foreground underline underline-offset-2">
+          {CONTACT_EMAIL}
+        </a>
+      </p>
     </motion.section>
   )
 }

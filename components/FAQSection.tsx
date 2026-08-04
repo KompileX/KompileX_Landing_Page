@@ -10,29 +10,29 @@ import { motion } from "motion/react"
 
 const faqs = [
   {
-    question: "What platforms does KompileX support?",
+    question: "How do you scope a new project?",
     answer:
-      "KompileX works with all major video conferencing and streaming platforms including Zoom, Google Meet, Microsoft Teams, Discord, YouTube Live, and more. Our browser extension captures audio from any web-based platform automatically.",
+      "We start with a discovery call to understand your goals, users, and constraints. From there we put together a written scope with milestones and a timeline before any code gets written, so everyone agrees on what \"done\" looks like.",
   },
   {
-    question: "Does KompileX work offline?",
+    question: "What's your typical project timeline?",
     answer:
-      "Currently, KompileX requires an internet connection for real-time AI processing and fact-checking. We are working on an offline mode for basic transcription that will be available in a future update.",
+      "It depends on scope, but most engagements run from a few weeks for a focused build to a few months for a full product. We work in short iterations and share progress continuously rather than disappearing until launch day.",
   },
   {
-    question: "How accurate is the transcription and analysis?",
+    question: "Do you work with early-stage startups or only established companies?",
     answer:
-      "Our transcription achieves 95%+ accuracy for clear audio in English, with support for multiple accents. Argument analysis and fact-checking leverage state-of-the-art AI models with continuous improvement through user feedback.",
+      "Both. We regularly help startups go from idea to MVP, and we also work with established teams who need extra engineering capacity or a specific system built and integrated into what they already have.",
   },
   {
-    question: "Can I use KompileX for Zoom or Teams meetings?",
+    question: "Do you sign NDAs and handle IP properly?",
     answer:
-      "Yes! KompileX integrates seamlessly with Zoom and Microsoft Teams. You can use our browser extension to capture meeting audio, or connect via our desktop app. All participants are notified when recording is active.",
+      "Yes. We're happy to sign an NDA before any detailed discussion, and all code and IP produced for a client project belongs to that client once the engagement is paid in full.",
   },
   {
-    question: "How is my data protected?",
+    question: "Do you offer support after launch?",
     answer:
-      "Your privacy is paramount. All audio is processed with end-to-end encryption. We maintain a strict zero-log policy for conversation content. You can delete your data at any time from your account settings. We are fully GDPR compliant.",
+      "Yes — we don't disappear after deployment. We offer ongoing support and maintenance retainers, and since our team built the system, we already know it well when something needs fixing or extending.",
   },
 ]
 
@@ -58,7 +58,7 @@ export default function FAQSection() {
           FAQ
         </h4>
         <p className="max-w-xl text-center text-sm bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-          Everything you need to know about KompileX.
+          Everything you need to know about working with KompileX.
         </p>
       </div>
       <div className="flex w-full max-w-2xl">

@@ -3,48 +3,19 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
 import { useTheme } from '@/context/ThemeContext'
-import { Mic, FileText, BarChart2, GraduationCap } from 'lucide-react'
+import { Code2, Server, Cloud, LifeBuoy } from 'lucide-react'
 
 const STAR_IMAGE = '/stars.png'
 
-const platforms = [
-  {
-    name: 'YouTube',
-    viewBox: '0 0 24 24',
-    fill: 'currentColor',
-    paths: <path fill="currentColor" className="text-red-500" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />,
-  },
-  {
-    name: 'Zoom',
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    paths: <><rect x="2" y="2" width="20" height="20" rx="5" fill="#2D8CFF" /><path d="M7.4 8.3h6.4a2.1 2.1 0 0 1 2.1 2.1v3.2a2.1 2.1 0 0 1-2.1 2.1H7.4a2.1 2.1 0 0 1-2.1-2.1v-3.2a2.1 2.1 0 0 1 2.1-2.1z" fill="#fff" /><path d="M15.7 10.1l3-1.6v7l-3-1.6v-3.8z" fill="#fff" /></>,
-  },
-  {
-    name: 'Google Meet',
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    paths: <><rect x="4" y="7" width="10" height="10" rx="2" fill="#34A853" /><rect x="6.2" y="9.2" width="5.6" height="5.6" rx="1.2" fill="#fff" /><path d="M14 9.2l5-3v11.6l-5-3v-5.6z" fill="#4285F4" /><rect x="2.2" y="8.4" width="2.8" height="7.2" rx="1" fill="#EA4335" /><rect x="6" y="17" width="6.8" height="2.6" rx="1.3" fill="#FBBC04" /></>,
-  },
-  {
-    name: 'Teams',
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    paths: <><rect x="2" y="5" width="12" height="14" rx="3" fill="#6264A7" /><rect x="10" y="7" width="12" height="12" rx="3" fill="#464EB8" /><circle cx="17" cy="9" r="3" fill="#7B83EB" /><circle cx="18" cy="15" r="3" fill="#8B8CF8" /><path d="M5.5 9h5v2H9v6H7v-6H5.5z" fill="#fff" /></>,
-  },
-  {
-    name: 'Discord',
-    viewBox: '0 0 16 16',
-    fill: 'currentColor',
-    paths: <path fill="currentColor" className="text-indigo-400" d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612" />,
-  },
+const technologies = [
+  'Next.js', 'React', 'TypeScript', 'Node.js', 'Go', 'PostgreSQL', 'GraphQL', 'AWS', 'Docker', 'Vercel',
 ]
 
 const featureCards = [
-  { side: 'left' as const, topClass: 'top-[30%]', xFrom: -40, delay: 0.25, Icon: Mic,            title: 'Real-time Transcription', desc: 'Capture every word with >99% accuracy.' },
-  { side: 'left' as const, topClass: 'top-[62%]', xFrom: -40, delay: 0.38, Icon: FileText,       title: 'Meeting Summary',         desc: 'Get concise, actionable recaps instantly.' },
-  { side: 'right' as const, topClass: 'top-[30%]', xFrom: 40, delay: 0.30, Icon: BarChart2,      title: 'Insightful Analysis',     desc: 'Analyze sentiment, pace, and key topics.' },
-  { side: 'right' as const, topClass: 'top-[62%]', xFrom: 40, delay: 0.43, Icon: GraduationCap,  title: 'Training & Feedback',     desc: 'Receive personalized tips to improve delivery.' },
+  { side: 'left' as const, topClass: 'top-[30%]', xFrom: -40, delay: 0.25, Icon: Code2,   title: 'Web & Mobile Apps',  desc: 'Full-stack products built from scratch or extended.' },
+  { side: 'left' as const, topClass: 'top-[62%]', xFrom: -40, delay: 0.38, Icon: Server,  title: 'APIs & Backends',    desc: 'Reliable services that scale with your users.' },
+  { side: 'right' as const, topClass: 'top-[30%]', xFrom: 40, delay: 0.30, Icon: Cloud,   title: 'Cloud Infrastructure', desc: 'CI/CD, hosting, and monitoring done right.' },
+  { side: 'right' as const, topClass: 'top-[62%]', xFrom: 40, delay: 0.43, Icon: LifeBuoy, title: 'Ongoing Support',   desc: 'We stick around after launch, not just before it.' },
 ]
 
 export default function HeroSection() {
@@ -156,24 +127,24 @@ export default function HeroSection() {
                 <span className="absolute inline-flex size-full rounded-full bg-[#8c45ff] opacity-75 animate-ping" />
                 <span className="relative inline-flex size-2 rounded-full bg-[#8c45ff]" />
               </span>
-              <span className={`text-sm font-semibold ${isLight ? 'text-violet-700' : 'text-white/70'}`}>AI Communication Platform</span>
+              <span className={`text-sm font-semibold ${isLight ? 'text-violet-700' : 'text-white/70'}`}>Software Development Studio</span>
             </div>
           </div>
 
           {/* Headline */}
           <h1 className={`text-center font-semibold tracking-tighter text-5xl md:text-7xl lg:text-8xl lg:leading-none ${isLight ? 'text-foreground' : 'text-white'}`}>
-            Master Every<br />Conversation
+            We Ship Software<br />That Works
           </h1>
 
           {/* Subtitle */}
           <p className={`mx-auto mt-5 max-w-xl text-center text-lg md:text-xl ${isLight ? 'text-muted-foreground' : 'text-white/70'}`}>
-            Real-time AI transcription and analysis for meetings, debates, and training sessions.
+            KompileX is a four-person team designing, building, and shipping full-stack products for startups and teams who need to move fast.
           </p>
 
           {/* CTAs */}
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="#waitlist"
+              href="#contact"
               className="relative cursor-pointer rounded-lg bg-gradient-to-b from-[#190d2e] to-[#4a208a] px-4 py-2.5 text-sm font-medium text-white shadow-[0px_0px_12px_#8c45ff]"
             >
               <div className="absolute inset-0 rounded-lg">
@@ -181,43 +152,40 @@ export default function HeroSection() {
                 <div className="absolute inset-0 rounded-lg border border-white/40 [mask-image:linear-gradient(to_top,black,transparent)]" />
                 <div className="absolute inset-0 rounded-lg shadow-[0_0_10px_rgb(140,69,255,0.7)_inset]" />
               </div>
-              <span className="relative">Get Started Free</span>
+              <span className="relative">Start a Project</span>
             </a>
 
             <a
-              href="#demo"
+              href="#work"
               className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition ${isLight ? 'border-border bg-white/70 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:border-foreground/20' : 'border-white/10 text-white/70 hover:border-white/30 hover:text-white'}`}
             >
               <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Watch Demo
+              See Our Work
             </a>
           </div>
         </div>
       </motion.section>
 
-      {/* ── Platform ticker ── */}
+      {/* ── Tech ticker ── */}
       <div className="w-full py-16">
         <div className="max-w-screen-xl mx-auto px-4 md:px-8">
           <div className="flex items-center gap-5">
             <div className="flex-1 md:flex-none">
-              <p className="text-sm font-medium text-muted-foreground whitespace-nowrap">Works with your favorite platforms</p>
+              <p className="text-sm font-medium text-muted-foreground whitespace-nowrap">Technologies we work with</p>
             </div>
             <div className="flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]">
               <motion.div
                 initial={{ x: '-50%' }}
                 animate={{ x: 0 }}
                 transition={{ repeat: Infinity, duration: 30, ease: 'linear' }}
-                className="-translate-x-1/2 flex flex-none gap-14 pr-14"
+                className="-translate-x-1/2 flex flex-none gap-4 pr-4"
               >
-                {[...platforms, ...platforms].map((p, i) => (
-                  <div key={i} className="flex items-center gap-2.5 h-8 whitespace-nowrap">
-                    <svg className="h-full w-auto shrink-0 opacity-70" viewBox={p.viewBox} fill={p.fill} xmlns="http://www.w3.org/2000/svg">
-                      {p.paths}
-                    </svg>
-                    <span className="text-sm font-medium text-muted-foreground">{p.name}</span>
+                {[...technologies, ...technologies].map((name, i) => (
+                  <div key={i} className="flex h-8 items-center whitespace-nowrap rounded-full border border-border px-4">
+                    <span className="text-sm font-medium text-muted-foreground">{name}</span>
                   </div>
                 ))}
               </motion.div>

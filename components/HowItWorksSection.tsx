@@ -4,38 +4,38 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { motion } from 'motion/react'
-import { LayoutGrid, Mic, Sparkles } from 'lucide-react'
+import { Compass, Hammer, Rocket } from 'lucide-react'
 
 const steps = [
   {
     number: '01',
-    icon: LayoutGrid,
-    title: 'Select Your Mode',
+    icon: Compass,
+    title: 'Discovery & Scoping',
     description:
-      'Choose from Listen & Analyze, P2P Debate, AI Training, Decode Mode, or Knowledge Base — each optimized for different learning and communication needs.',
-    badge: 'Setup',
+      'We start with a working session to understand your goals, users, and constraints, then turn that into a clear scope, timeline, and technical plan.',
+    badge: 'Plan',
     color: 'text-foreground',
     bg: 'bg-muted',
     border: 'border-border',
   },
   {
     number: '02',
-    icon: Mic,
-    title: 'Start Recording',
+    icon: Hammer,
+    title: 'Design & Build',
     description:
-      'Begin your conversation, lecture, meeting, or debate. KompileX captures audio in real-time with support for Zoom, Google Meet, Teams, YouTube and Discord.',
-    badge: 'Capture',
+      'Our four-person team designs and builds in short iterations, sharing progress often so you can steer direction before anything is set in stone.',
+    badge: 'Build',
     color: 'text-foreground',
     bg: 'bg-muted',
     border: 'border-border',
   },
   {
     number: '03',
-    icon: Sparkles,
-    title: 'Get Live Insights',
+    icon: Rocket,
+    title: 'Ship & Support',
     description:
-      'Receive real-time transcription, argument analysis, fact-checking, counter-arguments, and actionable feedback as the conversation unfolds.',
-    badge: 'Analyze',
+      'We deploy to production with proper CI/CD and monitoring in place, then stay on to fix issues, add features, and support you as you grow.',
+    badge: 'Support',
     color: 'text-foreground',
     bg: 'bg-muted',
     border: 'border-border',
@@ -54,7 +54,7 @@ const itemVariants = {
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="w-full py-20 lg:py-32">
+    <section id="process" className="w-full py-20 lg:py-32">
       <div className="max-w-screen-xl mx-auto px-4 md:px-8">
 
         {/* Header */}
@@ -66,10 +66,10 @@ export default function HowItWorksSection() {
           className="mb-16 text-center flex flex-col gap-3"
         >
           <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-            How It Works
+            How We Work
           </h2>
           <p className="max-w-xl mx-auto text-sm text-muted-foreground">
-            Get started in minutes. No complex setup required.
+            A straightforward process built around a small team that owns the whole project.
           </p>
         </motion.div>
 

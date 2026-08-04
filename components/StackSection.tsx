@@ -161,7 +161,7 @@ export default function StackSection() {
   })
 
   return (
-    <section ref={container} className="relative bg-background py-20 lg:py-28">
+    <section id="work" ref={container} className="relative bg-background py-20 lg:py-28">
       <div className="mx-auto mb-14 max-w-screen-xl px-4 text-center md:px-8">
         <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
           Projects We&apos;ve Shipped

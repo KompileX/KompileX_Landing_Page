@@ -7,22 +7,21 @@ import { motion } from 'motion/react'
 import { GitHubLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons'
 
 const links = {
-  product: [
-    { label: 'Features', href: '#features' },
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'FAQ', href: '#faq' },
+  studio: [
+    { label: 'Services', href: '#services' },
+    { label: 'Our Work', href: '#work' },
+    { label: 'How We Work', href: '#process' },
+    { label: 'Tech Stack', href: '#tech-stack' },
   ],
   company: [
-    { label: 'About', href: '#' },
-    { label: 'Blog', href: '#' },
-    { label: 'Careers', href: '#' },
-    { label: 'Contact', href: '#' },
+    { label: 'About', href: '#about' },
+    { label: 'Industries', href: '#industries' },
+    { label: 'FAQ', href: '#faq' },
+    { label: 'Contact', href: '#contact' },
   ],
   legal: [
     { label: 'Privacy Policy', href: '#' },
     { label: 'Terms of Service', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
   ],
 }
 
@@ -50,7 +49,7 @@ export default function Footer() {
               KompileX
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-              AI-powered transcription and argument analysis for every conversation. Think clearer, respond smarter.
+              A four-person software development studio designing, building, and shipping full-stack products end to end.
             </p>
             <div className="flex gap-2 mt-2">
               {socialLinks.map((social) => (
@@ -73,11 +72,11 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Product */}
+          {/* Studio */}
           <div className="flex flex-col gap-4">
-            <p className="text-sm font-semibold text-foreground">Product</p>
+            <p className="text-sm font-semibold text-foreground">Studio</p>
             <ul className="flex flex-col gap-3">
-              {links.product.map((link) => (
+              {links.studio.map((link) => (
                 <li key={link.label}>
                   <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                     {link.label}
@@ -120,7 +119,7 @@ export default function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <span>© {year} KompileX. All rights reserved.</span>
-          <span className="text-xs">Built for thinkers, debaters & lifelong learners.</span>
+          <span className="text-xs">Four engineers. One studio. Software that ships.</span>
         </div>
       </div>
     </footer>

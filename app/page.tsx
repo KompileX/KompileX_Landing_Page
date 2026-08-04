@@ -14,18 +14,21 @@ import { ToastProvider } from '@/components/Toast'
 export default function HomePage() {
   return (
     <ToastProvider>
-      <Navbar />
-      <main>
-        <HeroSection />
-        <AboutSection />
-        <FeaturesSection />
-        <StackSection />
-        <HowItWorksSection />
-        <TechStackSection />
-        <UseCasesSection />
-        <FAQSection />
-        <ContactSection />
-      </main>
+      {/* Curtain: this block scrolls away over the fixed footer below it. */}
+      <div className="relative z-10 bg-background">
+        <Navbar />
+        <main>
+          <HeroSection />
+          <AboutSection />
+          <FeaturesSection />
+          <StackSection />
+          <HowItWorksSection />
+          <TechStackSection />
+          <UseCasesSection />
+          <FAQSection />
+          <ContactSection />
+        </main>
+      </div>
       <Footer />
     </ToastProvider>
   )

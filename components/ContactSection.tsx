@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
 
-const CONTACT_EMAIL = 'hello@kompilex.dev'
+const CONTACT_EMAIL = 'contact@kompilex.com'
 
 export default function ContactSection() {
   const [name, setName] = useState('')

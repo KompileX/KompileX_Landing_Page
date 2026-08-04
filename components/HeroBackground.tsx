@@ -50,9 +50,9 @@ type FloatingIcon = {
   scale: number
 }
 
-const MAX_ICONS = 5
-const SPAWN_INTERVAL_MS = 260
-const MOVE_THRESHOLD_PX = 70
+const MAX_ICONS = 6
+const SPAWN_INTERVAL_MS = 220
+const MOVE_THRESHOLD_PX = 55
 const ICON_LIFETIME_MS = 2400
 
 const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
@@ -124,13 +124,16 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
   }, [])
 
   useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-
+    // Listen on window rather than the background layer itself: the headline,
+    // CTAs, badge, and feature cards are siblings stacked on top of it (not
+    // descendants), so a listener scoped to the background div never sees
+    // mousemove events that hit those elements first. Bounds-checking against
+    // the container's rect keeps the effect scoped to the hero only.
     const processPending = () => {
       rafRef.current = null
+      const el = containerRef.current
       const pos = pendingPosRef.current
-      if (!pos || !pointerOkRef.current) return
+      if (!el || !pos || !pointerOkRef.current) return
 
       const dist = Math.hypot(pos.x - lastPosRef.current.x, pos.y - lastPosRef.current.y)
       const now = performance.now()
@@ -144,16 +147,23 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!pointerOkRef.current) return
+      const el = containerRef.current
+      if (!el) return
+
       const rect = el.getBoundingClientRect()
+      if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
+        return
+      }
+
       pendingPosRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top }
       if (rafRef.current == null) {
         rafRef.current = requestAnimationFrame(processPending)
       }
     }
 
-    el.addEventListener('mousemove', handleMouseMove, { passive: true })
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
     return () => {
-      el.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mousemove', handleMouseMove)
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current)
     }
   }, [spawnIcon])

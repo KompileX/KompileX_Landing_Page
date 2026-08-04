@@ -4,8 +4,7 @@ import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
 import { useTheme } from '@/context/ThemeContext'
 import { Code2, Server, Cloud, LifeBuoy } from 'lucide-react'
-
-const STAR_IMAGE = '/stars.png'
+import HeroBackground from '@/components/HeroBackground'
 
 const technologies = [
   'Next.js', 'React', 'TypeScript', 'Node.js', 'Go', 'PostgreSQL', 'GraphQL', 'AWS', 'Docker', 'Vercel',
@@ -27,75 +26,16 @@ export default function HeroSection() {
     target: sectionRef,
     offset: ['start end', 'end start'],
   })
-  const backgroundPositionY = useTransform(scrollYProgress, [0, 1], [-300, 300])
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [-40, 40])
 
   return (
     <>
       {/* ── Hero ── */}
       <motion.section
         ref={sectionRef}
-        {...(!isLight && {
-          animate: { backgroundPositionX: 2400 },
-          transition: { duration: 120, repeat: Number.POSITIVE_INFINITY, ease: 'linear' },
-        })}
         className="[mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] relative flex h-[492px] items-center overflow-hidden md:h-[800px]"
-        style={!isLight ? { backgroundImage: `url(${STAR_IMAGE})`, backgroundPositionY } : { backgroundPositionY }}
       >
-        {/* Backgrounds */}
-        {!isLight ? (
-          <div className="absolute inset-0 bg-[radial-gradient(75%_75%_at_center_center,rgb(140,69,255,0.5)_15%,rgb(14,0,36,0.5)_78%,transparent)]" />
-        ) : (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-b from-violet-50/60 via-white to-white" />
-            <div className="absolute inset-0 bg-[radial-gradient(65%_65%_at_center_40%,rgba(139,92,246,0.10)_0%,rgba(167,139,250,0.05)_55%,transparent_80%)]" />
-          </>
-        )}
-
-        {/* Planet */}
-        {!isLight ? (
-          <div
-            className="absolute top-1/2 left-1/2 size-64 md:size-96 rounded-full border border-white/20 bg-[radial-gradient(50%_50%_at_16.8%_18.3%,white,rgb(184,148,255)_37.7%,rgb(24,0,66))] shadow-[-20px_-20px_50px_rgb(255,255,255,0.5),-20px_-20px_80px_rgb(255,255,255,0.1),0_0_50px_rgb(140,69,255)]"
-            style={{ translate: '-50% -50%' }}
-          />
-        ) : (
-          <div
-            className="absolute top-1/2 left-1/2 size-44 md:size-72 rounded-full border border-violet-200/50 bg-[radial-gradient(50%_50%_at_30%_25%,white,rgb(221,214,254)_45%,rgb(196,181,253)_72%,rgb(167,139,250))] shadow-[0_0_80px_rgba(139,92,246,0.12),0_0_40px_rgba(139,92,246,0.08)]"
-            style={{ translate: '-50% -50%' }}
-          />
-        )}
-
-        {/* Ring 1 */}
-        <motion.div
-          animate={{ rotate: '1turn' }}
-          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
-          style={{ x: '-50%', y: '-50%' }}
-          className={`absolute top-1/2 left-1/2 size-[344px] md:size-[580px] rounded-full border ${isLight ? 'border-violet-300/25' : 'border-white opacity-20'}`}
-        >
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-0 size-2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white'}`} />
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-0 left-1/2 size-2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white'}`} />
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-full inline-flex size-5 items-center justify-center rounded-full border ${isLight ? 'border-violet-300/40' : 'border-white'}`}>
-            <div className={`size-2 rounded-full ${isLight ? 'bg-violet-400/70' : 'bg-white'}`} />
-          </div>
-        </motion.div>
-
-        {/* Ring 2 — dashed */}
-        <motion.div
-          animate={{ rotate: '-1turn' }}
-          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
-          style={{ x: '-50%', y: '-50%' }}
-          className={`absolute top-1/2 left-1/2 size-[444px] md:size-[780px] rounded-full border-dashed ${isLight ? 'border border-violet-200/35' : 'border border-white/20'}`}
-        />
-
-        {/* Ring 3 */}
-        <motion.div
-          animate={{ rotate: '1turn' }}
-          transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
-          style={{ x: '-50%', y: '-50%' }}
-          className={`absolute top-1/2 left-1/2 size-[544px] md:size-[980px] rounded-full border ${isLight ? 'border-violet-200/20' : 'border-white opacity-20'}`}
-        >
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-0 size-2 rounded-full ${isLight ? 'bg-violet-300/50' : 'bg-white'}`} />
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-full size-2 rounded-full ${isLight ? 'bg-violet-300/50' : 'bg-white'}`} />
-        </motion.div>
+        <HeroBackground isLight={isLight} parallaxY={parallaxY} />
 
         {/* Floating feature cards — desktop only */}
         {featureCards.map((card, i) => (

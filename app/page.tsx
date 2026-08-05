@@ -3,7 +3,7 @@ import HeroSection from '@/components/HeroSection'
 import AboutSection from '@/components/AboutSection'
 import StackSection from '@/components/StackSection'
 import HowItWorksSection from '@/components/WhyChooseUs'
-import TechStackSection from '@/components/TechStackSection'
+import CaseStudiesSection from '@/components/CaseStudiesSection'
 import UseCasesSection from '@/components/UseCasesSection'
 import FAQSection from '@/components/FAQSection'
 import ContactSection from '@/components/ContactSection'
@@ -21,7 +21,7 @@ export default function HomePage() {
           <AboutSection />
           <StackSection />
           <HowItWorksSection />
-          <TechStackSection />
+          <CaseStudiesSection />
           <UseCasesSection />
           <FAQSection />
           <ContactSection />

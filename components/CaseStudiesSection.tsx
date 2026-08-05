@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'motion/react'
 import {
   Globe,
@@ -262,14 +263,13 @@ export default function CaseStudiesSection() {
 
                   {/* Details Button */}
                   <div className="pt-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setSelectedStudy(study)}
-                      className="w-full justify-between rounded-xl font-semibold text-xs border-border/70 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all"
+                    <Link
+                      href={`/case-studies/${study.id}`}
+                      className="inline-flex w-full items-center justify-between rounded-xl border border-border/70 bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
                     >
                       <span>View Details</span>
                       <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </Button>
+                    </Link>
                   </div>
                 </div>
               </motion.div>
@@ -277,121 +277,6 @@ export default function CaseStudiesSection() {
           </AnimatePresence>
         </motion.div>
       </div>
-
-      {/* Details Modal */}
-      <AnimatePresence>
-        {selectedStudy && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedStudy(null)}
-              className="fixed inset-0 bg-background/80 backdrop-blur-md"
-            />
-
-            {/* Modal Dialog Content */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: 'spring', bounce: 0.1, duration: 0.4 }}
-              className="relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-2xl"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedStudy(null)}
-                className="absolute right-5 top-5 flex size-8 items-center justify-center rounded-full border border-border bg-muted/60 text-muted-foreground transition hover:text-foreground"
-                aria-label="Close modal"
-              >
-                <X className="size-4" />
-              </button>
-
-              <div className="flex flex-col gap-6">
-                {/* Modal Header Image */}
-                <div className="relative h-48 w-full overflow-hidden rounded-2xl border border-border bg-muted">
-                  <Image
-                    src={selectedStudy.image}
-                    alt={selectedStudy.title}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                </div>
-
-                {/* Header info */}
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs uppercase font-medium">
-                      {selectedStudy.category}
-                    </Badge>
-                    <span className="text-xs font-mono text-primary font-semibold">
-                      {selectedStudy.highlight}
-                    </span>
-                  </div>
-
-                  <h3 className="text-2xl font-bold text-foreground sm:text-3xl">
-                    {selectedStudy.title}
-                  </h3>
-                  <p className="text-xs font-mono text-muted-foreground">{selectedStudy.client}</p>
-                </div>
-
-                <p className="text-sm text-foreground/90 leading-relaxed font-medium">
-                  {selectedStudy.tagline}
-                </p>
-
-                {/* Challenge & Solution */}
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="flex flex-col gap-2 rounded-2xl border border-border/60 bg-muted/30 p-4">
-                    <span className="text-xs font-mono font-semibold uppercase text-muted-foreground">The Challenge</span>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {selectedStudy.challenge}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col gap-2 rounded-2xl border border-border/60 bg-muted/30 p-4">
-                    <span className="text-xs font-mono font-semibold uppercase text-muted-foreground">Our Solution</span>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {selectedStudy.solution}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Key Outcome */}
-                <div className="flex items-start gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4">
-                  <CheckCircle2 className="size-5 text-primary shrink-0 mt-0.5" />
-                  <div className="flex flex-col gap-1">
-                    <span className="text-xs font-mono font-semibold uppercase text-primary">Measurable Outcome</span>
-                    <p className="text-xs text-foreground font-medium leading-relaxed">
-                      {selectedStudy.outcome}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Tech Stack */}
-                <div className="flex flex-col gap-2">
-                  <span className="text-xs font-mono font-semibold uppercase text-muted-foreground">Technologies Used</span>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedStudy.techStack.map((t) => (
-                      <span key={t} className="rounded-lg border border-border bg-muted/60 px-3 py-1 text-xs font-mono font-medium text-foreground">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* CTA */}
-                <div className="pt-2 flex justify-end">
-                  <Button onClick={() => setSelectedStudy(null)} className="rounded-xl px-6 font-semibold">
-                    Close Details
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   )
 }

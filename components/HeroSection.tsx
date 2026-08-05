@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react'
 import { useRef, useState } from 'react'
 import { useTheme } from '@/context/ThemeContext'
 import { Code2, Server, Cloud, LifeBuoy } from 'lucide-react'
+import HeroBackground from './HeroBackground'
 
 // ── Tech Icons for Mouse Trail (Devicon slugs) ──
 const TECH_ICONS = [

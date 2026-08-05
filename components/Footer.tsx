@@ -11,6 +11,8 @@ import {
   type MotionValue,
 } from 'motion/react'
 import { ArrowUp } from 'lucide-react'
+import ParticleTextCanvas from '@/components/ParticleTextCanvas'
+
 
 const CONTACT_EMAIL = 'contact@kompilex.com'
 const WORDMARK = 'KOMPILEX'
@@ -177,6 +179,9 @@ export default function Footer() {
   const staticProgress = useMotionValue(1)
   const progress = reduced ? staticProgress : scrollYProgress
 
+  const wordmarkY = useTransform(progress, [0.1, 0.55], ['100%', '0%'])
+  const wordmarkOpacity = useTransform(progress, [0.1, 0.3], [0, 1])
+
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
   }
@@ -278,33 +283,20 @@ export default function Footer() {
 
           {/* ---------- Wordmark zone: giant letters bleed to the edges, BACK TO TOP
                and the meta row float on top of them, exactly like the reference footers ---------- */}
-          <div className="relative overflow-hidden pt-10 pb-4 sm:pt-14 sm:pb-6 lg:pt-20 lg:pb-8">
+          <div className="relative overflow-visible pt-10 pb-4 sm:pt-14 sm:pb-6 lg:pt-20 lg:pb-8">
             <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
               <FooterClouds />
               <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent sm:h-20" />
             </div>
 
-            <div
+            <motion.div
               aria-label={WORDMARK}
               role="img"
-              className="relative z-[5] flex w-full justify-center overflow-hidden pointer-events-none leading-[0.78]"
+              style={reduced ? undefined : { y: wordmarkY, opacity: wordmarkOpacity }}
+              className="relative z-[5] flex w-full justify-center overflow-visible"
             >
-              <span
-                className="flex whitespace-nowrap font-bold uppercase tracking-[-0.045em] text-foreground"
-                style={{ fontSize: 'clamp(4rem, 24vw, 21rem)' }}
-              >
-                {WORDMARK.split('').map((char, i) => (
-                  <RisingLetter
-                    key={`${char}-${i}`}
-                    char={char}
-                    index={i}
-                    total={WORDMARK.length}
-                    progress={progress}
-                    reduced={reduced}
-                  />
-                ))}
-              </span>
-            </div>
+              <ParticleTextCanvas text={WORDMARK} />
+            </motion.div>
 
             <button
               type="button"

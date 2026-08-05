@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { motion, useScroll, useTransform } from 'motion/react'
-import { Compass, Hammer, Rocket, type LucideIcon } from 'lucide-react'
+import { Bot, Clock, Award, type LucideIcon } from 'lucide-react'
 
 interface Step {
   number: string
@@ -17,27 +17,27 @@ interface Step {
 const steps: Step[] = [
   {
     number: '01',
-    icon: Compass,
-    title: 'Discovery & Scoping',
+    icon: Bot,
+    title: 'AI-Powered Development',
     description:
-      'We start with a working session to understand your goals, users, and constraints, then turn that into a clear scope, timeline, and technical plan.',
-    badge: 'Plan',
+      'We leverage cutting-edge AI tools and automation frameworks to accelerate delivery cycles, reduce bugs, and ship production-ready features up to 40% faster than traditional development approaches.',
+    badge: 'AI Velocity',
   },
   {
     number: '02',
-    icon: Hammer,
-    title: 'Design & Build',
+    icon: Clock,
+    title: '24/7 Support',
     description:
-      'Our four-person team designs and builds in short iterations, sharing progress often so you can steer direction before anything is set in stone.',
-    badge: 'Build',
+      'Our dedicated support team is available around the clock to monitor your systems, resolve incidents, and ensure your platforms stay performant and available — with guaranteed SLA response times.',
+    badge: 'Always On',
   },
   {
     number: '03',
-    icon: Rocket,
-    title: 'Ship & Support',
+    icon: Award,
+    title: 'Senior Engineering Excellence',
     description:
-      'We deploy to production with proper CI/CD and monitoring in place, then stay on to fix issues, add features, and support you as you grow.',
-    badge: 'Support',
+      'Work with senior engineers, solution architects, and AI specialists rigorously vetted through multi-stage technical benchmarks. No juniors, no guesswork — only proven talent delivering enterprise-grade results.',
+    badge: 'Vetted Talent',
   },
 ]
 
@@ -116,10 +116,10 @@ export default function HowItWorksSection() {
           className="mb-10 text-center flex flex-col gap-3"
         >
           <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-            How We Work
+            Why Leading Enterprises Choose Us
           </h2>
           <p className="max-w-xl mx-auto text-sm text-muted-foreground">
-            A straightforward process built around a small team that owns the whole project.
+            We combine AI velocity, 24/7 dedicated support, and senior engineering talent to deliver enterprise-grade software that scales.
           </p>
         </motion.div>
       </div>

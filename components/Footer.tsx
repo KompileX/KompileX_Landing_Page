@@ -140,6 +140,67 @@ function RisingLetter({
   )
 }
 
+function BackToTopButton({ onClick }: { onClick: () => void }) {
+  const targetText = 'BACK TO TOP'
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*'
+  const [displayText, setDisplayText] = useState(targetText)
+  const [isHovered, setIsHovered] = useState(false)
+  const isAnimatingRef = useRef(false)
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    if (isAnimatingRef.current) return
+    isAnimatingRef.current = true
+
+    let frame = 0
+    const totalFrames = 30 // 30 frames @ 33ms = 1000ms (1 second)
+    const interval = setInterval(() => {
+      frame++
+      const progress = frame / totalFrames
+
+      // All characters randomly change for 1 second before revealing target text
+      const current = targetText
+        .split('')
+        .map((char, index) => {
+          if (char === ' ') return ' '
+          const resolveThreshold = (index / targetText.length) * 0.35 + 0.65
+          if (progress >= resolveThreshold) {
+            return targetText[index]
+          }
+          return chars[Math.floor(Math.random() * chars.length)]
+        })
+        .join('')
+
+      setDisplayText(current)
+
+      if (frame >= totalFrames) {
+        clearInterval(interval)
+        setDisplayText(targetText)
+        isAnimatingRef.current = false
+      }
+    }, 33)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="group absolute right-4 top-3 z-10 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground md:right-8 md:top-4"
+    >
+      <span className="font-mono">{displayText}</span>
+      <span className="flex size-7 items-center justify-center rounded-full border bg-background/70 backdrop-blur transition group-hover:-translate-y-0.5 group-hover:border-foreground">
+        <ArrowUp className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5" />
+      </span>
+    </button>
+  )
+}
+
 export default function Footer() {
   const reduced = useReducedMotion() ?? false
   const time = useDhakaTime()
@@ -298,16 +359,7 @@ export default function Footer() {
               <ParticleTextCanvas text={WORDMARK} />
             </motion.div>
 
-            <button
-              type="button"
-              onClick={scrollToTop}
-              className="group absolute right-4 top-3 z-10 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground md:right-8 md:top-4"
-            >
-              Back to top
-              <span className="flex size-7 items-center justify-center rounded-full border bg-background/70 backdrop-blur transition group-hover:-translate-y-0.5 group-hover:border-foreground">
-                <ArrowUp className="size-3.5" />
-              </span>
-            </button>
+            <BackToTopButton onClick={scrollToTop} />
 
             <div className="absolute inset-x-4 bottom-2 z-10 flex flex-col items-center justify-between gap-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground sm:flex-row md:inset-x-8">
               <span>Copyright KompileX. All rights reserved</span>

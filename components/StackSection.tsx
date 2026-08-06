@@ -107,7 +107,7 @@ function StackCard({
 
   return (
     <div
-      className="absolute inset-0 flex items-start justify-center pt-32 md:pt-40 px-4 md:px-8"
+      className="absolute inset-0 flex items-start justify-center pt-4 md:pt-8 px-4 md:px-8"
       style={{ zIndex: total - i }}
     >
       <motion.div
@@ -180,19 +180,21 @@ export default function StackSection() {
       className="relative bg-background py-10 lg:py-14"
       style={{ height: `${cards.length * 75}vh` }}
     >
-      <div className="mx-auto mb-4 max-w-screen-xl px-4 text-center md:px-8">
-        <h2 className="mb-3 text-3xl font-bold text-foreground sm:text-4xl">
-          What We Build
-        </h2>
-        <p className="mx-auto max-w-2xl text-base text-muted-foreground">
-          From first line of code to production, we cover the full stack — web, mobile, backend, and the infrastructure that keeps it all running.
-        </p>
-      </div>
+      <div className="sticky top-[20%] h-[75vh] flex flex-col items-center w-full">
+        <div className="mx-auto mb-4 max-w-screen-xl px-4 text-center md:px-8">
+          <h2 className="mb-3 text-3xl font-bold text-foreground sm:text-4xl">
+            What We Build
+          </h2>
+          <p className="mx-auto max-w-2xl text-base text-muted-foreground">
+            From first line of code to production, we cover the full stack — web, mobile, backend, and the infrastructure that keeps it all running.
+          </p>
+        </div>
 
-      <div className="sticky top-12 md:top-16 h-screen">
-        {cards.map((card, i) => (
-          <StackCard key={card.title} i={i} card={card} total={cards.length} progress={scrollYProgress} />
-        ))}
+        <div className="relative w-full flex-grow">
+          {cards.map((card, i) => (
+            <StackCard key={card.title} i={i} card={card} total={cards.length} progress={scrollYProgress} />
+          ))}
+        </div>
       </div>
     </section>
   )

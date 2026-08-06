@@ -2,58 +2,32 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, type MotionValue } from 'motion/react'
-import {
-  Atom,
-  Box,
-  Boxes,
-  Braces,
-  Cloud,
-  CloudCog,
-  Database,
-  FileCode2,
-  GitBranch,
-  Hexagon,
-  Layers,
-  Server,
-  Terminal,
-  Triangle,
-} from 'lucide-react'
 
 const TECH_ICONS = [
-  { name: '.NET', Icon: Braces },
-  { name: 'Node.js', Icon: Hexagon },
-  { name: 'Python', Icon: Terminal },
-  { name: 'Go', Icon: Layers },
-  { name: 'React', Icon: Atom },
-  { name: 'Next.js', Icon: Triangle },
-  { name: 'TypeScript', Icon: FileCode2 },
-  { name: 'PostgreSQL', Icon: Database },
-  { name: 'Docker', Icon: Box },
-  { name: 'Kubernetes', Icon: Boxes },
-  { name: 'Redis', Icon: Server },
-  { name: 'AWS', Icon: Cloud },
-  { name: 'Azure', Icon: CloudCog },
-  { name: 'Git', Icon: GitBranch },
+  { name: 'Python', slug: 'python/python-original.svg', bestFor: 'AI, Machine Learning, Data Science, Backend', glowColor: 'rgba(55, 118, 171, 0.45)' },
+  { name: 'JavaScript', slug: 'javascript/javascript-original.svg', bestFor: 'Frontend, Backend (Node.js), Full Stack', glowColor: 'rgba(247, 223, 30, 0.45)' },
+  { name: 'TypeScript', slug: 'typescript/typescript-original.svg', bestFor: 'Large Web Applications, React, Angular', glowColor: 'rgba(49, 120, 198, 0.45)' },
+  { name: 'Java', slug: 'java/java-original.svg', bestFor: 'Enterprise Software, Android', glowColor: 'rgba(234, 45, 46, 0.45)' },
+  { name: 'C#', slug: 'csharp/csharp-original.svg', bestFor: '.NET, Unity Game Development', glowColor: 'rgba(162, 125, 231, 0.45)' },
+  { name: 'Go (Golang)', slug: 'go/go-original.svg', bestFor: 'Cloud, Microservices, Backend APIs', glowColor: 'rgba(0, 173, 216, 0.45)' },
+  { name: 'C++', slug: 'cplusplus/cplusplus-original.svg', bestFor: 'Game Engines, High-Performance Software', glowColor: 'rgba(0, 89, 156, 0.45)' },
+  { name: 'Rust', slug: 'rust/rust-original.svg', bestFor: 'Systems Programming, Security', glowColor: 'rgba(240, 102, 50, 0.45)' },
+  { name: 'PHP', slug: 'php/php-original.svg', bestFor: 'Laravel, WordPress, Web Development', glowColor: 'rgba(119, 123, 180, 0.45)' },
+  { name: 'Dart', slug: 'dart/dart-original.svg', bestFor: 'Flutter Mobile & Cross-platform Apps', glowColor: 'rgba(1, 117, 194, 0.45)' },
+  { name: 'React', slug: 'react/react-original.svg', bestFor: 'Frontend Web Development', glowColor: 'rgba(0, 216, 255, 0.45)' },
+  { name: 'Next.js', slug: 'nextjs/nextjs-original.svg', invertInDark: true, bestFor: 'Full-Stack React Applications', glowColor: 'rgba(255, 255, 255, 0.35)', glowColorLight: 'rgba(0, 0, 0, 0.25)' },
+  { name: 'Angular', slug: 'angular/angular-original.svg', bestFor: 'Enterprise Web Applications', glowColor: 'rgba(221, 0, 49, 0.45)' },
+  { name: 'Vue.js', slug: 'vuejs/vuejs-original.svg', bestFor: 'Frontend Development', glowColor: 'rgba(66, 184, 131, 0.45)' },
+  { name: 'Flutter', slug: 'flutter/flutter-original.svg', bestFor: 'Cross-platform Mobile Apps', glowColor: 'rgba(64, 196, 255, 0.45)' },
+  { name: 'Express.js', slug: 'express/express-original.svg', invertInDark: true, bestFor: 'Node.js Backend APIs', glowColor: 'rgba(255, 255, 255, 0.35)', glowColorLight: 'rgba(0, 0, 0, 0.25)' },
+  { name: 'NestJS', slug: 'nestjs/nestjs-original.svg', bestFor: 'Scalable Backend Applications', glowColor: 'rgba(234, 40, 69, 0.45)' },
+  { name: 'Django', slug: 'django/django-plain.svg', bestFor: 'Backend & AI Web Applications', glowColor: 'rgba(9, 46, 32, 0.45)' },
+  { name: 'Spring Boot', slug: 'spring/spring-original.svg', bestFor: 'Enterprise Backend Development', glowColor: 'rgba(109, 179, 63, 0.45)' },
+  { name: 'Laravel', slug: 'laravel/laravel-original.svg', bestFor: 'Full-Stack Web Development', glowColor: 'rgba(255, 45, 32, 0.45)' },
 ] as const
 
-type TechIcon = (typeof TECH_ICONS)[number]
-
-type FloatingIcon = {
-  id: number
-  x: number
-  y: number
-  name: TechIcon['name']
-  Icon: TechIcon['Icon']
-  rotate: number
-  driftX: number
-  driftY: number
-  scale: number
-}
-
-const MAX_ICONS = 6
-const SPAWN_INTERVAL_MS = 220
-const MOVE_THRESHOLD_PX = 55
-const ICON_LIFETIME_MS = 2400
+const TRAIL_ICON_LIFETIME_MS = 1200
+const TRAIL_SPAWN_THRESHOLD_PX = 80
 
 const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
   id: i,
@@ -71,14 +45,9 @@ interface HeroBackgroundProps {
 
 export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [icons, setIcons] = useState<FloatingIcon[]>([])
-
-  const idRef = useRef(0)
-  const lastSpawnRef = useRef(0)
-  const lastPosRef = useRef({ x: 0, y: 0 })
-  const rafRef = useRef<number | null>(null)
-  const pendingPosRef = useRef<{ x: number; y: number } | null>(null)
-  const recentTechRef = useRef<string[]>([])
+  const [trail, setTrail] = useState<{ id: string; x: number; y: number; techIndex: number }[]>([])
+  const lastSpawnRef = useRef({ x: 0, y: 0 })
+  const iconIndexRef = useRef(0)
   const pointerOkRef = useRef(false)
 
   useEffect(() => {
@@ -91,59 +60,7 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
     return () => mq.removeEventListener('change', handleChange)
   }, [])
 
-  const spawnIcon = useCallback((x: number, y: number) => {
-    const pool = TECH_ICONS.filter((t) => !recentTechRef.current.includes(t.name))
-    const choices = pool.length ? pool : TECH_ICONS
-    const tech = choices[Math.floor(Math.random() * choices.length)]
-    recentTechRef.current = [...recentTechRef.current, tech.name].slice(-4)
-
-    const id = idRef.current++
-    const angle = Math.random() * Math.PI * 2
-    const offset = 40 + Math.random() * 34
-
-    const next: FloatingIcon = {
-      id,
-      x: x + Math.cos(angle) * offset,
-      y: y + Math.sin(angle) * offset,
-      name: tech.name,
-      Icon: tech.Icon,
-      rotate: (Math.random() - 0.5) * 22,
-      driftX: (Math.random() - 0.5) * 36,
-      driftY: -26 - Math.random() * 28,
-      scale: 0.92 + Math.random() * 0.22,
-    }
-
-    setIcons((prev) => {
-      const merged = [...prev, next]
-      return merged.length > MAX_ICONS ? merged.slice(merged.length - MAX_ICONS) : merged
-    })
-
-    window.setTimeout(() => {
-      setIcons((prev) => prev.filter((i) => i.id !== id))
-    }, ICON_LIFETIME_MS)
-  }, [])
-
   useEffect(() => {
-    // Listen on window rather than the background layer itself: the headline,
-    // CTAs, badge, and feature cards are siblings stacked on top of it (not
-    // descendants), so a listener scoped to the background div never sees
-    // mousemove events that hit those elements first. Bounds-checking against
-    // the container's rect keeps the effect scoped to the hero only.
-    const processPending = () => {
-      rafRef.current = null
-      const el = containerRef.current
-      const pos = pendingPosRef.current
-      if (!el || !pos || !pointerOkRef.current) return
-
-      const dist = Math.hypot(pos.x - lastPosRef.current.x, pos.y - lastPosRef.current.y)
-      const now = performance.now()
-
-      if (dist > MOVE_THRESHOLD_PX && now - lastSpawnRef.current > SPAWN_INTERVAL_MS) {
-        lastSpawnRef.current = now
-        lastPosRef.current = pos
-        spawnIcon(pos.x, pos.y)
-      }
-    }
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!pointerOkRef.current) return
@@ -155,18 +72,29 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
         return
       }
 
-      pendingPosRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top }
-      if (rafRef.current == null) {
-        rafRef.current = requestAnimationFrame(processPending)
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      const dist = Math.hypot(x - lastSpawnRef.current.x, y - lastSpawnRef.current.y)
+
+      if (dist > TRAIL_SPAWN_THRESHOLD_PX) {
+        lastSpawnRef.current = { x, y }
+        const id = Math.random().toString(36).substring(2, 9)
+        const techIndex = iconIndexRef.current
+        iconIndexRef.current = (iconIndexRef.current + 1) % TECH_ICONS.length
+
+        setTrail((prev) => [...prev, { id, x, y, techIndex }])
+
+        setTimeout(() => {
+          setTrail((prev) => prev.filter((item) => item.id !== id))
+        }, TRAIL_ICON_LIFETIME_MS)
       }
     }
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current)
     }
-  }, [spawnIcon])
+  }, [])
 
   const lineStroke = isLight ? 'rgba(139,92,246,0.35)' : 'rgba(184,148,255,0.4)'
   const dotFill = isLight ? '#a78bfa' : '#b894ff'
@@ -288,38 +216,39 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
         </div>
       </motion.div>
 
-      {/* Mouse-follow technology icons */}
+      {/* Mouse Swipe Trail Icons */}
       <AnimatePresence>
-        {icons.map((icon) => (
-          <motion.div
-            key={icon.id}
-            initial={{ opacity: 0, scale: 0.4, x: 0, y: 0 }}
-            animate={{
-              opacity: [0, 1, 1, 0],
-              scale: icon.scale,
-              x: icon.driftX,
-              y: icon.driftY,
-              rotate: icon.rotate,
-            }}
-            exit={{ opacity: 0, scale: 0.6 }}
-            transition={{ duration: ICON_LIFETIME_MS / 1000, ease: 'easeOut' }}
-            className="pointer-events-none absolute left-0 top-0 z-[6] will-change-transform"
-            style={{ left: icon.x, top: icon.y }}
-          >
-            <div
-              className={`flex items-center gap-2 rounded-2xl border px-4 py-2.5 backdrop-blur-md ${
-                isLight
-                  ? 'border-violet-200/70 bg-white/80 shadow-[0_4px_16px_rgba(139,92,246,0.2)]'
-                  : 'border-white/15 bg-white/5 shadow-[0_0_16px_rgba(140,69,255,0.4)]'
-              }`}
+        {trail.map((item) => {
+          const tech = TECH_ICONS[item.techIndex]
+          const activeGlow = isLight && (tech as any).glowColorLight ? (tech as any).glowColorLight : tech.glowColor
+          return (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, scale: 0.4, x: item.x - 40, y: item.y - 40, rotate: -15 }}
+              animate={{
+                opacity: [0, 1, 0.8, 0],
+                scale: [0.4, 1.1, 1, 0.7],
+                y: item.y - 40 - 85,
+                rotate: 15,
+              }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
+              className={`absolute left-0 top-0 pointer-events-none z-30 flex items-center justify-center size-20 rounded-full border backdrop-blur-md shadow-lg ${isLight ? 'bg-white/85 border-violet-100' : 'bg-black/30 border-white/10'}`}
+              style={{
+                boxShadow: `0 0 15px ${activeGlow}`,
+              }}
             >
-              <icon.Icon className={`size-6 ${isLight ? 'text-violet-500' : 'text-[#b794ff]'}`} />
-              <span className={`whitespace-nowrap text-sm font-medium ${isLight ? 'text-violet-700' : 'text-white/80'}`}>
-                {icon.name}
-              </span>
-            </div>
-          </motion.div>
-        ))}
+              <img
+                src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${tech.slug}`}
+                alt={tech.name}
+                className="size-11 object-contain"
+                style={{
+                  filter: !isLight && (tech as any).invertInDark ? 'invert(1) brightness(2)' : 'none',
+                }}
+              />
+            </motion.div>
+          )
+        })}
       </AnimatePresence>
     </div>
   )

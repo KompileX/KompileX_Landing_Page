@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useTransform, type MotionValue } from 'motion/react'
-import { BarChart3, CalendarCheck2, Lock, Workflow, ArrowUpRight, type LucideIcon } from 'lucide-react'
+import { Globe, Smartphone, Server, Cloud, CheckIcon, type LucideIcon } from 'lucide-react'
 
 interface StackCardData {
   tag: string
@@ -13,57 +13,72 @@ interface StackCardData {
   bg: string
   fg: string
   chip: string
-  href: string
 }
 
 const cards: StackCardData[] = [
   {
-    tag: 'SaaS Dashboard',
-    title: 'Pulse Analytics',
+    tag: 'Web',
+    title: 'Web Application Development',
     description:
-      'A real-time analytics dashboard that turns raw event streams into live charts and alerts, built end-to-end for a fast-moving startup team.',
-    Icon: BarChart3,
-    points: ['React + TypeScript frontend', 'Node.js & PostgreSQL backend', 'Deployed on AWS with CI/CD'],
+      'From marketing sites to full SaaS products, we build responsive React & Next.js frontends with performance and accessibility built in.',
+    Icon: Globe,
+    points: [
+      'Marketing sites to full SaaS products',
+      'React / Next.js frontends',
+      'Design systems & component libraries',
+      'Performance & accessibility built in',
+    ],
     bg: 'linear-gradient(145deg, #b9a6ff 0%, #8c6bff 100%)',
     fg: '#140630',
     chip: 'rgba(20,6,48,0.08)',
-    href: '#',
   },
   {
-    tag: 'Marketplace Platform',
-    title: 'Nimbus Booking',
+    tag: 'Mobile',
+    title: 'Mobile App Development',
     description:
-      'A multi-tenant booking and marketplace platform connecting vendors and customers, with payments and scheduling handled end to end.',
-    Icon: CalendarCheck2,
-    points: ['Next.js full-stack app', 'Stripe payments integration', 'Multi-tenant architecture'],
+      'iOS & Android applications built from one codebase using React Native & native modules, ready for App Store & Play Store launches.',
+    Icon: Smartphone,
+    points: [
+      'iOS & Android from one codebase',
+      'React Native & native modules',
+      'App Store & Play Store launches',
+      'Offline-first & push notifications',
+    ],
     bg: 'linear-gradient(145deg, #7fe3e0 0%, #35b6c9 100%)',
     fg: '#052224',
     chip: 'rgba(5,34,36,0.08)',
-    href: '#',
   },
   {
-    tag: 'Security Tooling',
-    title: 'Cipher Vault',
+    tag: 'Backend',
+    title: 'Backend & API Engineering',
     description:
-      'A zero-knowledge credential manager for engineering teams, designed with encryption and access auditing at the core of every feature.',
-    Icon: Lock,
-    points: ['Go backend services', 'Zero-knowledge encryption model', 'SOC2-ready infrastructure'],
+      'REST & GraphQL API design with Node.js, Go, and PostgreSQL. Built with secure authentication, billing, and scalable architecture.',
+    Icon: Server,
+    points: [
+      'REST & GraphQL API design',
+      'Node.js, Go, and PostgreSQL',
+      'Auth, billing, and integrations',
+      'Built to scale with real traffic',
+    ],
     bg: 'linear-gradient(145deg, #ffd684 0%, #ffb24d 100%)',
     fg: '#301a02',
     chip: 'rgba(48,26,2,0.08)',
-    href: '#',
   },
   {
-    tag: 'Internal Tool',
-    title: 'Flowline CRM',
+    tag: 'Infra',
+    title: 'Cloud & DevOps',
     description:
-      'A lightweight CRM built for small sales teams who outgrew spreadsheets, with real-time sync across web and mobile.',
-    Icon: Workflow,
-    points: ['React Native + web from one codebase', 'GraphQL API layer', 'Real-time sync across devices'],
+      'Automated CI/CD pipelines, containerized deployments on AWS, Vercel, and Docker with real-time monitoring and cost-aware infrastructure.',
+    Icon: Cloud,
+    points: [
+      'CI/CD pipelines & automated testing',
+      'AWS, Vercel, and Docker deployments',
+      'Monitoring, logging, and alerting',
+      'Cost-aware, production-ready infra',
+    ],
     bg: 'linear-gradient(145deg, #ff9fc0 0%, #ff6f9c 100%)',
     fg: '#33071a',
     chip: 'rgba(51,7,26,0.08)',
-    href: '#',
   },
 ]
 
@@ -86,14 +101,13 @@ function StackCard({
   const isLast = i === total - 1
 
   // Waiting in the stack -> settled at the front -> lifted away off the top.
-  // The last card has nothing left to reveal behind it, so it settles and stays put.
   const y = useTransform(progress, inputRange, [`${i * 2}vh`, '0vh', isLast ? '0vh' : '-120vh'])
   const scale = useTransform(progress, inputRange, [1 - i * 0.05, 1, 1])
   const { Icon } = card
 
   return (
     <div
-      className="absolute inset-0 flex items-center justify-center px-4 md:px-8"
+      className="absolute inset-0 flex items-start justify-center pt-32 md:pt-40 px-4 md:px-8"
       style={{ zIndex: total - i }}
     >
       <motion.div
@@ -126,23 +140,11 @@ function StackCard({
             <ul className="mt-2 flex flex-col gap-2.5">
               {card.points.map((point) => (
                 <li key={point} className="flex items-start gap-2.5 text-sm font-medium">
-                  <span
-                    className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: card.fg }}
-                  />
+                  <CheckIcon className="h-4 w-4 mt-0.5 shrink-0" strokeWidth={2.5} style={{ color: card.fg }} />
                   <span>{point}</span>
                 </li>
               ))}
             </ul>
-
-            <a
-              href={card.href}
-              className="mt-3 inline-flex w-fit items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
-              style={{ backgroundColor: card.fg }}
-            >
-              View project
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
           </div>
 
           {/* Icon panel */}
@@ -173,21 +175,21 @@ export default function StackSection() {
 
   return (
     <section
-      id="work"
+      id="services"
       ref={container}
-      className="relative bg-background py-14 lg:py-20"
+      className="relative bg-background py-10 lg:py-14"
       style={{ height: `${cards.length * 75}vh` }}
     >
-      <div className="mx-auto mb-10 max-w-screen-xl px-4 text-center md:px-8">
-        <h2 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
-          Projects We&apos;ve Shipped
+      <div className="mx-auto mb-4 max-w-screen-xl px-4 text-center md:px-8">
+        <h2 className="mb-3 text-3xl font-bold text-foreground sm:text-4xl">
+          What We Build
         </h2>
-        <p className="mx-auto max-w-xl text-base text-muted-foreground">
-          A small team building real products end to end — scroll to see a few things we&apos;ve built together.
+        <p className="mx-auto max-w-2xl text-base text-muted-foreground">
+          From first line of code to production, we cover the full stack — web, mobile, backend, and the infrastructure that keeps it all running.
         </p>
       </div>
 
-      <div className="sticky top-16 md:top-20 h-screen">
+      <div className="sticky top-12 md:top-16 h-screen">
         {cards.map((card, i) => (
           <StackCard key={card.title} i={i} card={card} total={cards.length} progress={scrollYProgress} />
         ))}

@@ -4,17 +4,20 @@ import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
 import { useTheme } from '@/context/ThemeContext'
 import { Code2, Server, Cloud, LifeBuoy } from 'lucide-react'
-import HeroBackground from '@/components/HeroBackground'
+import HeroBackground from './HeroBackground'
+
+
+const STAR_IMAGE = '/stars.png'
 
 const technologies = [
   'Next.js', 'React', 'TypeScript', 'Node.js', 'Go', 'PostgreSQL', 'GraphQL', 'AWS', 'Docker', 'Vercel',
 ]
 
 const featureCards = [
-  { side: 'left' as const, topClass: 'top-[30%]', xFrom: -40, delay: 0.25, Icon: Code2,   title: 'Web & Mobile Apps',  desc: 'Full-stack products built from scratch or extended.' },
-  { side: 'left' as const, topClass: 'top-[62%]', xFrom: -40, delay: 0.38, Icon: Server,  title: 'APIs & Backends',    desc: 'Reliable services that scale with your users.' },
-  { side: 'right' as const, topClass: 'top-[30%]', xFrom: 40, delay: 0.30, Icon: Cloud,   title: 'Cloud Infrastructure', desc: 'CI/CD, hosting, and monitoring done right.' },
-  { side: 'right' as const, topClass: 'top-[62%]', xFrom: 40, delay: 0.43, Icon: LifeBuoy, title: 'Ongoing Support',   desc: 'We stick around after launch, not just before it.' },
+  { side: 'left' as const, topClass: 'top-[30%]', xFrom: -40, delay: 0.25, Icon: Code2, title: 'Web & Mobile Apps', desc: 'Full-stack products built from scratch or extended.' },
+  { side: 'left' as const, topClass: 'top-[62%]', xFrom: -40, delay: 0.38, Icon: Server, title: 'APIs & Backends', desc: 'Reliable services that scale with your users.' },
+  { side: 'right' as const, topClass: 'top-[30%]', xFrom: 40, delay: 0.30, Icon: Cloud, title: 'Cloud Infrastructure', desc: 'CI/CD, hosting, and monitoring done right.' },
+  { side: 'right' as const, topClass: 'top-[62%]', xFrom: 40, delay: 0.43, Icon: LifeBuoy, title: 'Ongoing Support', desc: 'We stick around after launch, not just before it.' },
 ]
 
 export default function HeroSection() {
@@ -33,6 +36,11 @@ export default function HeroSection() {
       {/* ── Hero ── */}
       <motion.section
         ref={sectionRef}
+        {...(!isLight && {
+          animate: { backgroundPositionX: 2400 },
+          transition: { duration: 120, repeat: Number.POSITIVE_INFINITY, ease: 'linear' },
+        })}
+
         className="[mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] relative flex h-[492px] items-center overflow-hidden md:h-[800px]"
       >
         <HeroBackground isLight={isLight} parallaxY={parallaxY} />
@@ -72,7 +80,7 @@ export default function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className={`text-center font-semibold tracking-tighter text-5xl md:text-7xl lg:text-8xl lg:leading-none ${isLight ? 'text-foreground' : 'text-white'}`}>
+          <h1 className={`text-center font-semibold tracking-tighter text-4xl md:text-6xl lg:text-7xl lg:leading-none ${isLight ? 'text-foreground' : 'text-white'}`}>
             We Ship Software<br />That Works
           </h1>
 
@@ -107,6 +115,7 @@ export default function HeroSection() {
             </a>
           </div>
         </div>
+
       </motion.section>
 
       {/* ── Tech ticker ── */}

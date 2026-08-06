@@ -143,19 +143,6 @@ export default function HowItWorksSection() {
               <QueueCard step={steps[2]} />
             </FloatingCard>
           </motion.div>
-
-          {/* Cards */}
-          <div className="w-full overflow-hidden flex items-center justify-center gap-8 py-4">
-            <motion.div style={{ x: x0, opacity: 1 }} className="shrink-0">
-              <QueueCard step={steps[0]} className="w-[380px]" />
-            </motion.div>
-            <motion.div style={{ x: x1, opacity: o1 }} className="shrink-0">
-              <QueueCard step={steps[1]} className="w-[380px]" />
-            </motion.div>
-            <motion.div style={{ x: x2, opacity: o2 }} className="shrink-0">
-              <QueueCard step={steps[2]} className="w-[380px]" />
-            </motion.div>
-          </div>
         </div>
       </div>
     </section>

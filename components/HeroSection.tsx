@@ -1,35 +1,11 @@
 'use client'
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react'
-import { useRef, useState } from 'react'
+import { motion, useScroll, useTransform } from 'motion/react'
+import { useRef } from 'react'
 import { useTheme } from '@/context/ThemeContext'
 import { Code2, Server, Cloud, LifeBuoy } from 'lucide-react'
+import HeroBackground from './HeroBackground'
 
-// ── Tech Icons for Mouse Trail (Devicon slugs) ──
-const TECH_ICONS = [
-  { name: 'Python', slug: 'python/python-original.svg', bestFor: 'AI, Machine Learning, Data Science, Backend', glowColor: 'rgba(55, 118, 171, 0.45)' },
-  { name: 'JavaScript', slug: 'javascript/javascript-original.svg', bestFor: 'Frontend, Backend (Node.js), Full Stack', glowColor: 'rgba(247, 223, 30, 0.45)' },
-  { name: 'TypeScript', slug: 'typescript/typescript-original.svg', bestFor: 'Large Web Applications, React, Angular', glowColor: 'rgba(49, 120, 198, 0.45)' },
-  { name: 'Java', slug: 'java/java-original.svg', bestFor: 'Enterprise Software, Android', glowColor: 'rgba(234, 45, 46, 0.45)' },
-  { name: 'C#', slug: 'csharp/csharp-original.svg', bestFor: '.NET, Unity Game Development', glowColor: 'rgba(162, 125, 231, 0.45)' },
-  { name: 'Go (Golang)', slug: 'go/go-original.svg', bestFor: 'Cloud, Microservices, Backend APIs', glowColor: 'rgba(0, 173, 216, 0.45)' },
-  { name: 'C++', slug: 'cplusplus/cplusplus-original.svg', bestFor: 'Game Engines, High-Performance Software', glowColor: 'rgba(0, 89, 156, 0.45)' },
-  { name: 'Rust', slug: 'rust/rust-original.svg', bestFor: 'Systems Programming, Security', glowColor: 'rgba(240, 102, 50, 0.45)' },
-  { name: 'PHP', slug: 'php/php-original.svg', bestFor: 'Laravel, WordPress, Web Development', glowColor: 'rgba(119, 123, 180, 0.45)' },
-  { name: 'Dart', slug: 'dart/dart-original.svg', bestFor: 'Flutter Mobile & Cross-platform Apps', glowColor: 'rgba(1, 117, 194, 0.45)' },
-  { name: 'React', slug: 'react/react-original.svg', bestFor: 'Frontend Web Development', glowColor: 'rgba(0, 216, 255, 0.45)' },
-  { name: 'Next.js', slug: 'nextjs/nextjs-original.svg', invertInDark: true, bestFor: 'Full-Stack React Applications', glowColor: 'rgba(255, 255, 255, 0.35)', glowColorLight: 'rgba(0, 0, 0, 0.25)' },
-  { name: 'Angular', slug: 'angular/angular-original.svg', bestFor: 'Enterprise Web Applications', glowColor: 'rgba(221, 0, 49, 0.45)' },
-  { name: 'Vue.js', slug: 'vuejs/vuejs-original.svg', bestFor: 'Frontend Development', glowColor: 'rgba(66, 184, 131, 0.45)' },
-  { name: 'Flutter', slug: 'flutter/flutter-original.svg', bestFor: 'Cross-platform Mobile Apps', glowColor: 'rgba(64, 196, 255, 0.45)' },
-  { name: 'Express.js', slug: 'express/express-original.svg', invertInDark: true, bestFor: 'Node.js Backend APIs', glowColor: 'rgba(255, 255, 255, 0.35)', glowColorLight: 'rgba(0, 0, 0, 0.25)' },
-  { name: 'NestJS', slug: 'nestjs/nestjs-original.svg', bestFor: 'Scalable Backend Applications', glowColor: 'rgba(234, 40, 69, 0.45)' },
-  { name: 'Django', slug: 'django/django-plain.svg', bestFor: 'Backend & AI Web Applications', glowColor: 'rgba(9, 46, 32, 0.45)' },
-  { name: 'Spring Boot', slug: 'spring/spring-original.svg', bestFor: 'Enterprise Backend Development', glowColor: 'rgba(109, 179, 63, 0.45)' },
-  { name: 'Laravel', slug: 'laravel/laravel-original.svg', bestFor: 'Full-Stack Web Development', glowColor: 'rgba(255, 45, 32, 0.45)' },
-]
-
-const STAR_IMAGE = '/stars.png'
 
 const technologies = [
   'Next.js', 'React', 'TypeScript', 'Node.js', 'Go', 'PostgreSQL', 'GraphQL', 'AWS', 'Docker', 'Vercel',
@@ -51,102 +27,16 @@ export default function HeroSection() {
     target: sectionRef,
     offset: ['start end', 'end start'],
   })
-  const backgroundPositionY = useTransform(scrollYProgress, [0, 1], [-300, 300])
-
-  // Mouse trail state and refs
-  const [trail, setTrail] = useState<{ id: string; x: number; y: number; techIndex: number }[]>([])
-  const lastSpawnRef = useRef({ x: 0, y: 0 })
-  const iconIndexRef = useRef(0)
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-
-    const dist = Math.hypot(x - lastSpawnRef.current.x, y - lastSpawnRef.current.y)
-
-    if (dist > 80) {
-      lastSpawnRef.current = { x, y }
-      const id = Math.random().toString(36).substring(2, 9)
-      const techIndex = iconIndexRef.current
-      iconIndexRef.current = (iconIndexRef.current + 1) % TECH_ICONS.length
-
-      setTrail((prev) => [...prev, { id, x, y, techIndex }])
-
-      setTimeout(() => {
-        setTrail((prev) => prev.filter((item) => item.id !== id))
-      }, 1200)
-    }
-  }
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [-40, 40])
 
   return (
     <>
       {/* ── Hero ── */}
       <motion.section
         ref={sectionRef}
-        {...(!isLight && {
-          animate: { backgroundPositionX: 2400 },
-          transition: { duration: 120, repeat: Number.POSITIVE_INFINITY, ease: 'linear' },
-        })}
-        onMouseMove={handleMouseMove}
         className="[mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] relative flex h-[492px] items-center overflow-hidden md:h-[800px]"
-        style={!isLight ? { backgroundImage: `url(${STAR_IMAGE})`, backgroundPositionY } : { backgroundPositionY }}
       >
-        {/* Backgrounds */}
-        {!isLight ? (
-          <div className="absolute inset-0 bg-[radial-gradient(75%_75%_at_center_center,rgb(140,69,255,0.5)_15%,rgb(14,0,36,0.5)_78%,transparent)]" />
-        ) : (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-b from-violet-50/60 via-white to-white" />
-            <div className="absolute inset-0 bg-[radial-gradient(65%_65%_at_center_40%,rgba(139,92,246,0.10)_0%,rgba(167,139,250,0.05)_55%,transparent_80%)]" />
-          </>
-        )}
-
-        {/* Planet */}
-        {!isLight ? (
-          <div
-            className="absolute top-1/2 left-1/2 size-64 md:size-96 rounded-full border border-white/20 bg-[radial-gradient(50%_50%_at_16.8%_18.3%,white,rgb(184,148,255)_37.7%,rgb(24,0,66))] shadow-[-20px_-20px_50px_rgb(255,255,255,0.5),-20px_-20px_80px_rgb(255,255,255,0.1),0_0_50px_rgb(140,69,255)]"
-            style={{ translate: '-50% -50%' }}
-          />
-        ) : (
-          <div
-            className="absolute top-1/2 left-1/2 size-44 md:size-72 rounded-full border border-violet-200/50 bg-[radial-gradient(50%_50%_at_30%_25%,white,rgb(221,214,254)_45%,rgb(196,181,253)_72%,rgb(167,139,250))] shadow-[0_0_80px_rgba(139,92,246,0.12),0_0_40px_rgba(139,92,246,0.08)]"
-            style={{ translate: '-50% -50%' }}
-          />
-        )}
-
-        {/* Ring 1 */}
-        <motion.div
-          animate={{ rotate: '1turn' }}
-          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
-          style={{ x: '-50%', y: '-50%' }}
-          className={`absolute top-1/2 left-1/2 size-[344px] md:size-[580px] rounded-full border ${isLight ? 'border-violet-300/25' : 'border-white opacity-20'}`}
-        >
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-0 size-2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white'}`} />
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-0 left-1/2 size-2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white'}`} />
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-full inline-flex size-5 items-center justify-center rounded-full border ${isLight ? 'border-violet-300/40' : 'border-white'}`}>
-            <div className={`size-2 rounded-full ${isLight ? 'bg-violet-400/70' : 'bg-white'}`} />
-          </div>
-        </motion.div>
-
-        {/* Ring 2 — dashed */}
-        <motion.div
-          animate={{ rotate: '-1turn' }}
-          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
-          style={{ x: '-50%', y: '-50%' }}
-          className={`absolute top-1/2 left-1/2 size-[444px] md:size-[780px] rounded-full border-dashed ${isLight ? 'border border-violet-200/35' : 'border border-white/20'}`}
-        />
-
-        {/* Ring 3 */}
-        <motion.div
-          animate={{ rotate: '1turn' }}
-          transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
-          style={{ x: '-50%', y: '-50%' }}
-          className={`absolute top-1/2 left-1/2 size-[544px] md:size-[980px] rounded-full border ${isLight ? 'border-violet-200/20' : 'border-white opacity-20'}`}
-        >
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-0 size-2 rounded-full ${isLight ? 'bg-violet-300/50' : 'bg-white'}`} />
-          <div className={`-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-full size-2 rounded-full ${isLight ? 'bg-violet-300/50' : 'bg-white'}`} />
-        </motion.div>
+        <HeroBackground isLight={isLight} parallaxY={parallaxY} />
 
         {/* Floating feature cards — desktop only */}
         {featureCards.map((card, i) => (
@@ -219,40 +109,6 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Mouse Swipe Trail Icons */}
-        <AnimatePresence>
-          {trail.map((item) => {
-            const tech = TECH_ICONS[item.techIndex]
-            const activeGlow = isLight && tech.glowColorLight ? tech.glowColorLight : tech.glowColor
-            return (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, scale: 0.4, x: item.x - 40, y: item.y - 40, rotate: -15 }}
-                animate={{
-                  opacity: [0, 1, 0.8, 0],
-                  scale: [0.4, 1.1, 1, 0.7],
-                  y: item.y - 40 - 85,
-                  rotate: 15,
-                }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                transition={{ duration: 1.2, ease: 'easeOut' }}
-                className={`absolute left-0 top-0 pointer-events-none z-30 flex items-center justify-center size-20 rounded-full border backdrop-blur-md shadow-lg ${isLight ? 'bg-white/85 border-violet-100' : 'bg-black/30 border-white/10'}`}
-                style={{
-                  boxShadow: `0 0 15px ${activeGlow}`,
-                }}
-              >
-                <img
-                  src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${tech.slug}`}
-                  alt={tech.name}
-                  className="size-11 object-contain"
-                  style={{
-                    filter: !isLight && tech.invertInDark ? 'invert(1) brightness(2)' : 'none',
-                  }}
-                />
-              </motion.div>
-            )
-          })}
-        </AnimatePresence>
       </motion.section>
 
       {/* ── Tech ticker ── */}

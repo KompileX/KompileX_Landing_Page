@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useScroll, useTransform, type MotionValue } from 'motion/react'
+import { motion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react'
 import { Globe, Smartphone, Server, Cloud, CheckIcon, type LucideIcon } from 'lucide-react'
 
 interface StackCardData {
@@ -107,7 +107,7 @@ function StackCard({
 
   return (
     <div
-      className="absolute inset-0 flex items-start justify-center pt-4 md:pt-8 px-4 md:px-8"
+      className="[grid-area:1/1] flex items-center justify-center"
       style={{ zIndex: total - i }}
     >
       <motion.div
@@ -172,6 +172,7 @@ export default function StackSection() {
     target: container,
     offset: ['start start', 'end end'],
   })
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 600, damping: 50, mass: 0.15 })
 
   return (
     <section
@@ -180,8 +181,10 @@ export default function StackSection() {
       className="relative bg-background py-10 lg:py-14"
       style={{ height: `${cards.length * 75}vh` }}
     >
-      <div className="sticky top-[20%] h-[75vh] flex flex-col items-center w-full">
-        <div className="mx-auto mb-4 max-w-screen-xl px-4 text-center md:px-8">
+      {/* Main section: horizontally centers everything within the sticky viewport */}
+      <div className="sticky top-12 mx-auto flex h-[calc(100vh-3rem)] w-full max-w-screen-xl flex-col items-center justify-center px-4 md:top-16 md:h-[calc(100vh-4rem)] md:px-8">
+        {/* Title and subtitle */}
+        <div className="mb-10 w-full shrink-0 text-center">
           <h2 className="mb-3 text-3xl font-bold text-foreground sm:text-4xl">
             What We Build
           </h2>
@@ -190,9 +193,10 @@ export default function StackSection() {
           </p>
         </div>
 
-        <div className="relative w-full flex-grow">
+        {/* Cards */}
+        <div className="grid w-full shrink-0">
           {cards.map((card, i) => (
-            <StackCard key={card.title} i={i} card={card} total={cards.length} progress={scrollYProgress} />
+            <StackCard key={card.title} i={i} card={card} total={cards.length} progress={smoothProgress} />
           ))}
         </div>
       </div>

@@ -22,9 +22,12 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const lastScrollY = useRef(0)
 
-  if (typeof window !== 'undefined') {
+  useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : 'unset'
-  }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [mobileOpen])
 
   useEffect(() => {
     lastScrollY.current = window.scrollY

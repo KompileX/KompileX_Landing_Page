@@ -7,8 +7,6 @@ import { Code2, Server, Cloud, LifeBuoy } from 'lucide-react'
 import HeroBackground from './HeroBackground'
 
 
-const STAR_IMAGE = '/stars.png'
-
 const technologies = [
   'Next.js', 'React', 'TypeScript', 'Node.js', 'Go', 'PostgreSQL', 'GraphQL', 'AWS', 'Docker', 'Vercel',
 ]
@@ -31,17 +29,11 @@ export default function HeroSection() {
   })
   const parallaxY = useTransform(scrollYProgress, [0, 1], [-40, 40])
 
-
   return (
     <>
       {/* ── Hero ── */}
       <motion.section
         ref={sectionRef}
-        {...(!isLight && {
-          animate: { backgroundPositionX: 2400 },
-          transition: { duration: 120, repeat: Number.POSITIVE_INFINITY, ease: 'linear' },
-        })}
-
         className="[mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] relative flex h-[492px] items-center overflow-hidden md:h-[800px]"
       >
         <HeroBackground isLight={isLight} parallaxY={parallaxY} />

@@ -116,26 +116,20 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
       {/* Parallax layer: mesh blobs, grid, glow lines, geometry, particles */}
       <motion.div className="absolute inset-0" style={parallaxY ? { y: parallaxY } : undefined}>
         {/* Mesh gradient blobs */}
-        <motion.div
-          animate={{ x: [0, 40, 0], y: [0, -30, 0], scale: [1, 1.08, 1] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-          className={`absolute -left-24 top-[8%] size-72 rounded-full blur-[80px] md:size-[420px] ${
+        <div
+          className={`hero-blob-1 absolute -left-24 top-[8%] size-72 rounded-full blur-[80px] md:size-[420px] ${
             isLight ? 'bg-violet-300/25' : 'bg-[#8c45ff]/25'
           }`}
         />
-        <motion.div
-          animate={{ x: [0, -36, 0], y: [0, 24, 0], scale: [1, 1.1, 1] }}
-          transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
-          className={`absolute -right-20 bottom-[6%] size-64 rounded-full blur-[90px] md:size-96 ${
+        <div
+          className={`hero-blob-2 absolute -right-20 bottom-[6%] size-64 rounded-full blur-[90px] md:size-96 ${
             isLight ? 'bg-fuchsia-200/25' : 'bg-[#5c2ee6]/25'
           }`}
         />
 
         {/* Grid */}
-        <motion.div
-          animate={{ backgroundPosition: ['0px 0px', '64px 64px'] }}
-          transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-0 [mask-image:radial-gradient(65%_55%_at_center,black,transparent_75%)]"
+        <div
+          className="hero-grid-pan absolute inset-0 [mask-image:radial-gradient(65%_55%_at_center,black,transparent_75%)]"
           style={{
             backgroundImage: `linear-gradient(${isLight ? 'rgba(139,92,246,0.14)' : 'rgba(184,148,255,0.14)'} 1px, transparent 1px), linear-gradient(90deg, ${isLight ? 'rgba(139,92,246,0.14)' : 'rgba(184,148,255,0.14)'} 1px, transparent 1px)`,
             backgroundSize: '64px 64px',
@@ -174,23 +168,17 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
         </svg>
 
         {/* Rotating geometric accents */}
-        <motion.div
-          animate={{ rotate: '1turn' }}
-          transition={{ duration: 70, repeat: Infinity, ease: 'linear' }}
-          style={{ x: '-50%', y: '-50%' }}
-          className={`absolute left-1/2 top-1/2 hidden size-[420px] rotate-45 rounded-3xl border md:block md:size-[620px] ${
+        <div
+          className={`hero-ring-spin absolute left-1/2 top-1/2 hidden size-[420px] rounded-3xl border md:block md:size-[620px] ${
             isLight ? 'border-violet-300/25' : 'border-white/15'
           }`}
         >
           <span className={`absolute -left-1 top-1/2 size-1.5 -translate-y-1/2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white/70'}`} />
           <span className={`absolute left-1/2 top-0 size-1.5 -translate-x-1/2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white/70'}`} />
-        </motion.div>
+        </div>
 
-        <motion.div
-          animate={{ rotate: '-1turn' }}
-          transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
-          style={{ x: '-50%', y: '-50%' }}
-          className={`absolute left-1/2 top-1/2 hidden size-[300px] rounded-[2.5rem] border border-dashed md:block md:size-[460px] ${
+        <div
+          className={`hero-ring-spin-reverse absolute left-1/2 top-1/2 hidden size-[300px] rounded-[2.5rem] border border-dashed md:block md:size-[460px] ${
             isLight ? 'border-violet-200/35' : 'border-white/15'
           }`}
         />
@@ -198,9 +186,9 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
         {/* Ambient particles */}
         <div className="absolute inset-0 hidden sm:block">
           {particles.map((p) => (
-            <motion.span
+            <span
               key={p.id}
-              className="absolute rounded-full"
+              className="hero-particle absolute rounded-full"
               style={{
                 left: p.left,
                 top: p.top,
@@ -208,9 +196,9 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
                 height: p.size,
                 backgroundColor: dotFill,
                 boxShadow: `0 0 6px 1px ${dotFill}`,
+                animationDuration: `${p.duration}s`,
+                animationDelay: `${p.delay}s`,
               }}
-              animate={{ y: [0, -14, 0], opacity: [0.15, 0.7, 0.15] }}
-              transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
             />
           ))}
         </div>

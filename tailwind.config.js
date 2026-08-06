@@ -64,6 +64,12 @@ module.exports = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      maxWidth: {
+        // App-wide content cap. Overrides only these two utilities (used as page-width
+        // containers throughout) without touching the `xl` breakpoint used for responsive variants.
+        '7xl': '1440px',
+        'screen-xl': '1440px',
+      },
       animation: {
         'fade-in': 'fade-in 0.6s ease-out forwards',
         'fade-in-up': 'fade-in-up 0.6s ease-out forwards',

@@ -1,151 +1,173 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { motion, useScroll, useTransform } from 'motion/react'
-import { Bot, Clock, Award, type LucideIcon } from 'lucide-react'
+import { useRef } from 'react'
+import { Card } from '@/components/ui/card'
+import { motion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react'
+import { ArrowRight, Bot, Clock, Award, type LucideIcon } from 'lucide-react'
 
 interface Step {
-  number: string
-  icon: LucideIcon
   title: string
-  description: string
-  badge: string
+  subtitle: string
+  icon: LucideIcon
+  gradient: string
 }
 
 const steps: Step[] = [
   {
-    number: '01',
-    icon: Bot,
     title: 'AI-Powered Development',
-    description:
-      'We leverage cutting-edge AI tools and automation frameworks to accelerate delivery cycles, reduce bugs, and ship production-ready features up to 40% faster than traditional development approaches.',
-    badge: 'AI Velocity',
+    subtitle:
+      'We leverage cutting-edge AI tools and automation frameworks to accelerate delivery cycles, reduce bugs, and ship production-ready features faster.',
+    icon: Bot,
+    gradient: 'linear-gradient(145deg, #b9a6ff 0%, #8c6bff 100%)',
   },
   {
-    number: '02',
-    icon: Clock,
     title: '24/7 Support',
-    description:
-      'Our dedicated support team is available around the clock to monitor your systems, resolve incidents, and ensure your platforms stay performant and available — with guaranteed SLA response times.',
-    badge: 'Always On',
+    subtitle:
+      'Our dedicated support team is available around the clock to monitor your systems, resolve incidents, and keep your platforms performant and available.',
+    icon: Clock,
+    gradient: 'linear-gradient(145deg, #7fe3e0 0%, #35b6c9 100%)',
   },
   {
-    number: '03',
-    icon: Award,
     title: 'Senior Engineering Excellence',
-    description:
-      'Work with senior engineers, solution architects, and AI specialists rigorously vetted through multi-stage technical benchmarks. No juniors, no guesswork — only proven talent delivering enterprise-grade results.',
-    badge: 'Vetted Talent',
+    subtitle:
+      'Work with senior engineers, solution architects, and AI specialists rigorously vetted through multi-stage technical benchmarks.',
+    icon: Award,
+    gradient: 'linear-gradient(145deg, #ffd684 0%, #ffb24d 100%)',
   },
 ]
-
-// Fixed card footprint used both for the Tailwind width class and the slot math below,
-// so the computed offsets always line up with what's actually rendered.
-const CARD_WIDTH = 380
-const GAP = 32
-const SLOT = CARD_WIDTH + GAP
 
 function QueueCard({ step, className = '' }: { step: Step; className?: string }) {
   const Icon = step.icon
   return (
-    <Card className={`h-full bg-card/60 backdrop-blur-sm ${className}`}>
-      <CardContent className="p-8 flex flex-col gap-6">
-        <div className="flex items-start justify-between">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center border bg-muted border-border text-foreground">
-            <Icon className="w-5 h-5" strokeWidth={1.5} />
-          </div>
-          <span className="text-4xl font-black text-muted-foreground/20 leading-none select-none">
-            {step.number}
-          </span>
-        </div>
+    <Card className={`group overflow-hidden rounded-2xl border border-black/15 bg-card/60 shadow-none backdrop-blur-sm ${className}`}>
+      <div className="flex h-64 items-center justify-center" style={{ background: step.gradient }}>
+        <Icon className="h-14 w-14 text-black/70" strokeWidth={1.25} />
+      </div>
 
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">
-              {step.badge}
-            </Badge>
-          </div>
-          <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
-        </div>
-      </CardContent>
+      <div className="flex flex-col gap-2 p-6">
+        <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">{step.subtitle}</p>
+
+        <a
+          href="#"
+          className="mt-2 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
+        >
+          Learn more
+          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+        </a>
+      </div>
     </Card>
   )
 }
 
+// Wraps a card in its own scroll-linked parallax, independent of the entrance
+// animation on its parent — each card moves at a different speed so they
+// don't drift in lockstep. Scale/opacity ride the same progress as the
+// translateY so the card visibly grows and sharpens into place instead of
+// just sliding, which reads as more dynamic.
+function FloatingCard({
+  y,
+  scale,
+  opacity,
+  children,
+}: {
+  y: MotionValue<number>
+  scale: MotionValue<number>
+  opacity: MotionValue<number>
+  children: React.ReactNode
+}) {
+  return <motion.div style={{ y, scale, opacity, transformPerspective: 1200 }}>{children}</motion.div>
+}
+
 export default function HowItWorksSection() {
-  const container = useRef<HTMLDivElement>(null)
-  const [offscreen, setOffscreen] = useState(0)
-
+  const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ['start start', 'end end'],
+    target: sectionRef,
+    offset: ['start end', 'end start'],
   })
+  // Light, fast spring: just smooths out raw scroll jitter (settles in ~100ms) without
+  // adding noticeable lag — unlike the earlier heavy/slow spring that felt like it was
+  // dragging behind the scroll.
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 300, damping: 30, mass: 0.3 })
 
-  useEffect(() => {
-    const measure = () => setOffscreen(window.innerWidth)
-    measure()
-    window.addEventListener('resize', measure)
-    return () => window.removeEventListener('resize', measure)
-  }, [])
+  // As the section arrives (progress 0 -> 0.4), each card moves up from its starting
+  // offset to its correct resting position (0) — "positioned perfectly" — and holds
+  // there while the section is comfortably in view (0.4 -> 0.6). It then continues the
+  // same upward motion as the section exits (0.6 -> 1). Scrolling up reverses this
+  // exactly, since it's a direct function of scroll position, not a one-off animation.
+  // Amplitude is large and paired with scale/opacity so the arrival reads as a
+  // deliberate, dynamic entrance rather than a subtle drift.
+  const y1 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [220, 0, 0, -220])
+  const y2 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [340, 0, 0, -340])
+  const y3 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [280, 0, 0, -280])
 
-  // Card 0: visible & centered immediately, then eases into its final left slot
-  // in lockstep with card 1's arrival window — same breakpoints as x1 below, so
-  // the gap between them shrinks monotonically to the resting gap and never overlaps.
-  const x0 = useTransform(scrollYProgress, [0, 0.15, 0.5, 1], [SLOT, SLOT, 0, 0])
+  const scale1 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.82, 1, 1, 0.82])
+  const scale2 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.82, 1, 1, 0.82])
+  const scale3 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.82, 1, 1, 0.82])
 
-  // Card 1: hidden off-screen right until it joins mid-scroll, then settles into its slot.
-  const x1 = useTransform(scrollYProgress, [0, 0.15, 0.5, 1], [offscreen, offscreen, 0, 0])
-  const o1 = useTransform(scrollYProgress, [0, 0.15, 0.28, 1], [0, 0, 1, 1])
-
-  // Card 2: hidden off-screen right until the final third of the scroll, then settles in.
-  const x2 = useTransform(scrollYProgress, [0, 0.5, 0.85, 1], [offscreen, offscreen, 0, 0])
-  const o2 = useTransform(scrollYProgress, [0, 0.5, 0.63, 1], [0, 0, 1, 1])
+  const opacity1 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.35, 1, 1, 0.35])
+  const opacity2 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.35, 1, 1, 0.35])
+  const opacity3 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.35, 1, 1, 0.35])
 
   return (
-    <section id="process" className="w-full py-14 lg:py-20">
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-10 text-center flex flex-col gap-3"
-        >
-          <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-            Why Leading Enterprises Choose Us
-          </h2>
-          <p className="max-w-xl mx-auto text-sm text-muted-foreground">
-            We combine AI velocity, 24/7 dedicated support, and senior engineering talent to deliver enterprise-grade software that scales.
-          </p>
-        </motion.div>
-      </div>
+    <section id="process" ref={sectionRef} className="w-full py-14 lg:py-20">
+      <div className="mx-auto w-full max-w-screen-xl px-4 md:px-8">
+        <div className="why-choose-grid">
+          {/* DOM order puts the title first for a sane mobile reading order; grid-area
+              placement on desktop is independent of source order, so this doesn't
+              affect the desktop layout, where it renders between card 1 and card 3,
+              above card 2. */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
+            className="why-choose-title flex flex-col gap-3 text-center md:text-left"
+          >
+            <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
+              Why Leading Enterprises Choose Us
+            </h2>
+            <p className="mx-auto max-w-xl text-sm text-muted-foreground md:mx-0">
+              We combine AI velocity, 24/7 dedicated support, and senior engineering talent to deliver enterprise-grade software that scales.
+            </p>
+          </motion.div>
 
-      {/* Desktop/tablet: cards join one at a time, sliding left to make room, never fully hidden as a group */}
-      <div ref={container} className="hidden md:block" style={{ height: `${steps.length * 100}vh` }}>
-        <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center gap-8">
-          <motion.div style={{ x: x0, opacity: 1 }} className="shrink-0">
-            <QueueCard step={steps[0]} className="w-[380px]" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.05, type: 'spring', bounce: 0 }}
+            className="why-choose-card1"
+          >
+            <FloatingCard y={y1} scale={scale1} opacity={opacity1}>
+              <QueueCard step={steps[0]} />
+            </FloatingCard>
           </motion.div>
-          <motion.div style={{ x: x1, opacity: o1 }} className="shrink-0">
-            <QueueCard step={steps[1]} className="w-[380px]" />
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1, type: 'spring', bounce: 0 }}
+            className="why-choose-card2 md:mt-10"
+          >
+            <FloatingCard y={y2} scale={scale2} opacity={opacity2}>
+              <QueueCard step={steps[1]} />
+            </FloatingCard>
           </motion.div>
-          <motion.div style={{ x: x2, opacity: o2 }} className="shrink-0">
-            <QueueCard step={steps[2]} className="w-[380px]" />
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.15, type: 'spring', bounce: 0 }}
+            className="why-choose-card3 md:mt-20"
+          >
+            <FloatingCard y={y3} scale={scale3} opacity={opacity3}>
+              <QueueCard step={steps[2]} />
+            </FloatingCard>
           </motion.div>
         </div>
-      </div>
-
-      {/* Mobile fallback: native horizontal scroll, no scroll-jack */}
-      <div className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory px-4 pb-2 -mx-4">
-        {steps.map((step) => (
-          <div key={step.number} className="w-[85vw] shrink-0 snap-center">
-            <QueueCard step={step} />
-          </div>
-        ))}
       </div>
     </section>
   )

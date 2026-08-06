@@ -48,7 +48,7 @@ export default function ContactSection() {
       </div>
 
       {/* Main card matching screenshot layout */}
-      <div className="relative z-10 w-full max-w-6xl rounded-[32px] border border-border bg-card/85 p-8 shadow-2xl backdrop-blur-md sm:p-10 md:p-12 lg:p-14">
+      <div className="relative z-10 w-full max-w-6xl rounded-xl border border-border bg-card/85 p-8 shadow-sm backdrop-blur-md sm:p-10 md:p-12 lg:p-14">
         <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-12 lg:gap-16">
           {/* Left Column: Heading, Info & Socials */}
           <div className="flex flex-col justify-between gap-8">

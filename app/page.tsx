@@ -1,10 +1,9 @@
 import Navbar from '@/components/Navbar'
 import HeroSection from '@/components/HeroSection'
 import AboutSection from '@/components/AboutSection'
-import FeaturesSection from '@/components/FeaturesSection'
 import StackSection from '@/components/StackSection'
-import HowItWorksSection from '@/components/HowItWorksSection'
-import TechStackSection from '@/components/TechStackSection'
+import HowItWorksSection from '@/components/WhyChooseUs'
+import CaseStudiesSection from '@/components/CaseStudiesSection'
 import UseCasesSection from '@/components/UseCasesSection'
 import FAQSection from '@/components/FAQSection'
 import ContactSection from '@/components/ContactSection'
@@ -20,10 +19,9 @@ export default function HomePage() {
         <main>
           <HeroSection />
           <AboutSection />
-          <FeaturesSection />
           <StackSection />
           <HowItWorksSection />
-          <TechStackSection />
+          <CaseStudiesSection />
           <UseCasesSection />
           <FAQSection />
           <ContactSection />

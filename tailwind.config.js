@@ -12,7 +12,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        'sans': ['var(--font-geist-sans)', 'sans-serif'],
+        'display': ['var(--font-broche)', 'sans-serif'],
       },
       colors: {
         // shadcn/ui color tokens — raw CSS vars (hex values, not HSL channels)

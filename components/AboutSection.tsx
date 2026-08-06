@@ -70,7 +70,7 @@ export default function AboutSection() {
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
           className="mb-10 flex flex-col items-center gap-4 text-center"
         >
-          <h2 className="max-w-2xl text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
+          <h2 className="max-w-2xl text-3xl font-bold sm:text-4xl lg: bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
             Four engineers, one software company
           </h2>
           <p className="max-w-xl text-sm text-muted-foreground sm:text-base">

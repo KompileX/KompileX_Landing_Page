@@ -72,7 +72,7 @@ export default function HeroSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, delay: card.delay, type: 'spring' as const, bounce: 0 }}
-            className={`absolute hidden lg:block w-48 xl:w-56 ${card.side === 'left' ? 'left-[18%] xl:left-[20%]' : 'right-[18%] xl:right-[20%]'} ${card.topClass} -translate-y-1/2`}
+            className={`absolute hidden lg:block w-48 xl:w-56 ${card.side === 'left' ? 'left-[8%] xl:left-[12%] 2xl:left-[19%]' : 'right-[8%] xl:right-[12%] 2xl:right-[19%]'} ${card.topClass} -translate-y-1/2`}
             style={{ zIndex: 7 }}
           >
             <div className={`rounded-2xl border p-4 backdrop-blur-md ${isLight ? 'bg-white/95 border-border/60 shadow-[0_4px_20px_rgba(139,92,246,0.08),0_1px_4px_rgba(0,0,0,0.05)]' : 'bg-white/5 border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.35)]'}`}>
@@ -99,7 +99,7 @@ export default function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className={`text-center font-semibold tracking-tighter text-4xl md:text-6xl lg:text-7xl lg:leading-none ${isLight ? 'text-foreground' : 'text-white'}`}>
+          <h1 className={`text-center font-semibold tracking-tighter text-4xl md:text-6xl lg:text-5xl lg:leading-none ${isLight ? 'text-foreground' : 'text-white'}`}>
             We Ship Software<br />That Works
           </h1>
 
@@ -142,33 +142,32 @@ export default function HeroSection() {
         <div className="max-w-screen-xl mx-auto px-4 md:px-8">
           <div className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <motion.div
-                initial={{ x: 0 }}
-                animate={{ x: '-50%' }}
-                transition={{ repeat: Infinity, duration: 65, ease: 'linear' }}
-                className="flex gap-4 w-max"
-              >
-                {[...TECH_STACK_ITEMS, ...TECH_STACK_ITEMS].map((item, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3.5 rounded-2xl border border-border/70 bg-card/40 px-5 py-3 backdrop-blur-sm transition hover:border-primary/50 hover:bg-muted/30 group"
-                  >
-                    <img
-                      src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.slug}`}
-                      alt={item.name}
-                      className={`size-7 object-contain transition-transform duration-300 group-hover:scale-110 ${
-                        item.invertInDark ? 'dark:invert' : ''
+              initial={{ x: 0 }}
+              animate={{ x: '-50%' }}
+              transition={{ repeat: Infinity, duration: 65, ease: 'linear' }}
+              className="flex gap-4 w-max"
+            >
+              {[...TECH_STACK_ITEMS, ...TECH_STACK_ITEMS].map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3.5 rounded-2xl border border-border/70 bg-card/40 px-5 py-3 backdrop-blur-sm transition hover:border-primary/50 hover:bg-muted/30 group"
+                >
+                  <img
+                    src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.slug}`}
+                    alt={item.name}
+                    className={`size-7 object-contain transition-transform duration-300 group-hover:scale-110 ${item.invertInDark ? 'dark:invert' : ''
                       }`}
-                      loading="lazy"
-                    />
-                    <span className="text-sm font-semibold text-foreground whitespace-nowrap">
-                      {item.name}
-                    </span>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
+                    loading="lazy"
+                  />
+                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">
+                    {item.name}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
+      </div>
     </>
   )
 }

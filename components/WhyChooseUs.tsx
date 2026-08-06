@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { Card } from '@/components/ui/card'
-import { motion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react'
+import { motion, useScroll, useTransform, type MotionValue } from 'motion/react'
 import { ArrowRight, Bot, Clock, Award, type LucideIcon } from 'lucide-react'
 
 interface Step {
@@ -39,7 +39,7 @@ const steps: Step[] = [
 function QueueCard({ step, className = '' }: { step: Step; className?: string }) {
   const Icon = step.icon
   return (
-    <Card className={`group overflow-hidden rounded-2xl border border-black/15 bg-card/60 shadow-none backdrop-blur-sm ${className}`}>
+    <Card className={`group overflow-hidden rounded-2xl border border-black/30 bg-card/60 shadow-none backdrop-blur-sm ${className}`}>
       <div className="flex h-64 items-center justify-center" style={{ background: step.gradient }}>
         <Icon className="h-14 w-14 text-black/70" strokeWidth={1.25} />
       </div>
@@ -62,21 +62,10 @@ function QueueCard({ step, className = '' }: { step: Step; className?: string })
 
 // Wraps a card in its own scroll-linked parallax, independent of the entrance
 // animation on its parent — each card moves at a different speed so they
-// don't drift in lockstep. Scale/opacity ride the same progress as the
-// translateY so the card visibly grows and sharpens into place instead of
-// just sliding, which reads as more dynamic.
-function FloatingCard({
-  y,
-  scale,
-  opacity,
-  children,
-}: {
-  y: MotionValue<number>
-  scale: MotionValue<number>
-  opacity: MotionValue<number>
-  children: React.ReactNode
-}) {
-  return <motion.div style={{ y, scale, opacity, transformPerspective: 1200 }}>{children}</motion.div>
+// don't drift in lockstep. Pure translateY (no scale/opacity) so it reads as
+// being physically pushed up/down rather than zooming into place.
+function FloatingCard({ y, children }: { y: MotionValue<number>; children: React.ReactNode }) {
+  return <motion.div style={{ y, transformPerspective: 1200 }}>{children}</motion.div>
 }
 
 export default function HowItWorksSection() {
@@ -85,29 +74,16 @@ export default function HowItWorksSection() {
     target: sectionRef,
     offset: ['start end', 'end start'],
   })
-  // Light, fast spring: just smooths out raw scroll jitter (settles in ~100ms) without
-  // adding noticeable lag — unlike the earlier heavy/slow spring that felt like it was
-  // dragging behind the scroll.
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 300, damping: 30, mass: 0.3 })
-
-  // As the section arrives (progress 0 -> 0.4), each card moves up from its starting
-  // offset to its correct resting position (0) — "positioned perfectly" — and holds
-  // there while the section is comfortably in view (0.4 -> 0.6). It then continues the
-  // same upward motion as the section exits (0.6 -> 1). Scrolling up reverses this
-  // exactly, since it's a direct function of scroll position, not a one-off animation.
-  // Amplitude is large and paired with scale/opacity so the arrival reads as a
-  // deliberate, dynamic entrance rather than a subtle drift.
-  const y1 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [220, 0, 0, -220])
-  const y2 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [340, 0, 0, -340])
-  const y3 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [280, 0, 0, -280])
-
-  const scale1 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.82, 1, 1, 0.82])
-  const scale2 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.82, 1, 1, 0.82])
-  const scale3 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.82, 1, 1, 0.82])
-
-  const opacity1 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.35, 1, 1, 0.35])
-  const opacity2 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.35, 1, 1, 0.35])
-  const opacity3 = useTransform(smoothProgress, [0, 0.4, 0.6, 1], [0.35, 1, 1, 0.35])
+  // Bound directly to raw scroll progress — no spring, so there's zero lag between
+  // your scroll input and the card position (no more "dropping" delay). The
+  // ease-in-out curve softens each leg of the motion so it glides to a stop instead
+  // of moving at a constant mechanical speed, which is what reads as fluid/water-like
+  // rather than linear ("on rails"). Each card arrives, settles at 0, and exits on its
+  // own schedule — different total distance AND a different settle window.
+  const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+  const y1 = useTransform(scrollYProgress, [0, 0.4, 0.55, 1], [270, 0, 0, -270], { ease: easeInOutCubic })
+  const y2 = useTransform(scrollYProgress, [0, 0.5, 0.65, 1], [510, 0, 0, -510], { ease: easeInOutCubic })
+  const y3 = useTransform(scrollYProgress, [0, 0.45, 0.6, 1], [390, 0, 0, -390], { ease: easeInOutCubic })
 
   return (
     <section id="process" ref={sectionRef} className="w-full py-14 lg:py-20">
@@ -122,7 +98,7 @@ export default function HowItWorksSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-            className="why-choose-title flex flex-col gap-3 text-center md:text-left"
+            className="why-choose-title flex flex-col gap-3 text-center md:mt-24 md:text-left"
           >
             <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
               Why Leading Enterprises Choose Us
@@ -139,7 +115,7 @@ export default function HowItWorksSection() {
             transition={{ duration: 0.5, delay: 0.05, type: 'spring', bounce: 0 }}
             className="why-choose-card1"
           >
-            <FloatingCard y={y1} scale={scale1} opacity={opacity1}>
+            <FloatingCard y={y1}>
               <QueueCard step={steps[0]} />
             </FloatingCard>
           </motion.div>
@@ -151,7 +127,7 @@ export default function HowItWorksSection() {
             transition={{ duration: 0.5, delay: 0.1, type: 'spring', bounce: 0 }}
             className="why-choose-card2 md:mt-10"
           >
-            <FloatingCard y={y2} scale={scale2} opacity={opacity2}>
+            <FloatingCard y={y2}>
               <QueueCard step={steps[1]} />
             </FloatingCard>
           </motion.div>
@@ -163,7 +139,7 @@ export default function HowItWorksSection() {
             transition={{ duration: 0.5, delay: 0.15, type: 'spring', bounce: 0 }}
             className="why-choose-card3 md:mt-20"
           >
-            <FloatingCard y={y3} scale={scale3} opacity={opacity3}>
+            <FloatingCard y={y3}>
               <QueueCard step={steps[2]} />
             </FloatingCard>
           </motion.div>

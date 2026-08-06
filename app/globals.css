@@ -596,6 +596,32 @@
   }
 }
 
+/* ==================== WHY-CHOOSE-US ASYMMETRIC GRID ====================
+   Mobile: single stacked column (title, card1, card2, card3).
+   Desktop: title + card2 share the middle column; card1/card3 flank them
+   full-height, so everything renders in one static viewport-friendly block. */
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .why-choose-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      'card1 title card3'
+      'card1 card2 card3';
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .why-choose-card1 { grid-area: card1; }
+  .why-choose-title { grid-area: title; }
+  .why-choose-card2 { grid-area: card2; }
+  .why-choose-card3 { grid-area: card3; }
+}
+
 .animate-pulse-glow:nth-child(1) { animation: float-orb-1 20s ease-in-out infinite; }
 .animate-pulse-glow:nth-child(2) { animation: float-orb-2 25s ease-in-out infinite; }
 .animate-pulse-glow:nth-child(3) { animation: float-orb-3 30s ease-in-out infinite; }

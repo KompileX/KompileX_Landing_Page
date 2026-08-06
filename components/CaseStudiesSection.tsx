@@ -30,18 +30,34 @@ interface CaseStudy {
   outcome: string
 }
 
-const technologies = [
-  'Next.js',
-  'React',
-  'TypeScript',
-  'Tailwind CSS',
-  'Node.js',
-  'Python',
-  'PostgreSQL',
-  'Docker',
-  'AWS',
-  'GraphQL',
-  'Redis',
+const TECH_STACK_ITEMS = [
+  // Languages
+  { name: 'JavaScript', slug: 'javascript/javascript-original.svg', desc: 'Web Development' },
+  { name: 'Python', slug: 'python/python-original.svg', desc: 'AI & Data Science' },
+  { name: 'TypeScript', slug: 'typescript/typescript-original.svg', desc: 'Large Web Apps' },
+  { name: 'Java', slug: 'java/java-original.svg', desc: 'Enterprise & Android' },
+  { name: 'C#', slug: 'csharp/csharp-original.svg', desc: '.NET & Game Dev' },
+  { name: 'Go (Golang)', slug: 'go/go-original.svg', desc: 'Cloud & Backend' },
+  { name: 'Rust', slug: 'rust/rust-original.svg', desc: 'Systems & Performance' },
+  { name: 'C++', slug: 'cplusplus/cplusplus-original.svg', desc: 'Game Engines & Embedded' },
+  { name: 'Kotlin', slug: 'kotlin/kotlin-original.svg', desc: 'Android Development' },
+  { name: 'Dart', slug: 'dart/dart-original.svg', desc: 'Flutter Mobile Apps' },
+  // Frameworks
+  { name: 'React', slug: 'react/react-original.svg', desc: 'JavaScript' },
+  { name: 'Next.js', slug: 'nextjs/nextjs-original.svg', desc: 'React', invertInDark: true },
+  { name: 'Angular', slug: 'angular/angular-original.svg', desc: 'TypeScript' },
+  { name: 'Vue.js', slug: 'vuejs/vuejs-original.svg', desc: 'JavaScript' },
+  { name: 'Express.js', slug: 'express/express-original.svg', desc: 'JavaScript', invertInDark: true },
+  { name: 'NestJS', slug: 'nestjs/nestjs-original.svg', desc: 'TypeScript' },
+  { name: 'Flutter', slug: 'flutter/flutter-original.svg', desc: 'Dart' },
+  { name: 'React Native', slug: 'react/react-original.svg', desc: 'JS / TS' },
+  { name: 'Django', slug: 'django/django-plain.svg', desc: 'Python' },
+  { name: 'FastAPI', slug: 'fastapi/fastapi-original.svg', desc: 'Python' },
+  { name: 'Spring Boot', slug: 'spring/spring-original.svg', desc: 'Java' },
+  { name: 'Laravel', slug: 'laravel/laravel-original.svg', desc: 'PHP' },
+  { name: 'ASP.NET Core', slug: 'dotnetcore/dotnetcore-original.svg', desc: 'C#' },
+  { name: 'Nuxt.js', slug: 'nuxtjs/nuxtjs-original.svg', desc: 'Vue' },
+  { name: 'SvelteKit', slug: 'svelte/svelte-original.svg', desc: 'Svelte' },
 ]
 
 const caseStudies: CaseStudy[] = [
@@ -293,23 +309,32 @@ export default function CaseStudiesSection() {
 
         {/* Tech Marquee Ticker */}
         <div className="w-full pt-12 mt-8">
-          <div className="flex items-center gap-5">
-            <div className="flex-1 md:flex-none">
-            </div>
-            <div className="flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]">
-              <motion.div
-                initial={{ x: '-50%' }}
-                animate={{ x: 0 }}
-                transition={{ repeat: Infinity, duration: 30, ease: 'linear' }}
-                className="-translate-x-1/2 flex flex-none gap-4 pr-4"
-              >
-                {[...technologies, ...technologies].map((name, i) => (
-                  <div key={i} className="flex h-8 items-center whitespace-nowrap rounded-full border border-border px-4">
-                    <span className="text-sm font-medium text-muted-foreground">{name}</span>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
+          <div className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <motion.div
+              initial={{ x: 0 }}
+              animate={{ x: '-50%' }}
+              transition={{ repeat: Infinity, duration: 65, ease: 'linear' }}
+              className="flex gap-4 w-max"
+            >
+              {[...TECH_STACK_ITEMS, ...TECH_STACK_ITEMS].map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3.5 rounded-2xl border border-border/70 bg-card/40 px-5 py-3 backdrop-blur-sm transition hover:border-primary/50 hover:bg-muted/30 group"
+                >
+                  <img
+                    src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.slug}`}
+                    alt={item.name}
+                    className={`size-7 object-contain transition-transform duration-300 group-hover:scale-110 ${
+                      item.invertInDark ? 'dark:invert' : ''
+                    }`}
+                    loading="lazy"
+                  />
+                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">
+                    {item.name}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </div>

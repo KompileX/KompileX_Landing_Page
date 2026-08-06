@@ -81,9 +81,9 @@ export default function HowItWorksSection() {
   // rather than linear ("on rails"). Each card arrives, settles at 0, and exits on its
   // own schedule — different total distance AND a different settle window.
   const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
-  const y1 = useTransform(scrollYProgress, [0, 0.3, 0.5, 1], [180, 0, 0, -180], { ease: easeInOutCubic })
-  const y2 = useTransform(scrollYProgress, [0, 0.45, 0.65, 1], [340, 0, 0, -340], { ease: easeInOutCubic })
-  const y3 = useTransform(scrollYProgress, [0, 0.35, 0.55, 1], [260, 0, 0, -260], { ease: easeInOutCubic })
+  const y1 = useTransform(scrollYProgress, [0, 0.4, 0.55, 1], [180, 0, 0, -180], { ease: easeInOutCubic })
+  const y2 = useTransform(scrollYProgress, [0, 0.5, 0.65, 1], [340, 0, 0, -340], { ease: easeInOutCubic })
+  const y3 = useTransform(scrollYProgress, [0, 0.45, 0.6, 1], [260, 0, 0, -260], { ease: easeInOutCubic })
 
   return (
     <section id="process" ref={sectionRef} className="w-full py-14 lg:py-20">

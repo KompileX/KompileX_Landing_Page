@@ -106,7 +106,7 @@ export default function HowItWorksSection() {
 
   return (
     <section id="process" className="w-full py-14 lg:py-20">
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+      <div className="max-w-screen-xl mx-auto px-4 md:px-8 md:hidden">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -125,17 +125,36 @@ export default function HowItWorksSection() {
       </div>
 
       {/* Desktop/tablet: cards join one at a time, sliding left to make room, never fully hidden as a group */}
-      <div ref={container} className="hidden md:block" style={{ height: `${steps.length * 100}vh` }}>
-        <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center gap-8">
-          <motion.div style={{ x: x0, opacity: 1 }} className="shrink-0">
-            <QueueCard step={steps[0]} className="w-[380px]" />
+      <div ref={container} className="hidden md:block relative" style={{ height: `${steps.length * 80}vh` }}>
+        <div className="sticky top-[20%] flex flex-col items-center justify-center gap-12 w-full">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
+            className="text-center flex flex-col gap-3"
+          >
+            <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
+              Why Leading Enterprises Choose Us
+            </h2>
+            <p className="max-w-xl mx-auto text-sm text-muted-foreground">
+              We combine AI velocity, 24/7 dedicated support, and senior engineering talent to deliver enterprise-grade software that scales.
+            </p>
           </motion.div>
-          <motion.div style={{ x: x1, opacity: o1 }} className="shrink-0">
-            <QueueCard step={steps[1]} className="w-[380px]" />
-          </motion.div>
-          <motion.div style={{ x: x2, opacity: o2 }} className="shrink-0">
-            <QueueCard step={steps[2]} className="w-[380px]" />
-          </motion.div>
+
+          {/* Cards */}
+          <div className="w-full overflow-hidden flex items-center justify-center gap-8 py-4">
+            <motion.div style={{ x: x0, opacity: 1 }} className="shrink-0">
+              <QueueCard step={steps[0]} className="w-[380px]" />
+            </motion.div>
+            <motion.div style={{ x: x1, opacity: o1 }} className="shrink-0">
+              <QueueCard step={steps[1]} className="w-[380px]" />
+            </motion.div>
+            <motion.div style={{ x: x2, opacity: o2 }} className="shrink-0">
+              <QueueCard step={steps[2]} className="w-[380px]" />
+            </motion.div>
+          </div>
         </div>
       </div>
 

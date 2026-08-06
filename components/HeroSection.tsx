@@ -64,7 +64,7 @@ export default function HeroSection() {
       >
         <HeroBackground isLight={isLight} parallaxY={parallaxY} />
 
-        {/* Floating feature cards — desktop only */}
+        {/* Floating feature cards - desktop only */}
         {featureCards.map((card, i) => (
           <motion.div
             key={i}

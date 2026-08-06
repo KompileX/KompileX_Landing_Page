@@ -24,7 +24,7 @@ const team = [
   {
     name: 'Jordan Lee',
     role: 'Frontend Engineering',
-    blurb: 'Builds the interfaces users touch every day — fast, accessible, and polished down to the last pixel.',
+    blurb: 'Builds the interfaces users touch every day, fast, accessible, and polished down to the last pixel.',
     Icon: Code2,
     bg: 'linear-gradient(145deg, #7fe3e0 0%, #35b6c9 100%)',
     fg: '#052224',
@@ -32,7 +32,7 @@ const team = [
   {
     name: 'Sam Patel',
     role: 'Backend Engineering',
-    blurb: 'Designs the systems underneath — APIs, databases, and infrastructure that hold up under real traffic.',
+    blurb: 'Designs the systems underneath: APIs, databases, and infrastructure that hold up under real traffic.',
     Icon: Server,
     bg: 'linear-gradient(145deg, #ffd684 0%, #ffb24d 100%)',
     fg: '#301a02',
@@ -70,14 +70,11 @@ export default function AboutSection() {
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
           className="mb-10 flex flex-col items-center gap-4 text-center"
         >
-          <Badge variant="outline" className="text-xs font-semibold uppercase tracking-wide">
-            About Us
-          </Badge>
           <h2 className="max-w-2xl text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
             Four engineers, one software company
           </h2>
           <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
-            We&apos;re KompileX — a software development company built by four engineers who design,
+            We&apos;re KompileX a software development company built by four engineers who design,
             build, and ship full-stack products for our clients end to end. No hand-offs, no bloated
             process, just a small team that owns every project from first line of code to production.
           </p>

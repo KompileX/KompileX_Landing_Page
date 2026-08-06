@@ -204,7 +204,7 @@ function BackToTopButton({ onClick }: { onClick: () => void }) {
 export default function Footer() {
   // useReducedMotion() reads the media query synchronously on the client's very
   // first render (even during hydration), while SSR has no window and always
-  // yields false — a genuine mismatch if the device prefers reduced motion.
+  // yields false - a genuine mismatch if the device prefers reduced motion.
   // Stay false until mounted so the first client render matches the server,
   // then adopt the real value.
   const rawReducedMotion = useReducedMotion() ?? false
@@ -237,7 +237,7 @@ export default function Footer() {
   }, [])
 
   // Curtain mode pins the footer behind the page content. Only safe while the footer
-  // fits the viewport — taller than that and its top would be scrolled out of reach,
+  // fits the viewport - taller than that and its top would be scrolled out of reach,
   // so fall back to an ordinary in-flow footer (the wordmark still rises).
   const curtain = footerHeight > 0 && viewportHeight > 0 && footerHeight <= viewportHeight
 
@@ -284,7 +284,7 @@ export default function Footer() {
                   Available for work
                   <span className="text-border">|</span>
                   <span className="font-mono tabular-nums text-foreground">
-                    {time ? `${time} DHAKA` : '—— DHAKA'}
+                    {time ? `${time} DHAKA` : '-- DHAKA'}
                   </span>
                 </div>
               </div>

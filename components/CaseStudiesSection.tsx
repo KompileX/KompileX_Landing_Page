@@ -10,7 +10,6 @@ import {
   ArrowUpRight,
   X,
   CheckCircle2,
-  Layers,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -137,13 +136,7 @@ const caseStudies: CaseStudy[] = [
 ]
 
 export default function CaseStudiesSection() {
-  const [activeTab, setActiveTab] = useState<'all' | 'web' | 'mobile'>('all')
   const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null)
-
-  const filteredStudies = caseStudies.filter((study) => {
-    if (activeTab === 'all') return true
-    return study.category === activeTab
-  })
 
   return (
     <section id="case-studies" className="w-full py-14 lg:py-20 bg-background relative overflow-hidden">
@@ -163,42 +156,12 @@ export default function CaseStudiesSection() {
           <p className="max-w-xl mx-auto text-sm text-muted-foreground leading-relaxed">
             Explore real-world web and mobile applications engineered to scale with speed, security, and exceptional user experience.
           </p>
-
-          {/* Filter Tabs: All, Web, Mobile */}
-          <div className="mt-4 flex items-center gap-2 rounded-full border border-border bg-muted/40 p-1.5 backdrop-blur-sm">
-            {[
-              { id: 'all', label: 'All Projects', icon: Layers },
-              { id: 'web', label: 'Web Applications', icon: Globe },
-              { id: 'mobile', label: 'Mobile Apps', icon: Smartphone },
-            ].map((tab) => {
-              const Icon = tab.icon
-              const isActive = activeTab === tab.id
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as 'all' | 'web' | 'mobile')}
-                  className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-colors ${isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeTabPill"
-                      className="absolute inset-0 rounded-full bg-background border border-border shadow-sm"
-                      transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-                    />
-                  )}
-                  <Icon className="relative z-10 size-3.5" />
-                  <span className="relative z-10">{tab.label}</span>
-                </button>
-              )
-            })}
-          </div>
         </motion.div>
 
         {/* Project Cards Grid */}
         <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
-            {filteredStudies.map((study) => (
+            {caseStudies.map((study) => (
               <motion.div
                 key={study.id}
                 layout

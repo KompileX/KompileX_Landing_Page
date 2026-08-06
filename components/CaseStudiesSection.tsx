@@ -219,7 +219,7 @@ export default function CaseStudiesSection() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.94 }}
                 transition={{ duration: 0.35, ease: 'easeInOut' }}
-                className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl"
+                className="group flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl"
               >
                 {/* Top 70% Height Image Banner Area */}
                 <div className="relative h-60 w-full overflow-hidden bg-muted">

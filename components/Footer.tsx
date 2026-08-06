@@ -250,9 +250,8 @@ export default function Footer() {
   return (
     <div ref={trackRef} style={curtain ? { height: footerHeight } : undefined}>
       <footer
-        className={`w-full overflow-hidden bg-background ${
-          curtain ? 'fixed bottom-0 left-0 z-0' : 'relative'
-        }`}
+        className={`w-full overflow-hidden bg-background ${curtain ? 'fixed bottom-0 left-0 z-0' : 'relative'
+          }`}
       >
         <div ref={contentRef} className="relative">
           <div className="mx-auto w-full max-w-screen-xl px-4 pt-14 md:px-8 lg:pt-20">
@@ -344,7 +343,7 @@ export default function Footer() {
 
           {/* ---------- Wordmark zone: giant letters bleed to the edges, BACK TO TOP
                and the meta row float on top of them, exactly like the reference footers ---------- */}
-          <div className="relative overflow-visible pt-10 pb-4 sm:pt-14 sm:pb-6 lg:pt-20 lg:pb-8">
+          <div className="relative overflow-visible pt-8 pb-3 sm:pt-10 sm:pb-4 md:pt-12 md:pb-5 lg:pt-20 lg:pb-8">
             <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
               <FooterClouds />
               <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent sm:h-20" />

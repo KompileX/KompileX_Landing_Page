@@ -10,7 +10,6 @@ import {
   ArrowUpRight,
   X,
   CheckCircle2,
-  Layers,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -30,19 +29,6 @@ interface CaseStudy {
   outcome: string
 }
 
-const technologies = [
-  'Next.js',
-  'React',
-  'TypeScript',
-  'Tailwind CSS',
-  'Node.js',
-  'Python',
-  'PostgreSQL',
-  'Docker',
-  'AWS',
-  'GraphQL',
-  'Redis',
-]
 
 const caseStudies: CaseStudy[] = [
   {
@@ -150,13 +136,7 @@ const caseStudies: CaseStudy[] = [
 ]
 
 export default function CaseStudiesSection() {
-  const [activeTab, setActiveTab] = useState<'all' | 'web' | 'mobile'>('all')
   const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null)
-
-  const filteredStudies = caseStudies.filter((study) => {
-    if (activeTab === 'all') return true
-    return study.category === activeTab
-  })
 
   return (
     <section id="case-studies" className="w-full py-14 lg:py-20 bg-background relative overflow-hidden">
@@ -176,42 +156,12 @@ export default function CaseStudiesSection() {
           <p className="max-w-xl mx-auto text-sm text-muted-foreground leading-relaxed">
             Explore real-world web and mobile applications engineered to scale with speed, security, and exceptional user experience.
           </p>
-
-          {/* Filter Tabs: All, Web, Mobile */}
-          <div className="mt-4 flex items-center gap-2 rounded-full border border-border bg-muted/40 p-1.5 backdrop-blur-sm">
-            {[
-              { id: 'all', label: 'All Projects', icon: Layers },
-              { id: 'web', label: 'Web Applications', icon: Globe },
-              { id: 'mobile', label: 'Mobile Apps', icon: Smartphone },
-            ].map((tab) => {
-              const Icon = tab.icon
-              const isActive = activeTab === tab.id
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as 'all' | 'web' | 'mobile')}
-                  className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-colors ${isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
-                    }`}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeTabPill"
-                      className="absolute inset-0 rounded-full bg-background border border-border shadow-sm"
-                      transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-                    />
-                  )}
-                  <Icon className="relative z-10 size-3.5" />
-                  <span className="relative z-10">{tab.label}</span>
-                </button>
-              )
-            })}
-          </div>
         </motion.div>
 
         {/* Project Cards Grid */}
         <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
-            {filteredStudies.map((study) => (
+            {caseStudies.map((study) => (
               <motion.div
                 key={study.id}
                 layout
@@ -219,7 +169,7 @@ export default function CaseStudiesSection() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.94 }}
                 transition={{ duration: 0.35, ease: 'easeInOut' }}
-                className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl"
+                className="group flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl"
               >
                 {/* Top 70% Height Image Banner Area */}
                 <div className="relative h-60 w-full overflow-hidden bg-muted">
@@ -291,27 +241,6 @@ export default function CaseStudiesSection() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Tech Marquee Ticker */}
-        <div className="w-full pt-12 mt-8">
-          <div className="flex items-center gap-5">
-            <div className="flex-1 md:flex-none">
-            </div>
-            <div className="flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]">
-              <motion.div
-                initial={{ x: '-50%' }}
-                animate={{ x: 0 }}
-                transition={{ repeat: Infinity, duration: 30, ease: 'linear' }}
-                className="-translate-x-1/2 flex flex-none gap-4 pr-4"
-              >
-                {[...technologies, ...technologies].map((name, i) => (
-                  <div key={i} className="flex h-8 items-center whitespace-nowrap rounded-full border border-border px-4">
-                    <span className="text-sm font-medium text-muted-foreground">{name}</span>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   )

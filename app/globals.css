@@ -40,7 +40,7 @@
 
 /* ==================== CUSTOM PROPERTIES (THEME SYSTEM) ==================== */
 :root {
-  /* ---- shadcn/ui — Dark Theme (matches template exactly) ---- */
+  /* ---- shadcn/ui - Dark Theme (matches template exactly) ---- */
   --background: #131316;
   --foreground: #eeeeec;
   --card: #1c1c1c;
@@ -107,7 +107,7 @@
 
 /* Light Theme */
 [data-theme="light"] {
-  /* ---- shadcn/ui — Light Theme (matches template exactly) ---- */
+  /* ---- shadcn/ui - Light Theme (matches template exactly) ---- */
   --background: #ffffff;
   --foreground: #131316;
   --card: #ffffff;

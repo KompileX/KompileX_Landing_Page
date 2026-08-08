@@ -204,7 +204,7 @@ function BackToTopButton({ onClick }: { onClick: () => void }) {
 export default function Footer() {
   // useReducedMotion() reads the media query synchronously on the client's very
   // first render (even during hydration), while SSR has no window and always
-  // yields false — a genuine mismatch if the device prefers reduced motion.
+  // yields false - a genuine mismatch if the device prefers reduced motion.
   // Stay false until mounted so the first client render matches the server,
   // then adopt the real value.
   const rawReducedMotion = useReducedMotion() ?? false
@@ -237,7 +237,7 @@ export default function Footer() {
   }, [])
 
   // Curtain mode pins the footer behind the page content. Only safe while the footer
-  // fits the viewport — taller than that and its top would be scrolled out of reach,
+  // fits the viewport - taller than that and its top would be scrolled out of reach,
   // so fall back to an ordinary in-flow footer (the wordmark still rises).
   const curtain = footerHeight > 0 && viewportHeight > 0 && footerHeight <= viewportHeight
 
@@ -259,9 +259,8 @@ export default function Footer() {
   return (
     <div ref={trackRef} style={curtain ? { height: footerHeight } : undefined}>
       <footer
-        className={`w-full overflow-hidden bg-background ${
-          curtain ? 'fixed bottom-0 left-0 z-0' : 'relative'
-        }`}
+        className={`w-full overflow-hidden bg-background ${curtain ? 'fixed bottom-0 left-0 z-0' : 'relative'
+          }`}
       >
         <div ref={contentRef} className="relative">
           <div className="mx-auto w-full max-w-screen-xl px-4 pt-14 md:px-8 lg:pt-20">
@@ -285,7 +284,7 @@ export default function Footer() {
                   Available for work
                   <span className="text-border">|</span>
                   <span className="font-mono tabular-nums text-foreground">
-                    {time ? `${time} DHAKA` : '—— DHAKA'}
+                    {time ? `${time} DHAKA` : '-- DHAKA'}
                   </span>
                 </div>
               </div>
@@ -354,7 +353,7 @@ export default function Footer() {
 
           {/* ---------- Wordmark zone: giant letters bleed to the edges, BACK TO TOP
                and the meta row float on top of them, exactly like the reference footers ---------- */}
-          <div className="relative overflow-visible pt-10 pb-4 sm:pt-14 sm:pb-6 lg:pt-20 lg:pb-8">
+          <div className="relative overflow-visible pt-8 pb-3 sm:pt-10 sm:pb-4 md:pt-12 md:pb-5 lg:pt-20 lg:pb-8">
             <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
               <FooterClouds />
               <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent sm:h-20" />

@@ -9,11 +9,11 @@ import { Button } from '@/components/ui/button'
 import { Moon, Sun, Menu, X } from 'lucide-react'
 
 const navItems = [
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Work', href: '#work' },
-  { label: 'Process', href: '#process' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'About', href: '/#about' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Work', href: '/#work' },
+  { label: 'Process', href: '/#process' },
+  { label: 'FAQ', href: '/#faq' },
 ]
 
 export default function Navbar() {
@@ -74,7 +74,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="transition hover:opacity-80">
             <div className="inline-flex size-10 items-center justify-center rounded-lg border border-border transition hover:border-primary">
-              <Image src="/images/kompileX.svg" alt="KompileX" width={32} height={32} className="w-11 h-8" />
+              <Image src="/images/kompilex.svg" alt="KompileX" width={32} height={32} className="w-11 h-8" />
             </div>
           </Link>
 
@@ -105,7 +105,7 @@ export default function Navbar() {
 
             {/* Contact CTA */}
             <a
-              href="#contact"
+              href="/#contact"
               className="relative cursor-pointer rounded-lg bg-gradient-to-b from-[#190d2e] to-[#4a208a] px-3 py-2 text-sm font-medium text-white shadow-[0px_0px_12px_#8c45ff]"
             >
               <div className="absolute inset-0 rounded-lg">

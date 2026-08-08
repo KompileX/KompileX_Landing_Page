@@ -95,13 +95,13 @@ export default function LegalPage({
         <div className="absolute -right-40 top-[52rem] size-[460px] -rotate-12 rounded-3xl bg-[#8c45ff]/30 blur-[110px]" />
       </div>
 
-      <div className="relative mx-auto w-full max-w-screen-xl px-4 pb-14 pt-10 md:px-8 lg:pb-20 lg:pt-14">
+      <div className="relative mx-auto w-full max-w-screen-xl px-4 pb-10 pt-8 md:px-8 lg:pb-16 lg:pt-12">
         {/* Breadcrumb */}
         <motion.nav
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="mb-10"
+          className="mb-6"
         >
           <Link
             href="/"
@@ -113,7 +113,7 @@ export default function LegalPage({
         </motion.nav>
 
         {/* Body: sticky TOC + document */}
-        <div className="grid gap-10 lg:grid-cols-[260px_1fr] lg:gap-16">
+        <div className="grid gap-8 lg:grid-cols-[260px_1fr] lg:gap-12">
           {/* Table of contents — fixed to the window, vertically centered */}
           <div className="hidden lg:block">
             <div
@@ -163,7 +163,7 @@ export default function LegalPage({
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1, type: 'spring', bounce: 0 }}
-              className="mb-12 flex max-w-3xl flex-col items-start gap-5 lg:mb-16"
+              className="mb-8 flex max-w-3xl flex-col items-start gap-4 lg:mb-10"
             >
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1 text-xs text-muted-foreground">
                 <span className="relative flex size-1.5">
@@ -193,7 +193,7 @@ export default function LegalPage({
             </motion.div>
 
             {/* Intro lead */}
-            <motion.div {...reveal} className="mb-12">
+            <motion.div {...reveal} className="mb-8">
               <p className="border-l-2 border-[#8c45ff] pl-5 text-base leading-8 text-foreground sm:text-lg">
                 {intro}
               </p>
@@ -205,9 +205,9 @@ export default function LegalPage({
                   key={section.id}
                   id={section.id}
                   {...reveal}
-                  className="scroll-mt-28 border-t border-border py-10 first:border-t-0 first:pt-0 lg:py-12"
+                  className="scroll-mt-28 border-t border-border py-7 first:border-t-0 first:pt-0 lg:py-9"
                 >
-                  <div className="mb-6 flex items-center gap-4">
+                  <div className="mb-4 flex items-center gap-4">
                     <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border bg-muted/50 font-mono text-xs font-semibold text-[#8c45ff]">
                       {pad(i + 1)}
                     </span>
@@ -216,7 +216,7 @@ export default function LegalPage({
                     </h2>
                   </div>
 
-                  <div className="flex flex-col gap-5 pl-0 sm:pl-[3.25rem]">
+                  <div className="flex flex-col gap-4 pl-0 sm:pl-[3.25rem]">
                     {section.blocks.map((block, j) => {
                       switch (block.type) {
                         case 'paragraph':
@@ -267,7 +267,7 @@ export default function LegalPage({
             {/* Closing / contact */}
             <motion.div
               {...reveal}
-              className="mt-4 rounded-xl border border-border bg-card/50 p-6 backdrop-blur-sm sm:p-8"
+              className="mt-3 rounded-xl border border-border bg-card/50 p-5 backdrop-blur-sm sm:p-6"
             >
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex flex-col gap-1.5">

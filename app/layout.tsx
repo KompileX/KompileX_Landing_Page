@@ -1,10 +1,13 @@
 import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { Toaster } from 'sonner'
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
+const laghino = localFont({
+  src: '../public/fonts/Laghino-Regular.otf',
+  variable: '--font-laghino',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://kompilex.ai'),
@@ -33,7 +36,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geist.variable} ${geist.className} antialiased bg-background text-foreground`} suppressHydrationWarning>
+      <body className={`${laghino.variable} antialiased bg-background text-foreground`} suppressHydrationWarning>
         <ThemeProvider>{children}</ThemeProvider>
         <Toaster richColors position="top-right" />
       </body>

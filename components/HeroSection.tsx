@@ -37,11 +37,11 @@ const TECH_STACK_ITEMS = [
   { name: 'SvelteKit', slug: 'svelte/svelte-original.svg', desc: 'Svelte' },
 ]
 
-const featureCards = [
-  { side: 'left' as const, topClass: 'top-[30%]', xFrom: -40, delay: 0.25, Icon: Code2, title: 'Web & Mobile Apps', desc: 'Full-stack products built from scratch or extended.' },
-  { side: 'left' as const, topClass: 'top-[62%]', xFrom: -40, delay: 0.38, Icon: Server, title: 'APIs & Backends', desc: 'Reliable services that scale with your users.' },
-  { side: 'right' as const, topClass: 'top-[30%]', xFrom: 40, delay: 0.30, Icon: Cloud, title: 'Cloud Infrastructure', desc: 'CI/CD, hosting, and monitoring done right.' },
-  { side: 'right' as const, topClass: 'top-[62%]', xFrom: 40, delay: 0.43, Icon: LifeBuoy, title: 'Ongoing Support', desc: 'We stick around after launch, not just before it.' },
+const capabilities = [
+  { Icon: Code2, title: 'Web & Mobile Apps' },
+  { Icon: Server, title: 'APIs & Backends' },
+  { Icon: Cloud, title: 'Cloud Infrastructure' },
+  { Icon: LifeBuoy, title: 'Ongoing Support' },
 ]
 
 export default function HeroSection() {
@@ -60,33 +60,12 @@ export default function HeroSection() {
       {/* ── Hero ── */}
       <motion.section
         ref={sectionRef}
-        className="[mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] relative flex h-[492px] items-center overflow-hidden md:h-[800px]"
+        className="[mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] relative flex min-h-[600px] items-center overflow-hidden py-16 md:min-h-[800px]"
       >
         <HeroBackground isLight={isLight} parallaxY={parallaxY} />
 
-        {/* Floating feature cards - desktop only */}
-        {featureCards.map((card, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: card.xFrom }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, delay: card.delay, type: 'spring' as const, bounce: 0 }}
-            className={`absolute hidden lg:block w-48 xl:w-56 ${card.side === 'left' ? 'left-[18%] xl:left-[20%]' : 'right-[18%] xl:right-[20%]'} ${card.topClass} -translate-y-1/2`}
-            style={{ zIndex: 7 }}
-          >
-            <div className={`rounded-2xl border p-4 backdrop-blur-md ${isLight ? 'bg-white/95 border-border/60 shadow-[0_4px_20px_rgba(139,92,246,0.08),0_1px_4px_rgba(0,0,0,0.05)]' : 'bg-white/5 border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.35)]'}`}>
-              <div className={`mb-3 flex items-center justify-center w-8 h-8 rounded-xl ${isLight ? 'bg-violet-50 border border-violet-100/80' : 'bg-white/10 border border-white/10'}`}>
-                <card.Icon className={`w-4 h-4 ${isLight ? 'text-violet-500' : 'text-white/70'}`} />
-              </div>
-              <p className={`text-xs font-bold leading-snug mb-1.5 ${isLight ? 'text-foreground' : 'text-white'}`}>{card.title}</p>
-              <p className={`text-[11px] leading-relaxed ${isLight ? 'text-muted-foreground' : 'text-white/45'}`}>{card.desc}</p>
-            </div>
-          </motion.div>
-        ))}
-
         {/* Center content */}
-        <div className="container mx-auto relative z-10 -mt-16 text-center">
+        <div className="container relative z-10 mx-auto text-center">
           {/* Badge */}
           <div className="flex justify-center mb-6">
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border ${isLight ? 'border-violet-200 bg-violet-50/80 backdrop-blur-sm' : 'border-white/10 bg-white/5'}`}>
@@ -99,7 +78,7 @@ export default function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className={`text-center font-semibold tracking-tighter text-4xl md:text-6xl lg:text-7xl lg:leading-none ${isLight ? 'text-foreground' : 'text-white'}`}>
+          <h1 className={`text-center font-normal tracking-tight text-4xl md:text-6xl lg:text-7xl lg:leading-[1.05] ${isLight ? 'text-foreground' : 'text-white'}`}>
             We Ship Software<br />That Works
           </h1>
 
@@ -109,7 +88,7 @@ export default function HeroSection() {
           </p>
 
           {/* CTAs */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-4 mt-8 sm:flex-row">
             <a
               href="#contact"
               className="relative cursor-pointer rounded-lg bg-gradient-to-b from-[#190d2e] to-[#4a208a] px-4 py-2.5 text-sm font-medium text-white shadow-[0px_0px_12px_#8c45ff]"
@@ -133,42 +112,58 @@ export default function HeroSection() {
               See Our Work
             </a>
           </div>
+
+          {/* Capabilities strip */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-2.5">
+            {capabilities.map((cap, i) => (
+              <div
+                key={i}
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium backdrop-blur-sm transition-colors ${
+                  isLight
+                    ? 'border-violet-200/70 bg-white/70 text-muted-foreground hover:border-violet-300 hover:text-foreground'
+                    : 'border-white/10 bg-white/[0.03] text-white/60 hover:border-white/20 hover:text-white'
+                }`}
+              >
+                <cap.Icon className={`size-3.5 ${isLight ? 'text-violet-500' : 'text-cyan-300'}`} />
+                {cap.title}
+              </div>
+            ))}
+          </div>
         </div>
 
       </motion.section>
 
       {/* ── Tech ticker ── */}
       <div className="w-full py-8">
-        <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+        <div className="max-w-screen-xl px-4 mx-auto md:px-8">
           <div className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <motion.div
-                initial={{ x: 0 }}
-                animate={{ x: '-50%' }}
-                transition={{ repeat: Infinity, duration: 65, ease: 'linear' }}
-                className="flex gap-4 w-max"
-              >
-                {[...TECH_STACK_ITEMS, ...TECH_STACK_ITEMS].map((item, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3.5 rounded-2xl border border-border/70 bg-card/40 px-5 py-3 backdrop-blur-sm transition hover:border-primary/50 hover:bg-muted/30 group"
-                  >
-                    <img
-                      src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.slug}`}
-                      alt={item.name}
-                      className={`size-7 object-contain transition-transform duration-300 group-hover:scale-110 ${
-                        item.invertInDark ? 'dark:invert' : ''
+              initial={{ x: 0 }}
+              animate={{ x: '-50%' }}
+              transition={{ repeat: Infinity, duration: 65, ease: 'linear' }}
+              className="flex gap-4 w-max"
+            >
+              {[...TECH_STACK_ITEMS, ...TECH_STACK_ITEMS].map((item, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-3.5 rounded-2xl border border-border/70 bg-card/40 px-5 py-3 backdrop-blur-sm transition hover:border-primary/50 hover:bg-muted/30 group"
+                >
+                  <img
+                    src={`https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${item.slug}`}
+                    alt={item.name}
+                    className={`size-7 object-contain transition-transform duration-300 group-hover:scale-110 ${item.invertInDark ? 'dark:invert' : ''
                       }`}
-                      loading="lazy"
-                    />
-                    <span className="text-sm font-semibold text-foreground whitespace-nowrap">
-                      {item.name}
-                    </span>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
+                    loading="lazy"
+                  />
+                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">
+                    {item.name}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </div>
+      </div>
     </>
   )
 }

@@ -68,15 +68,15 @@ export default function ContactSection() {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: 0.2, type: 'spring', bounce: 0 }}
-      className="relative w-full max-w-screen-xl mx-auto px-4 py-14 lg:py-20 md:px-8 flex justify-center"
+      className="relative flex justify-center w-full max-w-screen-xl px-4 mx-auto py-14 lg:py-20 md:px-8"
     >
       {/* Background ambient glow */}
-      <div className="absolute inset-0 pointer-events-none flex justify-center items-center overflow-hidden">
+      <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
         <div className="w-[500px] h-[300px] bg-primary/10 blur-[120px] rounded-full" />
       </div>
 
       {/* Main card */}
-      <div className="relative z-10 w-full max-w-6xl rounded-xl border border-border bg-card/85 p-8 shadow-sm backdrop-blur-md sm:p-10 md:p-12 lg:p-14">
+      <div className="relative z-10 w-full max-w-6xl p-8 border shadow-sm rounded-xl border-border bg-card/85 backdrop-blur-md sm:p-10 md:p-12 lg:p-14">
         <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-12 lg:gap-16">
 
           {/* Left Column */}
@@ -96,7 +96,7 @@ export default function ContactSection() {
             <div className="flex flex-col gap-5">
 
               <div className="flex items-center gap-4">
-                <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border bg-muted/60 text-foreground transition-colors hover:border-primary">
+                <div className="flex items-center justify-center transition-colors border rounded-full size-11 shrink-0 border-border bg-muted/60 text-foreground hover:border-primary">
                   <Mail className="size-4" strokeWidth={1.75} />
                 </div>
 
@@ -115,7 +115,7 @@ export default function ContactSection() {
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border bg-muted/60 text-foreground transition-colors hover:border-primary">
+                <div className="flex items-center justify-center transition-colors border rounded-full size-11 shrink-0 border-border bg-muted/60 text-foreground hover:border-primary">
                   <MapPin className="size-4" strokeWidth={1.75} />
                 </div>
 
@@ -131,7 +131,7 @@ export default function ContactSection() {
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border bg-muted/60 text-foreground transition-colors hover:border-primary">
+                <div className="flex items-center justify-center transition-colors border rounded-full size-11 shrink-0 border-border bg-muted/60 text-foreground hover:border-primary">
                   <Phone className="size-4" strokeWidth={1.75} />
                 </div>
 
@@ -162,7 +162,7 @@ export default function ContactSection() {
                   href="https://linkedin.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex size-9 items-center justify-center rounded-full border border-border bg-muted/40 text-muted-foreground transition hover:border-foreground hover:text-foreground"
+                  className="flex items-center justify-center transition border rounded-full size-9 border-border bg-muted/40 text-muted-foreground hover:border-foreground hover:text-foreground"
                   aria-label="LinkedIn"
                 >
                   <Linkedin className="size-4" />
@@ -172,7 +172,7 @@ export default function ContactSection() {
                   href="https://github.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex size-9 items-center justify-center rounded-full border border-border bg-muted/40 text-muted-foreground transition hover:border-foreground hover:text-foreground"
+                  className="flex items-center justify-center transition border rounded-full size-9 border-border bg-muted/40 text-muted-foreground hover:border-foreground hover:text-foreground"
                   aria-label="GitHub"
                 >
                   <Github className="size-4" />
@@ -182,7 +182,7 @@ export default function ContactSection() {
                   href="https://x.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex size-9 items-center justify-center rounded-full border border-border bg-muted/40 text-muted-foreground transition hover:border-foreground hover:text-foreground"
+                  className="flex items-center justify-center transition border rounded-full size-9 border-border bg-muted/40 text-muted-foreground hover:border-foreground hover:text-foreground"
                   aria-label="Twitter / X"
                 >
                   <Twitter className="size-4" />

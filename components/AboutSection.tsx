@@ -60,7 +60,7 @@ const itemVariants = {
 export default function AboutSection() {
   return (
     <section id="about" className="w-full py-14 lg:py-20">
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+      <div className="max-w-screen-xl px-4 mx-auto md:px-8">
 
         {/* Header */}
         <motion.div
@@ -68,9 +68,9 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-10 flex flex-col items-center gap-4 text-center"
+          className="flex flex-col items-center gap-4 mb-10 text-center"
         >
-          <h2 className="max-w-2xl text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
+          <h2 className="max-w-2xl text-3xl font-bold text-transparent sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text">
             Four engineers, one software company
           </h2>
           <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
@@ -86,13 +86,13 @@ export default function AboutSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="mb-10 grid grid-cols-2 gap-6 sm:grid-cols-4"
+          className="grid grid-cols-2 gap-6 mb-10 sm:grid-cols-4"
         >
           {stats.map((stat) => (
             <motion.div
               key={stat.label}
               variants={itemVariants}
-              className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card/60 py-6 text-center backdrop-blur-sm"
+              className="flex flex-col items-center gap-1 py-6 text-center border rounded-2xl border-border bg-card/60 backdrop-blur-sm"
             >
               <span className="text-2xl font-bold text-foreground sm:text-3xl">{stat.value}</span>
               <span className="text-xs text-muted-foreground sm:text-sm">{stat.label}</span>
@@ -112,13 +112,13 @@ export default function AboutSection() {
             const { Icon } = member
             return (
               <motion.div key={member.name} variants={itemVariants}>
-                <Card className="group h-full hover:shadow-lg transition-all duration-300 bg-card/60 backdrop-blur-sm">
-                  <CardContent className="p-6 flex flex-col gap-5">
+                <Card className="h-full transition-all duration-300 group hover:shadow-lg bg-card/60 backdrop-blur-sm">
+                  <CardContent className="flex flex-col gap-5 p-6">
                     <div
-                      className="flex h-14 w-14 items-center justify-center rounded-2xl"
+                      className="flex items-center justify-center h-14 w-14 rounded-2xl"
                       style={{ background: member.bg }}
                     >
-                      <Icon className="h-6 w-6" strokeWidth={1.5} style={{ color: member.fg }} />
+                      <Icon className="w-6 h-6" strokeWidth={1.5} style={{ color: member.fg }} />
                     </div>
 
                     <div>

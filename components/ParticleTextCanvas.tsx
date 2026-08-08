@@ -27,13 +27,15 @@ export default function ParticleTextCanvas({ text, className = '' }: ParticleTex
   const { theme } = useTheme()
   const isLight = theme === 'light'
   const hasAnimatedInRef = useRef(false)
+  const mouseTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const mouseRef = useRef<{ x: number; y: number; prevX: number; prevY: number; isHovered: boolean }>({
+  const mouseRef = useRef<{ x: number; y: number; prevX: number; prevY: number; isHovered: boolean; isMoving: boolean }>({
     x: -9999,
     y: -9999,
     prevX: -9999,
     prevY: -9999,
     isHovered: false,
+    isMoving: false,
   })
 
   useEffect(() => {
@@ -211,8 +213,8 @@ export default function ParticleTextCanvas({ text, className = '' }: ParticleTex
         if (p.isDisplaced) {
           const distToMouse = Math.hypot(p.originX - mouseX, p.originY - mouseY)
 
-          // While mouse is active over this specific PORTION, hold at long distance
-          if (isHovered && distToMouse < portionRadius) {
+          // While mouse is active over this specific PORTION and moving, hold at long distance
+          if (isHovered && mouse.isMoving && distToMouse < portionRadius) {
             p.x += (p.scatterX! - p.x) * 0.15
             p.y += (p.scatterY! - p.y) * 0.15
           } else {
@@ -251,6 +253,9 @@ export default function ParticleTextCanvas({ text, className = '' }: ParticleTex
       cancelAnimationFrame(animationFrameId)
       resizeObserver.disconnect()
       intersectionObserver.disconnect()
+      if (mouseTimeoutRef.current) {
+        clearTimeout(mouseTimeoutRef.current)
+      }
     }
   }, [text, isLight])
 
@@ -261,22 +266,35 @@ export default function ParticleTextCanvas({ text, className = '' }: ParticleTex
     const newY = e.clientY - rect.top
     const prev = mouseRef.current
 
+    if (mouseTimeoutRef.current) {
+      clearTimeout(mouseTimeoutRef.current)
+    }
+
     mouseRef.current = {
       x: newX,
       y: newY,
       prevX: prev.isHovered ? prev.x : newX,
       prevY: prev.isHovered ? prev.y : newY,
       isHovered: true,
+      isMoving: true,
     }
+
+    mouseTimeoutRef.current = setTimeout(() => {
+      mouseRef.current.isMoving = false
+    }, 150)
   }
 
   const handleMouseLeave = () => {
+    if (mouseTimeoutRef.current) {
+      clearTimeout(mouseTimeoutRef.current)
+    }
     mouseRef.current = {
       x: -9999,
       y: -9999,
       prevX: -9999,
       prevY: -9999,
       isHovered: false,
+      isMoving: false,
     }
   }
 

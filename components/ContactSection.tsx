@@ -31,9 +31,6 @@ export default function ContactSection() {
       toast.success('Opening your email client...', {
         description: `Your message is prefilled, just hit send to ${CONTACT_EMAIL}.`,
       })
-    } finally {
-      setIsSending(false)
-    }
   }
 
   return (

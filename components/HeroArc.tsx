@@ -21,13 +21,17 @@ const TRAIL_CX = [38.0, 99.7, 215.7, 372.2, 550, 727.8, 884.3, 1000.3, 1062.1]
 const TRAIL_CY = [469.7, 300.0, 161.7, 71.4, 40, 71.4, 161.7, 300.0, 469.7]
 
 const PARTICLE_ANGLES = [200, 218, 236, 254, 272, 290, 308, 326, 344]
+// Rounded to 2 decimals: raw Math.cos/sin output can differ in the last
+// float digit between server and client JS engines, which fails hydration.
+const round2 = (n: number) => Math.round(n * 100) / 100
+
 const PARTICLES = PARTICLE_ANGLES.map((deg, i) => {
   const rad = (deg * Math.PI) / 180
   const r = 380 + (i % 3) * 45
   return {
     id: i,
-    cx: CX + r * Math.cos(rad),
-    cy: CY + r * Math.sin(rad),
+    cx: round2(CX + r * Math.cos(rad)),
+    cy: round2(CY + r * Math.sin(rad)),
     size: 2 + (i % 3),
     delay: i * 0.35,
   }

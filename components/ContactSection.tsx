@@ -53,9 +53,12 @@ export default function ContactSection() {
     } catch (error) {
       console.error('EmailJS Error:', error)
 
-    toast.success('Opening your email client...', {
-      description: `Your message is prefilled, just hit send to ${CONTACT_EMAIL}.`,
-    })
+      toast.success('Opening your email client...', {
+        description: `Your message is prefilled, just hit send to ${CONTACT_EMAIL}.`,
+      })
+    } finally {
+      setIsSending(false)
+    }
   }
 
   return (

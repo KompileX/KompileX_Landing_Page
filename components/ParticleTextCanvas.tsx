@@ -78,42 +78,56 @@ export default function ParticleTextCanvas({ text, className = '' }: ParticleTex
       canvas.style.height = `${height + margin * 2}px`
       ctx.scale(dpr, dpr)
 
-      // Offscreen canvas to render text and sample pixel coordinates
+      // Offscreen canvas with extra padding to avoid clipping top/bottom/sides of text characters
+      const padding = 60
       const offscreen = document.createElement('canvas')
-      offscreen.width = width
-      offscreen.height = height
+      offscreen.width = width + padding * 2
+      offscreen.height = height + padding * 2
       const offCtx = offscreen.getContext('2d')
       if (!offCtx) return
 
-      // Measure dynamic font size to fill width while preserving padding
-      const targetFontSize = Math.min(width * 0.22, height * 0.85)
+      // Dynamically calculate font size so that the text spans exactly the container width or height without clipping
+      const baseFontSize = 100
+      offCtx.font = `900 ${baseFontSize}px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
+      const measuredWidth = offCtx.measureText(text).width
+      // Cap height for bold sans-serif is approximately 75% of the font size
+      const measuredHeight = baseFontSize * 0.75
+
+      const maxFontSizeByWidth = (width * 0.98 / measuredWidth) * baseFontSize
+      const maxFontSizeByHeight = (height * 0.92 / measuredHeight) * baseFontSize
+      const targetFontSize = Math.min(maxFontSizeByWidth, maxFontSizeByHeight)
+
       offCtx.font = `900 ${targetFontSize}px system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
       offCtx.textAlign = 'center'
       offCtx.textBaseline = 'middle'
       offCtx.fillStyle = '#ffffff'
-      offCtx.fillText(text, width / 2, height / 2)
+      offCtx.fillText(text, offscreen.width / 2, offscreen.height / 2)
 
-      const imgData = offCtx.getImageData(0, 0, width, height)
+      const imgData = offCtx.getImageData(0, 0, offscreen.width, offscreen.height)
       const data = imgData.data
 
       particles = []
       // Step size determines dot density (lower step = smaller & denser pixels)
       const step = width < 640 ? 3 : 4
 
-      for (let y = 0; y < height; y += step) {
-        for (let x = 0; x < width; x += step) {
-          const index = (y * width + x) * 4
+      for (let y = 0; y < offscreen.height; y += step) {
+        for (let x = 0; x < offscreen.width; x += step) {
+          const index = (y * offscreen.width + x) * 4
           const alpha = data[index + 3]
 
           if (alpha > 128) {
+            // Map coordinates back to the original container's coordinate system
+            const originX = x - padding
+            const originY = y - padding
+
             // Spread pixels across both horizontal and vertical dimensions of the container area
             const initX = Math.random() * width
             const initY = Math.random() * height
             particles.push({
               x: initX,
               y: initY,
-              originX: x,
-              originY: y,
+              originX,
+              originY,
               vx: (Math.random() - 0.5) * 2,
               vy: (Math.random() - 0.5) * 2,
               radius: step > 3 ? 1.3 : 1.0,
@@ -271,10 +285,9 @@ export default function ParticleTextCanvas({ text, className = '' }: ParticleTex
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`relative w-full h-[180px] sm:h-[260px] md:h-[340px] lg:h-[420px] select-none cursor-pointer ${className}`}
+      className={`relative w-full h-[120px] sm:h-[180px] md:h-[240px] lg:h-[200px] 2xl:h-[280px] select-none cursor-pointer ${className}`}
     >
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
     </div>
   )
 }
-

@@ -61,7 +61,7 @@ function QueueCard({ step, className = '' }: { step: Step; className?: string })
 }
 
 // Wraps a card in its own scroll-linked parallax, independent of the entrance
-// animation on its parent — each card moves at a different speed so they
+// animation on its parent - each card moves at a different speed so they
 // don't drift in lockstep. Pure translateY (no scale/opacity) so it reads as
 // being physically pushed up/down rather than zooming into place.
 function FloatingCard({ y, children }: { y: MotionValue<number>; children: React.ReactNode }) {
@@ -74,12 +74,12 @@ export default function HowItWorksSection() {
     target: sectionRef,
     offset: ['start end', 'end start'],
   })
-  // Bound directly to raw scroll progress — no spring, so there's zero lag between
+  // Bound directly to raw scroll progress - no spring, so there's zero lag between
   // your scroll input and the card position (no more "dropping" delay). The
   // ease-in-out curve softens each leg of the motion so it glides to a stop instead
   // of moving at a constant mechanical speed, which is what reads as fluid/water-like
   // rather than linear ("on rails"). Each card arrives, settles at 0, and exits on its
-  // own schedule — different total distance AND a different settle window.
+  // own schedule - different total distance AND a different settle window.
   const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
   const y1 = useTransform(scrollYProgress, [0, 0.4, 0.55, 1], [270, 0, 0, -270], { ease: easeInOutCubic })
   const y2 = useTransform(scrollYProgress, [0, 0.5, 0.65, 1], [510, 0, 0, -510], { ease: easeInOutCubic })

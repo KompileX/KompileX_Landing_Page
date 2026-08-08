@@ -28,9 +28,12 @@ export default function ContactSection() {
     )
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`
 
-    toast.success('Opening your email client...', {
-      description: `Your message is prefilled, just hit send to ${CONTACT_EMAIL}.`,
-    })
+      toast.success('Opening your email client...', {
+        description: `Your message is prefilled, just hit send to ${CONTACT_EMAIL}.`,
+      })
+    } finally {
+      setIsSending(false)
+    }
   }
 
   return (

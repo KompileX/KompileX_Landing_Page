@@ -50,7 +50,6 @@ export default function LegalPage({
   email,
 }: LegalPageProps) {
   const [activeId, setActiveId] = useState<string>(sections[0]?.id ?? '')
-  const [footerVisible, setFooterVisible] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -67,26 +66,26 @@ export default function LegalPage({
       if (el) observer.observe(el)
     })
 
-    return () => observer.disconnect()
-  }, [sections])
-
-  // Fade the fixed Contents sidebar out once the curtain footer starts to
-  // reveal itself, so it never overlays the footer's wordmark or meta row.
-  useEffect(() => {
+    // The last section never crosses the active band when scrolled to the
+    // bottom, so pin it once the page is fully scrolled.
+    const lastId = sections[sections.length - 1]?.id
     const onScroll = () => {
-      const withinFooterZone =
-        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 700
-      setFooterVisible(withinFooterZone)
+      if (!lastId) return
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4
+      if (atBottom) setActiveId(lastId)
     }
 
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
+
     return () => {
+      observer.disconnect()
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
-  }, [])
+  }, [sections])
 
   return (
     <section className="relative w-full overflow-hidden">
@@ -118,17 +117,14 @@ export default function LegalPage({
           {/* Table of contents — fixed to the window, vertically centered */}
           <div className="hidden lg:block">
             <div
-              className={cn(
-                'fixed inset-y-0 z-20 hidden w-[260px] items-center transition-opacity duration-300 lg:flex',
-                footerVisible ? 'pointer-events-none opacity-0' : 'opacity-100'
-              )}
+              className="pointer-events-none fixed inset-y-0 z-20 hidden w-[260px] items-center lg:flex"
               style={{ left: 'max(2rem, calc((100vw - 1440px) / 2 + 2rem))' }}
             >
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="flex max-h-full w-full flex-col gap-1 overflow-y-auto rounded-2xl border border-border bg-card/50 p-5 backdrop-blur-sm"
+                className="pointer-events-auto flex max-h-full w-full flex-col gap-1 overflow-y-auto rounded-2xl border border-border bg-card/50 p-5 backdrop-blur-sm"
               >
                 <p className="mb-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
                   / Contents
@@ -167,7 +163,7 @@ export default function LegalPage({
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1, type: 'spring', bounce: 0 }}
-              className="mx-auto mb-12 flex max-w-3xl flex-col items-center gap-5 text-center lg:mb-16"
+              className="mb-12 flex max-w-3xl flex-col items-start gap-5 lg:mb-16"
             >
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1 text-xs text-muted-foreground">
                 <span className="relative flex size-1.5">
@@ -184,7 +180,7 @@ export default function LegalPage({
               <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">{tagline}</p>
 
               {/* Meta row */}
-              <div className="mt-1 flex flex-wrap items-center justify-center gap-3">
+              <div className="mt-1 flex flex-wrap items-center justify-start gap-3">
                 <span className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
                   <CalendarDays className="size-3.5" />
                   Effective {effectiveDate}
@@ -271,7 +267,7 @@ export default function LegalPage({
             {/* Closing / contact */}
             <motion.div
               {...reveal}
-              className="mt-4 rounded-3xl border border-border bg-card/50 p-6 backdrop-blur-sm sm:p-8"
+              className="mt-4 rounded-xl border border-border bg-card/50 p-6 backdrop-blur-sm sm:p-8"
             >
               <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex flex-col gap-1.5">

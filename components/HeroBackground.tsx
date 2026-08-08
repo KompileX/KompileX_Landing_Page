@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, type MotionValue } from 'motion/react'
+import HeroArc from './HeroArc'
 
 const TECH_ICONS = [
   { name: 'Python', slug: 'python/python-original.svg', bestFor: 'AI, Machine Learning, Data Science, Backend', glowColor: 'rgba(55, 118, 171, 0.45)' },
@@ -238,6 +239,9 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
           )
         })}
       </AnimatePresence>
+
+      {/* Glowing arc centerpiece, anchored to the bottom edge */}
+      <HeroArc isLight={isLight} />
     </div>
   )
 }

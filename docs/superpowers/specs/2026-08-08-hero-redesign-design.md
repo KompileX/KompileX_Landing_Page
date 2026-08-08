@@ -1,106 +1,51 @@
-# Hero Section Redesign — Design Spec
+# Hero Section Redesign — Design Spec (revised)
 
 Date: 2026-08-08
 Branch: `feature/hero_modification`
 
 ## Goal
 
-Redesign KompileX landing page hero section into a dark, cinematic,
-futuristic tech-startup hero (inspired by a Fluidity-style reference image),
-while keeping brand tone enterprise/professional (not crypto/Web3).
+Add a dark, cinematic, futuristic glowing-arc visual to the KompileX hero
+background (inspired by a Fluidity-style reference image), **without**
+removing or restructuring any existing hero content.
 
-Scope: **hero section only**. Navbar and all sections below the hero
-(tech ticker included) are untouched.
+Scope: **hero background visual only**. `HeroSection.tsx` (copy, feature
+cards, badge, CTAs, tech ticker) stays exactly as it is today. Navbar and
+all sections below the hero are untouched.
 
-## Decisions
+## Decisions (revised — supersedes the original version of this doc)
 
-- **Theme**: hero is always dark/cinematic, regardless of site-wide
-  light/dark toggle. Rest of the site keeps `ThemeContext` as-is.
-- **Feature cards**: the 4 floating cards (Web & Mobile, APIs, Cloud,
-  Support) are removed from the hero for a clean, centered composition
-  matching the reference.
-- **Mouse-trail tech icon effect**: removed (not part of target design,
-  conflicts with clean minimal composition).
-- **Avatars**: image-generation tool unavailable this session (Higgsfield
-  connector session expired, needs re-auth outside agent control). Use
-  5 small overlapping circular placeholders instead: gradient-filled
-  circles (cyan/blue/purple mix, distinct per circle) with a centered
-  `lucide-react` `User` icon — no external image asset required. Row
-  sits above the headline next to the "Trusted by growing teams" text.
-- **Copy**:
-  - Badge row: avatar stack + "Trusted by growing teams"
-  - Headline (2 lines): "Engineering Powerful" / "Digital Experiences"
-  - Subtitle: "We design, build, and ship full-stack products for
-    startups and teams who need to move fast."
-  - Primary CTA: "Start a Project" → `#contact`
-  - Secondary CTA: "See Our Work" → `#work`
-- **Arc visual technique**: layered SVG (multiple concentric stroked arc
-  paths, varying radius/opacity/dash + `feGaussianBlur` glow filter),
-  radial-gradient glow layers behind/around it, small floating particles,
-  slow CSS rotation on outer ring layers. Matches existing codebase
-  pattern already used in `HeroBackground.tsx` (SVG paths + blur filter +
-  `motion` path animation) — no new dependencies.
-- **Colors**: electric blue/cyan primary glow, subtle purple/magenta
-  secondary highlights (KompileX's existing violet `#8c45ff` accent
-  extended toward cyan for the arc, keeping brand continuity rather than
-  switching to a pure Web3 palette).
+- **Nothing existing is removed.** Feature cards, mouse-trail tech-icon
+  effect, grid, mesh blobs, connector lines, rotating square rings,
+  ambient particles, badge copy, headline "We Ship Software That Works",
+  CTAs, tech ticker — all stay as-is in `HeroSection.tsx` and
+  `HeroBackground.tsx`.
+- **Light/dark toggle stays respected.** `HeroBackground` keeps its
+  `isLight` prop. The new arc visual renders in both themes, with a more
+  vivid cyan/indigo/purple gradient in dark mode and a softer
+  violet/fuchsia version in light mode (consistent with the existing
+  `isLight` branching pattern already in the file).
+- **Addition only:** a new `HeroArc.tsx` component (layered SVG rings +
+  glow + particles + a slow-moving light-trail dot) is mounted at the
+  bottom of the existing `HeroBackground.tsx`, on top of/alongside its
+  current content — not replacing it.
 
 ## Components touched
 
-- `components/HeroSection.tsx` — rewritten. Layout: badge row (avatars +
-  text) → 2-line headline → subtitle → CTA row → arc visual anchored at
-  bottom of section. Drops `isLight`/`featureCards`/`useTheme` usage in
-  hero (hero is always-dark). `min-h-screen` (100vh) section, content
-  vertically centered in upper-middle portion. Tech ticker block below
-  the `<section>` stays unchanged.
-- `components/HeroBackground.tsx` — rewritten. Renders: dark navy/black
-  base gradient, radial blue glow (center/lower), star-field (small
-  twinkling dots, upper area), ambient particles (reuse existing
-  particle pattern), and mounts the new arc visual.
-- `components/HeroArc.tsx` — **new**. Self-contained SVG component for
-  the glowing arc/ring centerpiece: 4–5 concentric arc paths (only upper
-  ~55–65% of each circle drawn, i.e. large radius circles clipped near
-  viewport bottom), radial + linear gradients (cyan → blue → purple),
-  `feGaussianBlur` bloom filters, small glowing particle dots along/near
-  the arc with slow orbit via `motion`, one or two thin "light trail"
-  segments animating slowly along a path (`motion` `pathLength`/offset
-  animation, same technique as the existing connector-line animation in
-  `HeroBackground.tsx`).
-- No new image assets — avatars are inline gradient+icon circles built
-  in `HeroSection.tsx`.
-
-## Layout / responsive
-
-- Desktop: full `100vh` hero, headline ~700–850px max width, large arc
-  (viewBox scaled via container, e.g. `min(90vw, 900px)` wide) anchored
-  at bottom, ~55–65% visible (rest clipped below viewport/section edge).
-- Tablet: typography and arc scale down proportionally via Tailwind
-  breakpoints, same structure.
-- Mobile: headline `text-[42px]`–`text-[52px]` equivalent Tailwind
-  scale, subtitle `text-base`/`text-lg`, CTAs stack vertically
-  (`flex-col`), arc simplified (fewer concentric paths / particles) but
-  still visible at bottom, not overwhelming content.
-
-## Animation
-
-- Content: fade-up entrance (badge → headline → subtitle → CTAs,
-  staggered), reusing `motion` (already a dependency, same as rest of
-  site).
-- Background: slow pulsing glow opacity, twinkling stars (CSS keyframes,
-  matches existing `hero-particle`-style keyframe approach in
-  `app/globals.css`), slow outer-ring rotation.
-- Arc: particles drift slowly, one light-trail segment loops slowly
-  around an arc path.
-- CTAs: existing hover transition style kept/extended (scale/opacity or
-  border-glow on hover), pill shape.
-- All animation kept subtle/performant — no new heavy libraries, reuse
-  `motion` + CSS keyframes exactly as the current codebase already does
-  in `app/globals.css` (`hero-blob`, `hero-grid-pan`, `hero-ring-spin`,
-  `hero-particle` keyframes) — new keyframes added there following the
-  same naming convention.
+- `components/HeroArc.tsx` — **new**. Self-contained SVG arc/ring visual:
+  4 concentric circles (only the upper half of each drawn, via a center
+  pushed to the bottom edge of the viewBox), `feGaussianBlur` bloom glow
+  behind crisp segmented rings, small pulsing particles, one light-trail
+  dot animating slowly along the outer ring. Takes an `isLight` prop to
+  swap the gradient/opacity for the two themes. No new dependencies
+  (`motion`, already used elsewhere in the file).
+- `components/HeroBackground.tsx` — small addition only: import
+  `HeroArc`, render `<HeroArc isLight={isLight} />` near the end of the
+  existing markup. No existing JSX removed.
+- `components/HeroSection.tsx` — **untouched**.
 
 ## Out of scope
 
-- Navbar changes.
-- Any section below hero (About, Stack, tech ticker, etc.) — untouched.
+- Any change to `HeroSection.tsx` content/layout/copy/cards.
+- Navbar, any section below the hero.
 - Site-wide theme system changes.

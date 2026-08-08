@@ -586,13 +586,21 @@
 .hero-ring-spin { animation: hero-ring-spin 70s linear infinite; }
 .hero-ring-spin-reverse { animation: hero-ring-spin-reverse 90s linear infinite; }
 
+@keyframes hero-arc-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.hero-arc-rotate { animation: hero-arc-rotate 140s linear infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   .hero-blob-1,
   .hero-blob-2,
   .hero-grid-pan,
   .hero-particle,
   .hero-ring-spin,
-  .hero-ring-spin-reverse {
+  .hero-ring-spin-reverse,
+  .hero-arc-rotate {
     animation: none;
   }
 }

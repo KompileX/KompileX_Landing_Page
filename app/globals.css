@@ -482,16 +482,6 @@
   .animate-marquee { animation: none; }
 }
 
-@keyframes hero-ring-spin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-@keyframes hero-ring-spin-reverse {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(-360deg); }
-}
-
 .animate-float {
   animation: float 4s ease-in-out infinite;
 }
@@ -583,8 +573,6 @@
 .hero-blob-2 { animation: hero-blob-2 26s ease-in-out infinite; }
 .hero-grid-pan { animation: hero-grid-pan 40s linear infinite; }
 .hero-particle { animation: hero-particle-float 6s ease-in-out infinite; }
-.hero-ring-spin { animation: hero-ring-spin 70s linear infinite; }
-.hero-ring-spin-reverse { animation: hero-ring-spin-reverse 90s linear infinite; }
 
 @keyframes hero-arc-rotate {
   from { transform: rotate(0deg); }
@@ -598,8 +586,6 @@
   .hero-blob-2,
   .hero-grid-pan,
   .hero-particle,
-  .hero-ring-spin,
-  .hero-ring-spin-reverse,
   .hero-arc-rotate {
     animation: none;
   }

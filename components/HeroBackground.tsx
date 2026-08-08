@@ -169,21 +169,6 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
           ))}
         </svg>
 
-        {/* Rotating geometric accents */}
-        <div
-          className={`hero-ring-spin absolute left-1/2 top-1/2 hidden size-[420px] rounded-3xl border md:block md:size-[620px] ${
-            isLight ? 'border-violet-300/25' : 'border-white/15'
-          }`}
-        >
-          <span className={`absolute -left-1 top-1/2 size-1.5 -translate-y-1/2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white/70'}`} />
-          <span className={`absolute left-1/2 top-0 size-1.5 -translate-x-1/2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white/70'}`} />
-        </div>
-
-        <div
-          className={`hero-ring-spin-reverse absolute left-1/2 top-1/2 hidden size-[300px] rounded-[2.5rem] border border-dashed md:block md:size-[460px] ${
-            isLight ? 'border-violet-200/35' : 'border-white/15'
-          }`}
-        />
 
         {/* Ambient particles */}
         <div className="absolute inset-0 hidden sm:block">

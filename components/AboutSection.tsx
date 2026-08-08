@@ -68,12 +68,12 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-10 flex flex-col items-center gap-4 text-center"
+          className="mb-14 lg:mb-20 flex flex-col items-center gap-5 sm:gap-6 text-center"
         >
-          <h2 className="max-w-2xl text-3xl font-bold sm:text-4xl lg: bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
+          <h2 className="max-w-3xl text-3xl font-bold sm:text-4xl lg:text-5xl tracking-wider leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
             Four engineers, one software company
           </h2>
-          <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
+          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg leading-relaxed">
             We&apos;re KompileX a software development company built by four engineers who design,
             build, and ship full-stack products for our clients end to end. No hand-offs, no bloated
             process, just a small team that owns every project from first line of code to production.

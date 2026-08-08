@@ -129,7 +129,7 @@ function StackCard({
               {card.tag} · {String(i + 1).padStart(2, '0')}/{String(cards.length).padStart(2, '0')}
             </span>
 
-            <h3 className="text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-[2.4rem]">
+            <h3 className="text-2xl font-bold leading-tight tracking-wider sm:text-3xl lg:text-[2.4rem]">
               {card.title}
             </h3>
 
@@ -184,11 +184,11 @@ export default function StackSection() {
       {/* Main section: horizontally centers everything within the sticky viewport */}
       <div className="sticky top-12 mx-auto flex h-[calc(100vh-3rem)] w-full max-w-screen-xl flex-col items-center justify-center px-4 md:top-16 md:h-[calc(100vh-4rem)] md:px-8">
         {/* Title and subtitle */}
-        <div className="mb-10 w-full shrink-0 text-center">
-          <h2 className="mb-3 text-3xl font-bold text-foreground sm:text-4xl">
+        <div className="mb-14 lg:mb-20 w-full shrink-0 text-center flex flex-col gap-4 sm:gap-5">
+          <h2 className="text-3xl font-bold tracking-wider sm:text-4xl lg:text-5xl leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
             What We Build
           </h2>
-          <p className="mx-auto max-w-2xl text-base text-muted-foreground">
+          <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg leading-relaxed">
             From first line of code to production, we cover the full stack: web, mobile, backend, and the infrastructure that keeps it all running.
           </p>
         </div>

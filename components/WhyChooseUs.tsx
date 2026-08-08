@@ -98,12 +98,12 @@ export default function HowItWorksSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-            className="why-choose-title flex flex-col gap-3 text-center md:mt-24 md:text-left"
+            className="why-choose-title flex flex-col gap-5 sm:gap-6 text-center md:mt-16 lg:mt-20 md:text-left"
           >
-            <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
+            <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl tracking-wider leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
               Why Leading Enterprises Choose Us
             </h2>
-            <p className="mx-auto max-w-xl text-sm text-muted-foreground md:mx-0">
+            <p className="mx-auto max-w-xl text-base text-muted-foreground sm:text-lg leading-relaxed md:mx-0">
               We combine AI velocity, 24/7 dedicated support, and senior engineering talent to deliver enterprise-grade software that scales.
             </p>
           </motion.div>

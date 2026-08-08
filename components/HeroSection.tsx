@@ -78,7 +78,7 @@ export default function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className={`text-center font-normal tracking-tight text-4xl md:text-6xl lg:text-7xl lg:leading-[1.05] ${isLight ? 'text-foreground' : 'text-white'}`}>
+          <h1 className={`text-center font-normal tracking-wider text-4xl md:text-6xl lg:text-7xl lg:leading-[1.05] ${isLight ? 'text-foreground' : 'text-white'}`}>
             We Ship Software<br />That Works
           </h1>
 

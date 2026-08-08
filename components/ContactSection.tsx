@@ -52,11 +52,11 @@ export default function ContactSection() {
         <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-12 lg:gap-16">
           {/* Left Column: Heading, Info & Socials */}
           <div className="flex flex-col justify-between gap-8">
-            <div className="flex flex-col gap-4">
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            <div className="flex flex-col gap-5 sm:gap-6">
+              <h2 className="text-3xl font-bold tracking-wider sm:text-4xl lg:text-5xl leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
                 Contact Us
               </h2>
-              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+              <p className="text-base text-muted-foreground sm:text-lg leading-relaxed">
                 Have a project idea, need dedicated engineering talent, or want to consult on system architecture? Reach out directly.
               </p>
             </div>

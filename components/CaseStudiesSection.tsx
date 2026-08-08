@@ -147,13 +147,13 @@ export default function CaseStudiesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-10 text-center flex flex-col items-center gap-3"
+          className="mb-14 lg:mb-20 text-center flex flex-col items-center gap-5 sm:gap-6"
         >
-          <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
+          <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl tracking-wider leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
             Case Studies
           </h2>
 
-          <p className="max-w-xl mx-auto text-sm text-muted-foreground leading-relaxed">
+          <p className="max-w-2xl mx-auto text-base text-muted-foreground sm:text-lg leading-relaxed">
             Explore real-world web and mobile applications engineered to scale with speed, security, and exceptional user experience.
           </p>
         </motion.div>

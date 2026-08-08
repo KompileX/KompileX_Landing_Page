@@ -189,7 +189,7 @@ export default function StackSection() {
             What We Build
           </h2>
           <p className="mx-auto max-w-2xl text-base text-muted-foreground">
-            From first line of code to production, we cover the full stack — web, mobile, backend, and the infrastructure that keeps it all running.
+            From first line of code to production, we cover the full stack: web, mobile, backend, and the infrastructure that keeps it all running.
           </p>
         </div>
 

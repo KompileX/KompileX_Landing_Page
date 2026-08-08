@@ -21,9 +21,12 @@ Scope: **hero section only**. Navbar and all sections below the hero
   matching the reference.
 - **Mouse-trail tech icon effect**: removed (not part of target design,
   conflicts with clean minimal composition).
-- **Avatars**: 4–5 generated placeholder avatar images (neutral,
-  professional, diverse), saved to `public/images/avatars/`, used in a
-  small overlapping-circle row above the headline.
+- **Avatars**: image-generation tool unavailable this session (Higgsfield
+  connector session expired, needs re-auth outside agent control). Use
+  5 small overlapping circular placeholders instead: gradient-filled
+  circles (cyan/blue/purple mix, distinct per circle) with a centered
+  `lucide-react` `User` icon — no external image asset required. Row
+  sits above the headline next to the "Trusted by growing teams" text.
 - **Copy**:
   - Badge row: avatar stack + "Trusted by growing teams"
   - Headline (2 lines): "Engineering Powerful" / "Digital Experiences"
@@ -63,8 +66,8 @@ Scope: **hero section only**. Navbar and all sections below the hero
   segments animating slowly along a path (`motion` `pathLength`/offset
   animation, same technique as the existing connector-line animation in
   `HeroBackground.tsx`).
-- `public/images/avatars/` — new generated avatar images (4–5, small
-  square/circular-croppable PNGs).
+- No new image assets — avatars are inline gradient+icon circles built
+  in `HeroSection.tsx`.
 
 ## Layout / responsive
 

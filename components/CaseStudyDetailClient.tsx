@@ -115,7 +115,7 @@ export default function CaseStudyDetailClient({ id }: { id: string }) {
         </div>
 
         {/* Carousel Section with Horizontal Swipe Animation */}
-        <div className="relative w-full overflow-hidden rounded-3xl border border-border bg-card shadow-2xl group">
+        <div className="relative w-full overflow-hidden rounded-xl border border-border bg-card shadow-2xl group">
           {/* Main Image Viewport */}
           <div className="relative h-[320px] sm:h-[480px] lg:h-[600px] w-full bg-muted/30 overflow-hidden">
             <AnimatePresence mode="popLayout" custom={direction}>
@@ -198,7 +198,7 @@ export default function CaseStudyDetailClient({ id }: { id: string }) {
           {/* Left Column: Project Overview & Key Features */}
           <div className="flex flex-col gap-8">
             {/* Overview Card */}
-            <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 backdrop-blur-md flex flex-col gap-6">
+            <div className="rounded-xl border border-border bg-card p-6 sm:p-8 backdrop-blur-md flex flex-col gap-6">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-6 rounded-full bg-primary" />
                 <h2 className="text-xl font-bold tracking-wider text-foreground sm:text-2xl">
@@ -233,7 +233,7 @@ export default function CaseStudyDetailClient({ id }: { id: string }) {
           {/* Right Column: Sidebar info cards */}
           <div className="flex flex-col gap-6">
             {/* Project Info Box */}
-            <div className="rounded-3xl border border-border bg-card p-6 backdrop-blur-md flex flex-col gap-5">
+            <div className="rounded-xl border border-border bg-card p-6 backdrop-blur-md flex flex-col gap-5">
               <h3 className="text-base font-bold tracking-wider text-foreground">
                 Project Info
               </h3>
@@ -275,7 +275,7 @@ export default function CaseStudyDetailClient({ id }: { id: string }) {
             </div>
 
             {/* Technologies Used Box */}
-            <div className="rounded-3xl border border-border bg-card p-6 backdrop-blur-md flex flex-col gap-4">
+            <div className="rounded-xl border border-border bg-card p-6 backdrop-blur-md flex flex-col gap-4">
               <h3 className="text-base font-bold tracking-wider text-foreground">
                 Technologies Used
               </h3>
@@ -293,7 +293,7 @@ export default function CaseStudyDetailClient({ id }: { id: string }) {
             </div>
 
             {/* Project Links Box matching screenshot buttons */}
-            <div className="rounded-3xl border border-border bg-card p-6 backdrop-blur-md flex flex-col gap-4">
+            <div className="rounded-xl border border-border bg-card p-6 backdrop-blur-md flex flex-col gap-4">
               <h3 className="text-base font-bold tracking-wider text-foreground">
                 Project Links
               </h3>

@@ -4,9 +4,9 @@ import './globals.css'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { Toaster } from 'sonner'
 
-const broche = localFont({
-  src: '../public/fonts/Broche-Regular.otf',
-  variable: '--font-broche',
+const laghino = localFont({
+  src: '../public/fonts/Laghino-Regular.otf',
+  variable: '--font-laghino',
 })
 
 export const metadata: Metadata = {
@@ -36,7 +36,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${broche.variable} antialiased bg-background text-foreground`} suppressHydrationWarning>
+      <body className={`${laghino.variable} antialiased bg-background text-foreground`} suppressHydrationWarning>
         <ThemeProvider>{children}</ThemeProvider>
         <Toaster richColors position="top-right" />
       </body>

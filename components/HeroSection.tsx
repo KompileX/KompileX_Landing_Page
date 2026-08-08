@@ -75,12 +75,25 @@ export default function HeroSection() {
             className={`absolute hidden lg:block w-48 xl:w-56 ${card.side === 'left' ? 'left-[8%] xl:left-[12%] 2xl:left-[19%]' : 'right-[8%] xl:right-[12%] 2xl:right-[19%]'} ${card.topClass} -translate-y-1/2`}
             style={{ zIndex: 7 }}
           >
-            <div className={`rounded-2xl border p-4 backdrop-blur-md ${isLight ? 'bg-white/95 border-border/60 shadow-[0_4px_20px_rgba(139,92,246,0.08),0_1px_4px_rgba(0,0,0,0.05)]' : 'bg-white/5 border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.35)]'}`}>
-              <div className={`mb-3 flex items-center justify-center w-8 h-8 rounded-xl ${isLight ? 'bg-violet-50 border border-violet-100/80' : 'bg-white/10 border border-white/10'}`}>
-                <card.Icon className={`w-4 h-4 ${isLight ? 'text-violet-500' : 'text-white/70'}`} />
+            <div
+              className={`group relative overflow-hidden rounded-2xl border p-4 backdrop-blur-xl transition-colors duration-300 ${
+                isLight
+                  ? 'bg-white/95 border-border/60 shadow-[0_4px_20px_rgba(139,92,246,0.08),0_1px_4px_rgba(0,0,0,0.05)]'
+                  : 'border-white/10 bg-[#0b0b1c]/70 shadow-[0_8px_30px_rgba(0,0,0,0.5)] hover:border-white/20'
+              }`}
+            >
+              {!isLight && (
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-transparent to-transparent" />
+              )}
+              <div
+                className={`relative mb-3 flex items-center justify-center w-9 h-9 rounded-xl border ${
+                  isLight ? 'bg-violet-50 border-violet-100/80' : 'border-white/10 bg-gradient-to-br from-cyan-400/15 to-violet-500/15'
+                }`}
+              >
+                <card.Icon className={`w-4 h-4 ${isLight ? 'text-violet-500' : 'text-cyan-200'}`} />
               </div>
-              <p className={`text-xs font-bold leading-snug mb-1.5 ${isLight ? 'text-foreground' : 'text-white'}`}>{card.title}</p>
-              <p className={`text-[11px] leading-relaxed ${isLight ? 'text-muted-foreground' : 'text-white/45'}`}>{card.desc}</p>
+              <p className={`relative text-xs font-bold leading-snug mb-1.5 ${isLight ? 'text-foreground' : 'text-white'}`}>{card.title}</p>
+              <p className={`relative text-[11px] leading-relaxed ${isLight ? 'text-muted-foreground' : 'text-white/50'}`}>{card.desc}</p>
             </div>
           </motion.div>
         ))}

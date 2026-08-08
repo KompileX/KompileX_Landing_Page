@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, type MotionValue } from 'motion/react'
+import HeroArc from './HeroArc'
+import HeroFloatingShapes from './HeroFloatingShapes'
 
 const TECH_ICONS = [
   { name: 'Python', slug: 'python/python-original.svg', bestFor: 'AI, Machine Learning, Data Science, Backend', glowColor: 'rgba(55, 118, 171, 0.45)' },
@@ -106,8 +108,8 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
       {/* Gradient wash */}
       {isLight ? (
         <>
-          <div className="absolute inset-0 bg-gradient-to-b from-violet-50/60 via-white to-white" />
-          <div className="absolute inset-0 bg-[radial-gradient(65%_65%_at_center_40%,rgba(139,92,246,0.10)_0%,rgba(167,139,250,0.05)_55%,transparent_80%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-violet-100/80 via-white to-violet-50/50" />
+          <div className="absolute inset-0 bg-[radial-gradient(70%_60%_at_50%_100%,rgba(139,92,246,0.20)_0%,rgba(217,70,239,0.08)_55%,transparent_80%)]" />
         </>
       ) : (
         <div className="absolute inset-0 bg-[radial-gradient(75%_75%_at_center_center,rgb(140,69,255,0.35)_15%,rgb(14,0,36,0.55)_78%,transparent)]" />
@@ -167,21 +169,6 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
           ))}
         </svg>
 
-        {/* Rotating geometric accents */}
-        <div
-          className={`hero-ring-spin absolute left-1/2 top-1/2 hidden size-[420px] rounded-3xl border md:block md:size-[620px] ${
-            isLight ? 'border-violet-300/25' : 'border-white/15'
-          }`}
-        >
-          <span className={`absolute -left-1 top-1/2 size-1.5 -translate-y-1/2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white/70'}`} />
-          <span className={`absolute left-1/2 top-0 size-1.5 -translate-x-1/2 rounded-full ${isLight ? 'bg-violet-400/60' : 'bg-white/70'}`} />
-        </div>
-
-        <div
-          className={`hero-ring-spin-reverse absolute left-1/2 top-1/2 hidden size-[300px] rounded-[2.5rem] border border-dashed md:block md:size-[460px] ${
-            isLight ? 'border-violet-200/35' : 'border-white/15'
-          }`}
-        />
 
         {/* Ambient particles */}
         <div className="absolute inset-0 hidden sm:block">
@@ -238,6 +225,12 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
           )
         })}
       </AnimatePresence>
+
+      {/* Glowing arc centerpiece, anchored to the bottom edge */}
+      <HeroArc isLight={isLight} />
+
+      {/* 3D floating cubes filling the empty side margins on wide screens */}
+      <HeroFloatingShapes isLight={isLight} />
     </div>
   )
 }

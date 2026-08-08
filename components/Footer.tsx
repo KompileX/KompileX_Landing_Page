@@ -42,15 +42,15 @@ const linkGroups = [
     links: [
       { label: 'GitHub', href: 'https://github.com', external: true },
       { label: 'X / Twitter', href: 'https://x.com', external: true },
-      { label: 'LinkedIn', href: 'https://linkedin.com', external: true },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kompilex-technology-ab9423428/', external: true },
       { label: 'Email us', href: `mailto:${CONTACT_EMAIL}` },
     ],
   },
   {
     title: 'Legal',
     links: [
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms of Service', href: '#' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Terms of Service', href: '/terms-of-service' },
     ],
   },
 ]

@@ -107,8 +107,8 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
       {/* Gradient wash */}
       {isLight ? (
         <>
-          <div className="absolute inset-0 bg-gradient-to-b from-violet-50/60 via-white to-white" />
-          <div className="absolute inset-0 bg-[radial-gradient(65%_65%_at_center_40%,rgba(139,92,246,0.10)_0%,rgba(167,139,250,0.05)_55%,transparent_80%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-violet-100/80 via-white to-violet-50/50" />
+          <div className="absolute inset-0 bg-[radial-gradient(70%_60%_at_50%_100%,rgba(139,92,246,0.20)_0%,rgba(217,70,239,0.08)_55%,transparent_80%)]" />
         </>
       ) : (
         <div className="absolute inset-0 bg-[radial-gradient(75%_75%_at_center_center,rgb(140,69,255,0.35)_15%,rgb(14,0,36,0.55)_78%,transparent)]" />

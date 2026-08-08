@@ -55,7 +55,7 @@ export default function HeroArc({ isLight }: HeroArcProps) {
       ]
   const trailColor = isLight ? '#c4b5fd' : '#a5f3fc'
   const particleColor = isLight ? '#f5f3ff' : '#e0f2ff'
-  const opacityScale = isLight ? 0.6 : 1
+  const opacityScale = isLight ? 0.9 : 1
 
   return (
     <div className="pointer-events-none absolute bottom-0 left-1/2 w-[min(900px,150vw)] -translate-x-1/2 sm:w-[min(1400px,180vw)]">

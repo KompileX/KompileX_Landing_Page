@@ -37,11 +37,11 @@ const TECH_STACK_ITEMS = [
   { name: 'SvelteKit', slug: 'svelte/svelte-original.svg', desc: 'Svelte' },
 ]
 
-const featureCards = [
-  { side: 'left' as const, topClass: 'top-[30%]', xFrom: -40, delay: 0.25, Icon: Code2, title: 'Web & Mobile Apps', desc: 'Full-stack products built from scratch or extended.' },
-  { side: 'left' as const, topClass: 'top-[62%]', xFrom: -40, delay: 0.38, Icon: Server, title: 'APIs & Backends', desc: 'Reliable services that scale with your users.' },
-  { side: 'right' as const, topClass: 'top-[30%]', xFrom: 40, delay: 0.30, Icon: Cloud, title: 'Cloud Infrastructure', desc: 'CI/CD, hosting, and monitoring done right.' },
-  { side: 'right' as const, topClass: 'top-[62%]', xFrom: 40, delay: 0.43, Icon: LifeBuoy, title: 'Ongoing Support', desc: 'We stick around after launch, not just before it.' },
+const capabilities = [
+  { Icon: Code2, title: 'Web & Mobile Apps' },
+  { Icon: Server, title: 'APIs & Backends' },
+  { Icon: Cloud, title: 'Cloud Infrastructure' },
+  { Icon: LifeBuoy, title: 'Ongoing Support' },
 ]
 
 export default function HeroSection() {
@@ -60,46 +60,12 @@ export default function HeroSection() {
       {/* ── Hero ── */}
       <motion.section
         ref={sectionRef}
-        className="[mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] relative flex h-[492px] items-center overflow-hidden md:h-[800px]"
+        className="[mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] relative flex min-h-[600px] items-center overflow-hidden py-16 md:min-h-[800px]"
       >
         <HeroBackground isLight={isLight} parallaxY={parallaxY} />
 
-        {/* Floating feature cards - desktop only */}
-        {featureCards.map((card, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: card.xFrom }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55, delay: card.delay, type: 'spring' as const, bounce: 0 }}
-            className={`absolute hidden lg:block w-48 xl:w-56 ${card.side === 'left' ? 'left-[8%] xl:left-[12%] 2xl:left-[19%]' : 'right-[8%] xl:right-[12%] 2xl:right-[19%]'} ${card.topClass} -translate-y-1/2`}
-            style={{ zIndex: 7 }}
-          >
-            <div
-              className={`group relative overflow-hidden rounded-2xl border p-4 backdrop-blur-xl transition-colors duration-300 ${
-                isLight
-                  ? 'bg-white/95 border-border/60 shadow-[0_4px_20px_rgba(139,92,246,0.08),0_1px_4px_rgba(0,0,0,0.05)]'
-                  : 'border-white/10 bg-[#0b0b1c]/70 shadow-[0_8px_30px_rgba(0,0,0,0.5)] hover:border-white/20'
-              }`}
-            >
-              {!isLight && (
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] via-transparent to-transparent" />
-              )}
-              <div
-                className={`relative mb-3 flex items-center justify-center w-9 h-9 rounded-xl border ${
-                  isLight ? 'bg-violet-50 border-violet-100/80' : 'border-white/10 bg-gradient-to-br from-cyan-400/15 to-violet-500/15'
-                }`}
-              >
-                <card.Icon className={`w-4 h-4 ${isLight ? 'text-violet-500' : 'text-cyan-200'}`} />
-              </div>
-              <p className={`relative text-xs font-bold leading-snug mb-1.5 ${isLight ? 'text-foreground' : 'text-white'}`}>{card.title}</p>
-              <p className={`relative text-[11px] leading-relaxed ${isLight ? 'text-muted-foreground' : 'text-white/50'}`}>{card.desc}</p>
-            </div>
-          </motion.div>
-        ))}
-
         {/* Center content */}
-        <div className="container mx-auto relative z-10 -mt-16 text-center">
+        <div className="container mx-auto relative z-10 text-center">
           {/* Badge */}
           <div className="flex justify-center mb-6">
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border ${isLight ? 'border-violet-200 bg-violet-50/80 backdrop-blur-sm' : 'border-white/10 bg-white/5'}`}>
@@ -112,7 +78,7 @@ export default function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className={`text-center font-semibold tracking-tighter text-4xl md:text-6xl lg:text-5xl lg:leading-none ${isLight ? 'text-foreground' : 'text-white'}`}>
+          <h1 className={`text-center font-normal tracking-tight text-4xl md:text-6xl lg:text-7xl lg:leading-[1.05] ${isLight ? 'text-foreground' : 'text-white'}`}>
             We Ship Software<br />That Works
           </h1>
 
@@ -145,6 +111,23 @@ export default function HeroSection() {
               </svg>
               See Our Work
             </a>
+          </div>
+
+          {/* Capabilities strip */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-2.5">
+            {capabilities.map((cap, i) => (
+              <div
+                key={i}
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium backdrop-blur-sm transition-colors ${
+                  isLight
+                    ? 'border-violet-200/70 bg-white/70 text-muted-foreground hover:border-violet-300 hover:text-foreground'
+                    : 'border-white/10 bg-white/[0.03] text-white/60 hover:border-white/20 hover:text-white'
+                }`}
+              >
+                <cap.Icon className={`size-3.5 ${isLight ? 'text-violet-500' : 'text-cyan-300'}`} />
+                {cap.title}
+              </div>
+            ))}
           </div>
         </div>
 

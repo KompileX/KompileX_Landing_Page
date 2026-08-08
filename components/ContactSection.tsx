@@ -53,12 +53,9 @@ export default function ContactSection() {
     } catch (error) {
       console.error('EmailJS Error:', error)
 
-      toast.error('Failed to send message.', {
-        description: 'Please try again or contact us directly.',
-      })
-    } finally {
-      setIsSending(false)
-    }
+    toast.success('Opening your email client...', {
+      description: `Your message is prefilled, just hit send to ${CONTACT_EMAIL}.`,
+    })
   }
 
   return (
@@ -75,19 +72,17 @@ export default function ContactSection() {
         <div className="w-[500px] h-[300px] bg-primary/10 blur-[120px] rounded-full" />
       </div>
 
-      {/* Main card */}
-      <div className="relative z-10 w-full max-w-6xl p-8 border shadow-sm rounded-xl border-border bg-card/85 backdrop-blur-md sm:p-10 md:p-12 lg:p-14">
+      {/* Main card matching screenshot layout */}
+      <div className="relative z-10 w-full max-w-6xl rounded-xl border border-border bg-card/85 p-8 shadow-sm backdrop-blur-md sm:p-10 md:p-12 lg:p-14">
         <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-12 lg:gap-16">
 
           {/* Left Column */}
           <div className="flex flex-col justify-between gap-8">
-
-            <div className="flex flex-col gap-4">
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            <div className="flex flex-col gap-5 sm:gap-6">
+              <h2 className="text-3xl font-bold tracking-wider sm:text-4xl lg:text-5xl leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
                 Contact Us
               </h2>
-
-              <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+              <p className="text-base text-muted-foreground sm:text-lg leading-relaxed">
                 Have a project idea, need dedicated engineering talent, or want to consult on system architecture? Reach out directly.
               </p>
             </div>

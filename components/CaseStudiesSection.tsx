@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react'
 import {
   Globe,
   Smartphone,
@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { LayerStack, Card } from '@/components/ui/layer-stack'
 
 interface CaseStudy {
   id: string
@@ -135,9 +136,149 @@ const caseStudies: CaseStudy[] = [
   },
 ]
 
-export default function CaseStudiesSection() {
-  const [selectedStudy, setSelectedStudy] = useState<CaseStudy | null>(null)
+function CaseStudyCard({ study }: { study: CaseStudy }) {
+  const cardRef = useRef<HTMLDivElement>(null)
 
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  // Spring values for smooth tilt
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), { stiffness: 200, damping: 25 })
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), { stiffness: 200, damping: 25 })
+
+  // Glow position values (pixel coordinates relative to the card's top-left)
+  const glowX = useMotionValue(-999)
+  const glowY = useMotionValue(-999)
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    
+    // Relative coordinates for tilt (-0.5 to 0.5)
+    x.set((e.clientX - rect.left) / rect.width - 0.5)
+    y.set((e.clientY - rect.top) / rect.height - 0.5)
+
+    // Pixel coordinates for glow
+    glowX.set(e.clientX - rect.left)
+    glowY.set(e.clientY - rect.top)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+    glowX.set(-999)
+    glowY.set(-999)
+  }
+
+  const transform = useMotionTemplate`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+  const glowBg = useMotionTemplate`radial-gradient(300px circle at ${glowX}px ${glowY}px, rgba(140, 69, 255, 0.15), transparent 80%)`
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform,
+        transformStyle: 'preserve-3d',
+      }}
+      className="group flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-card/70 shadow-sm backdrop-blur-sm transition-colors duration-300 hover:border-primary/50 hover:shadow-2xl cursor-pointer relative size-full"
+    >
+      {/* Dynamic Radial Glow Background */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: glowBg }}
+      />
+
+      {/* Top 70% Height Image Banner Area */}
+      <div 
+        className="relative h-60 w-full overflow-hidden bg-muted"
+        style={{ transform: 'translateZ(20px)', transformStyle: 'preserve-3d' }}
+      >
+        <Image
+          src={study.image}
+          alt={study.title}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+        {/* Overlaid Badges */}
+        <div 
+          className="absolute top-3 left-3 z-10"
+          style={{ transform: 'translateZ(30px)' }}
+        >
+          <Badge variant="outline" className="flex items-center gap-1.5 border-white/20 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-1">
+            {study.category === 'web' ? (
+              <Globe className="size-3 text-sky-400" />
+            ) : (
+              <Smartphone className="size-3 text-emerald-400" />
+            )}
+            <span className="capitalize">{study.category}</span>
+          </Badge>
+        </div>
+
+        {/* Overlaid Title on Image Bottom */}
+        <div 
+          className="absolute bottom-3 left-4 right-4 z-10"
+          style={{ transform: 'translateZ(35px)' }}
+        >
+          <h3 className="text-xl font-bold text-white transition-colors group-hover:text-primary">
+            {study.title}
+          </h3>
+          <p className="text-[11px] font-medium text-white/70">{study.client}</p>
+        </div>
+      </div>
+
+      {/* Bottom Content Area */}
+      <div 
+        className="flex flex-col justify-between gap-4 p-5"
+        style={{ transform: 'translateZ(25px)', transformStyle: 'preserve-3d' }}
+      >
+        <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
+          {study.description}
+        </p>
+
+        {/* Tech stack chips */}
+        <div 
+          className="flex flex-wrap gap-1.5 pt-1"
+          style={{ transform: 'translateZ(30px)' }}
+        >
+          {study.techStack.slice(0, 4).map((tech) => (
+            <span
+              key={tech}
+              className="rounded-md border border-border/60 bg-muted/50 px-2 py-0.5 text-[10px] font-mono text-muted-foreground"
+            >
+              {tech}
+            </span>
+          ))}
+          {study.techStack.length > 4 && (
+            <span className="rounded-md border border-border/60 bg-muted/30 px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
+              +{study.techStack.length - 4}
+            </span>
+          )}
+        </div>
+
+        {/* Details Button */}
+        <div 
+          className="pt-2"
+          style={{ transform: 'translateZ(35px)' }}
+        >
+          <Link
+            href={`/case-studies/${study.id}`}
+            className="inline-flex w-full items-center justify-between rounded-xl border border-border/70 bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground group/btn"
+          >
+            <span>View Details</span>
+            <ArrowUpRight className="size-3.5 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+          </Link>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+export default function CaseStudiesSection() {
   return (
     <section id="case-studies" className="w-full py-14 lg:py-20 bg-background relative overflow-hidden">
       <div className="max-w-screen-xl mx-auto px-4 md:px-8">
@@ -147,99 +288,27 @@ export default function CaseStudiesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-10 text-center flex flex-col items-center gap-3"
+          className="mb-14 lg:mb-20 text-center flex flex-col items-center gap-5 sm:gap-6"
         >
-          <h2 className="text-3xl font-bold sm:text-4xl bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
+          <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl tracking-wider leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
             Case Studies
           </h2>
 
-          <p className="max-w-xl mx-auto text-sm text-muted-foreground leading-relaxed">
+          <p className="max-w-2xl mx-auto text-base text-muted-foreground sm:text-lg leading-relaxed">
             Explore real-world web and mobile applications engineered to scale with speed, security, and exceptional user experience.
           </p>
         </motion.div>
 
-        {/* Project Cards Grid */}
-        <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
+        {/* Project Cards Layer Stack */}
+        <div className="max-w-[1163px] mx-auto">
+          <LayerStack cardWidth={374} cardGap={20} stageHeight={460}>
             {caseStudies.map((study) => (
-              <motion.div
-                key={study.id}
-                layout
-                initial={{ opacity: 0, scale: 0.94 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.94 }}
-                transition={{ duration: 0.35, ease: 'easeInOut' }}
-                className="group flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl"
-              >
-                {/* Top 70% Height Image Banner Area */}
-                <div className="relative h-60 w-full overflow-hidden bg-muted">
-                  <Image
-                    src={study.image}
-                    alt={study.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                  {/* Overlaid Badges */}
-                  <div className="absolute top-3 left-3 z-10">
-                    <Badge variant="outline" className="flex items-center gap-1.5 border-white/20 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-1">
-                      {study.category === 'web' ? (
-                        <Globe className="size-3 text-sky-400" />
-                      ) : (
-                        <Smartphone className="size-3 text-emerald-400" />
-                      )}
-                      <span className="capitalize">{study.category}</span>
-                    </Badge>
-                  </div>
-
-                  {/* Overlaid Title on Image Bottom */}
-                  <div className="absolute bottom-3 left-4 right-4 z-10">
-                    <h3 className="text-xl font-bold text-white transition-colors group-hover:text-primary">
-                      {study.title}
-                    </h3>
-                    <p className="text-[11px] font-medium text-white/70">{study.client}</p>
-                  </div>
-                </div>
-
-                {/* Bottom Content Area */}
-                <div className="flex flex-col justify-between gap-4 p-5">
-                  <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
-                    {study.description}
-                  </p>
-
-                  {/* Tech stack chips */}
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {study.techStack.slice(0, 4).map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-md border border-border/60 bg-muted/50 px-2 py-0.5 text-[10px] font-mono text-muted-foreground"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {study.techStack.length > 4 && (
-                      <span className="rounded-md border border-border/60 bg-muted/30 px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
-                        +{study.techStack.length - 4}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Details Button */}
-                  <div className="pt-2">
-                    <Link
-                      href={`/case-studies/${study.id}`}
-                      className="inline-flex w-full items-center justify-between rounded-xl border border-border/70 bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                    >
-                      <span>View Details</span>
-                      <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
+              <Card key={study.id} className="relative bg-card/70 border border-border rounded-xl">
+                <CaseStudyCard study={study} />
+              </Card>
             ))}
-          </AnimatePresence>
-        </motion.div>
+          </LayerStack>
+        </div>
 
       </div>
     </section>

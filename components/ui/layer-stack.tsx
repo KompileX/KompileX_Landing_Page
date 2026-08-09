@@ -138,7 +138,6 @@ function LayerStack({
   const rafRef = React.useRef<number | null>(null);
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
-  const [progressValue, setProgressValue] = React.useState(0);
   const [containerWidth, setContainerWidth] = React.useState(0);
   const [isMobile, setIsMobile] = React.useState(false);
   const [autoHeight, setAutoHeight] = React.useState(stageHeight);
@@ -189,32 +188,7 @@ function LayerStack({
     restSpeed: 0.001,
   });
 
-  useMotionValueEvent(scrollX, 'change', (v) => {
-    setProgressValue(v * 100);
-  });
 
-  const rockX = useTransform(smoothScrollX, [0, 1], [175, 101]);
-  const rockY = useTransform(rockX, (x) => {
-    return 12 + 38 * Math.pow((x - 100) / 85, 2) - 4.5;
-  });
-
-  const shoulderX = useTransform(smoothScrollX, [0, 1], [99, 91]);
-  const shoulderY = useTransform(smoothScrollX, [0, 1], [-10, -7]);
-  const headX = useTransform(shoulderX, (x) => x - 2.5);
-  const headY = useTransform(shoulderY, (y) => y - 5.5);
-  const handX = useTransform(smoothScrollX, [0, 1], [108, 97]);
-  const handY = useTransform(smoothScrollX, [0, 1], [-5, -2]);
-
-
-
-  const hillPath = React.useMemo(() => {
-    const points = [];
-    for (let x = 15; x <= 185; x += 1) {
-      const y = 12 + 38 * Math.pow((x - 100) / 85, 2);
-      points.push(`${x} ${y}`);
-    }
-    return `M ${points.join(' L ')}`;
-  }, []);
 
   const visibleCardsCount = React.useMemo(() => {
     if (isMobile) return 1;
@@ -433,93 +407,6 @@ function LayerStack({
         })}
       </div>
 
-      <div className='mt-3 flex flex-col items-center gap-1.5'>
-        {/* Sisyphus Stage */}
-        <div className="w-60 h-16 relative">
-          <svg
-            viewBox="0 -22 200 76"
-            className="w-full h-full text-foreground stroke-foreground"
-            fill="none"
-          >
-            {/* The Curved Hill Path */}
-            <path
-              d={hillPath}
-              className="stroke-zinc-500/50"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-
-            {/* Rope stretching taut from hand to rock */}
-            <motion.line
-              x1={handX}
-              y1={handY}
-              x2={rockX}
-              y2={rockY}
-              className="stroke-primary"
-              strokeWidth="1.2"
-              strokeDasharray="2 2"
-            />
-
-            {/* Rock (Boulder) */}
-            <motion.circle
-              cx={rockX}
-              cy={rockY}
-              r="4.5"
-              className="fill-foreground/10 stroke-foreground"
-              strokeWidth="1.2"
-            />
-
-            {/* Human stick figure (on the left slope) */}
-            {/* Back Leg */}
-            <line
-              x1="95"
-              y1="8"
-              x2="89"
-              y2="13"
-              className="stroke-primary"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            />
-            {/* Front Leg */}
-            <line
-              x1="95"
-              y1="8"
-              x2="101"
-              y2="12"
-              className="stroke-primary"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            />
-            {/* Torso */}
-            <motion.line
-              x1="95"
-              y1="8"
-              x2={shoulderX}
-              y2={shoulderY}
-              className="stroke-primary"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            />
-            {/* Head */}
-            <motion.circle
-              cx={headX}
-              cy={headY}
-              r="3"
-              className="fill-primary"
-            />
-            {/* Arm pulling rope */}
-            <motion.line
-              x1={shoulderX}
-              y1={shoulderY}
-              x2={handX}
-              y2={handY}
-              className="stroke-primary"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-      </div>
     </div>
   );
 }

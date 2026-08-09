@@ -24,8 +24,9 @@
   }
 
   h1, h2, h3, h4, h5, h6, .font-display {
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: var(--font-laghino), sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.04em;
   }
 
   ::selection {
@@ -40,7 +41,7 @@
 
 /* ==================== CUSTOM PROPERTIES (THEME SYSTEM) ==================== */
 :root {
-  /* ---- shadcn/ui — Dark Theme (matches template exactly) ---- */
+  /* ---- shadcn/ui - Dark Theme (matches template exactly) ---- */
   --background: #131316;
   --foreground: #eeeeec;
   --card: #1c1c1c;
@@ -107,7 +108,7 @@
 
 /* Light Theme */
 [data-theme="light"] {
-  /* ---- shadcn/ui — Light Theme (matches template exactly) ---- */
+  /* ---- shadcn/ui - Light Theme (matches template exactly) ---- */
   --background: #ffffff;
   --foreground: #131316;
   --card: #ffffff;
@@ -299,12 +300,6 @@
 
 /* ==================== LIGHT THEME ENHANCEMENTS ==================== */
 [data-theme="light"] {
-  nav {
-    background: rgba(255, 255, 255, 0.9) !important;
-    border-bottom-color: rgba(99, 102, 241, 0.15) !important;
-    box-shadow: 0 4px 24px rgba(99, 102, 241, 0.08) !important;
-  }
-
   .feature-card {
     background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
     box-shadow: 0 2px 8px rgba(125, 131, 153, 0.08);
@@ -487,16 +482,6 @@
   .animate-marquee { animation: none; }
 }
 
-@keyframes hero-ring-spin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-@keyframes hero-ring-spin-reverse {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to   { transform: translate(-50%, -50%) rotate(-360deg); }
-}
-
 .animate-float {
   animation: float 4s ease-in-out infinite;
 }
@@ -561,6 +546,75 @@
 
 .hero-ambient-glow {
   animation: ambient-pulse 15s ease-in-out infinite;
+}
+
+/* ==================== HERO BACKGROUND (CSS-driven, off main thread) ==================== */
+@keyframes hero-blob-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.08); }
+}
+
+@keyframes hero-blob-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-36px, 24px) scale(1.1); }
+}
+
+@keyframes hero-grid-pan {
+  from { background-position: 0px 0px; }
+  to   { background-position: 64px 64px; }
+}
+
+@keyframes hero-particle-float {
+  0%, 100% { transform: translateY(0); opacity: 0.15; }
+  50% { transform: translateY(-14px); opacity: 0.7; }
+}
+
+.hero-blob-1 { animation: hero-blob-1 22s ease-in-out infinite; }
+.hero-blob-2 { animation: hero-blob-2 26s ease-in-out infinite; }
+.hero-grid-pan { animation: hero-grid-pan 40s linear infinite; }
+.hero-particle { animation: hero-particle-float 6s ease-in-out infinite; }
+
+@keyframes hero-arc-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.hero-arc-rotate { animation: hero-arc-rotate 140s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob-1,
+  .hero-blob-2,
+  .hero-grid-pan,
+  .hero-particle,
+  .hero-arc-rotate {
+    animation: none;
+  }
+}
+
+/* ==================== WHY-CHOOSE-US ASYMMETRIC GRID ====================
+   Mobile: single stacked column (title, card1, card2, card3).
+   Desktop: title + card2 share the middle column; card1/card3 flank them
+   full-height, so everything renders in one static viewport-friendly block. */
+.why-choose-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .why-choose-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      'card1 title card3'
+      'card1 card2 card3';
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .why-choose-card1 { grid-area: card1; }
+  .why-choose-title { grid-area: title; }
+  .why-choose-card2 { grid-area: card2; }
+  .why-choose-card3 { grid-area: card3; }
 }
 
 .animate-pulse-glow:nth-child(1) { animation: float-orb-1 20s ease-in-out infinite; }

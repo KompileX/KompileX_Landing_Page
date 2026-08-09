@@ -11,6 +11,8 @@ import {
   type MotionValue,
 } from 'motion/react'
 import { ArrowUp } from 'lucide-react'
+import ParticleTextCanvas from '@/components/ParticleTextCanvas'
+
 
 const CONTACT_EMAIL = 'contact@kompilex.com'
 const WORDMARK = 'KOMPILEX'
@@ -40,15 +42,15 @@ const linkGroups = [
     links: [
       { label: 'GitHub', href: 'https://github.com', external: true },
       { label: 'X / Twitter', href: 'https://x.com', external: true },
-      { label: 'LinkedIn', href: 'https://linkedin.com', external: true },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kompilex-technology-ab9423428/', external: true },
       { label: 'Email us', href: `mailto:${CONTACT_EMAIL}` },
     ],
   },
   {
     title: 'Legal',
     links: [
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms of Service', href: '#' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Terms of Service', href: '/terms-of-service' },
     ],
   },
 ]
@@ -138,8 +140,78 @@ function RisingLetter({
   )
 }
 
+function BackToTopButton({ onClick }: { onClick: () => void }) {
+  const targetText = 'BACK TO TOP'
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*'
+  const [displayText, setDisplayText] = useState(targetText)
+  const [isHovered, setIsHovered] = useState(false)
+  const isAnimatingRef = useRef(false)
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    if (isAnimatingRef.current) return
+    isAnimatingRef.current = true
+
+    let frame = 0
+    const totalFrames = 30 // 30 frames @ 33ms = 1000ms (1 second)
+    const interval = setInterval(() => {
+      frame++
+      const progress = frame / totalFrames
+
+      // All characters randomly change for 1 second before revealing target text
+      const current = targetText
+        .split('')
+        .map((char, index) => {
+          if (char === ' ') return ' '
+          const resolveThreshold = (index / targetText.length) * 0.35 + 0.65
+          if (progress >= resolveThreshold) {
+            return targetText[index]
+          }
+          return chars[Math.floor(Math.random() * chars.length)]
+        })
+        .join('')
+
+      setDisplayText(current)
+
+      if (frame >= totalFrames) {
+        clearInterval(interval)
+        setDisplayText(targetText)
+        isAnimatingRef.current = false
+      }
+    }, 33)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="group absolute right-4 top-3 z-10 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground md:right-8 md:top-4"
+    >
+      <span className="font-mono">{displayText}</span>
+      <span className="flex size-7 items-center justify-center rounded-full border bg-background/70 backdrop-blur transition group-hover:-translate-y-0.5 group-hover:border-foreground">
+        <ArrowUp className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5" />
+      </span>
+    </button>
+  )
+}
+
 export default function Footer() {
-  const reduced = useReducedMotion() ?? false
+  // useReducedMotion() reads the media query synchronously on the client's very
+  // first render (even during hydration), while SSR has no window and always
+  // yields false - a genuine mismatch if the device prefers reduced motion.
+  // Stay false until mounted so the first client render matches the server,
+  // then adopt the real value.
+  const rawReducedMotion = useReducedMotion() ?? false
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  const reduced = mounted && rawReducedMotion
+
   const time = useDhakaTime()
   const year = new Date().getFullYear()
 
@@ -165,7 +237,7 @@ export default function Footer() {
   }, [])
 
   // Curtain mode pins the footer behind the page content. Only safe while the footer
-  // fits the viewport — taller than that and its top would be scrolled out of reach,
+  // fits the viewport - taller than that and its top would be scrolled out of reach,
   // so fall back to an ordinary in-flow footer (the wordmark still rises).
   const curtain = footerHeight > 0 && viewportHeight > 0 && footerHeight <= viewportHeight
 
@@ -177,6 +249,9 @@ export default function Footer() {
   const staticProgress = useMotionValue(1)
   const progress = reduced ? staticProgress : scrollYProgress
 
+  const wordmarkY = useTransform(progress, [0.1, 0.55], ['100%', '0%'])
+  const wordmarkOpacity = useTransform(progress, [0.1, 0.3], [0, 1])
+
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
   }
@@ -184,9 +259,8 @@ export default function Footer() {
   return (
     <div ref={trackRef} style={curtain ? { height: footerHeight } : undefined}>
       <footer
-        className={`w-full overflow-hidden bg-background ${
-          curtain ? 'fixed bottom-0 left-0 z-0' : 'relative'
-        }`}
+        className={`w-full overflow-hidden bg-background ${curtain ? 'fixed bottom-0 left-0 z-0' : 'relative'
+          }`}
       >
         <div ref={contentRef} className="relative">
           <div className="mx-auto w-full max-w-screen-xl px-4 pt-14 md:px-8 lg:pt-20">
@@ -210,7 +284,7 @@ export default function Footer() {
                   Available for work
                   <span className="text-border">|</span>
                   <span className="font-mono tabular-nums text-foreground">
-                    {time ? `${time} DHAKA` : '—— DHAKA'}
+                    {time ? `${time} DHAKA` : '-- DHAKA'}
                   </span>
                 </div>
               </div>
@@ -259,7 +333,8 @@ export default function Footer() {
 
           {/* ---------- Tagline marquee ---------- */}
           <div className="mt-10 flex select-none overflow-hidden border-y py-3">
-            <div className={`flex shrink-0 ${reduced ? '' : 'animate-marquee'}`}>
+            {/* prefers-reduced-motion is handled in CSS (see .animate-marquee in globals.css) */}
+            <div className="flex shrink-0 animate-marquee">
               {Array.from({ length: 2 }).map((_, group) => (
                 <div key={group} className="flex shrink-0" aria-hidden={group > 0}>
                   {Array.from({ length: 4 }).map((__, i) => (
@@ -278,44 +353,22 @@ export default function Footer() {
 
           {/* ---------- Wordmark zone: giant letters bleed to the edges, BACK TO TOP
                and the meta row float on top of them, exactly like the reference footers ---------- */}
-          <div className="relative overflow-hidden pt-10 pb-4 sm:pt-14 sm:pb-6 lg:pt-20 lg:pb-8">
+          <div className="relative overflow-visible pt-8 pb-3 sm:pt-10 sm:pb-4 md:pt-12 md:pb-5 lg:pt-20 lg:pb-8">
             <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
               <FooterClouds />
               <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent sm:h-20" />
             </div>
 
-            <div
+            <motion.div
               aria-label={WORDMARK}
               role="img"
-              className="relative z-[5] flex w-full justify-center overflow-hidden pointer-events-none leading-[0.78]"
+              style={reduced ? undefined : { y: wordmarkY, opacity: wordmarkOpacity }}
+              className="relative z-[5] flex w-full justify-center overflow-visible"
             >
-              <span
-                className="flex whitespace-nowrap font-bold uppercase tracking-[-0.045em] text-foreground"
-                style={{ fontSize: 'clamp(4rem, 24vw, 21rem)' }}
-              >
-                {WORDMARK.split('').map((char, i) => (
-                  <RisingLetter
-                    key={`${char}-${i}`}
-                    char={char}
-                    index={i}
-                    total={WORDMARK.length}
-                    progress={progress}
-                    reduced={reduced}
-                  />
-                ))}
-              </span>
-            </div>
+              <ParticleTextCanvas text={WORDMARK} />
+            </motion.div>
 
-            <button
-              type="button"
-              onClick={scrollToTop}
-              className="group absolute right-4 top-3 z-10 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground md:right-8 md:top-4"
-            >
-              Back to top
-              <span className="flex size-7 items-center justify-center rounded-full border bg-background/70 backdrop-blur transition group-hover:-translate-y-0.5 group-hover:border-foreground">
-                <ArrowUp className="size-3.5" />
-              </span>
-            </button>
+            <BackToTopButton onClick={scrollToTop} />
 
             <div className="absolute inset-x-4 bottom-2 z-10 flex flex-col items-center justify-between gap-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground sm:flex-row md:inset-x-8">
               <span>Copyright KompileX. All rights reserved</span>

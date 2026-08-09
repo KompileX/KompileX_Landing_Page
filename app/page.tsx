@@ -1,12 +1,9 @@
 import Navbar from '@/components/Navbar'
 import HeroSection from '@/components/HeroSection'
 import AboutSection from '@/components/AboutSection'
-import FeaturesSection from '@/components/FeaturesSection'
 import StackSection from '@/components/StackSection'
-import HowItWorksSection from '@/components/HowItWorksSection'
-import TechStackSection from '@/components/TechStackSection'
-import UseCasesSection from '@/components/UseCasesSection'
-import FAQSection from '@/components/FAQSection'
+import HowItWorksSection from '@/components/WhyChooseUs'
+import CaseStudiesSection from '@/components/CaseStudiesSection'
 import ContactSection from '@/components/ContactSection'
 import Footer from '@/components/Footer'
 import { ToastProvider } from '@/components/Toast'
@@ -20,12 +17,9 @@ export default function HomePage() {
         <main>
           <HeroSection />
           <AboutSection />
-          <FeaturesSection />
           <StackSection />
           <HowItWorksSection />
-          <TechStackSection />
-          <UseCasesSection />
-          <FAQSection />
+          <CaseStudiesSection />
           <ContactSection />
         </main>
       </div>

@@ -24,17 +24,14 @@ const linkGroups = [
     links: [
       { label: 'Services', href: '#services' },
       { label: 'Our Work', href: '#work' },
-      { label: 'How We Work', href: '#process' },
-      { label: 'Tech Stack', href: '#tech-stack' },
     ],
   },
   {
     title: 'Company',
     links: [
       { label: 'About', href: '#about' },
-      { label: 'Industries', href: '#industries' },
-      { label: 'FAQ', href: '#faq' },
       { label: 'Contact', href: '#contact' },
+      { label: 'Why Us', href: '#process' },
     ],
   },
   {

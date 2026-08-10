@@ -13,7 +13,7 @@ const stats = [
 
 const team = [
   {
-    name: 'Ashikuzzaman',
+    name: 'Asaduzzaman Ashik',
     role: 'Frontend & Mobile Application Specialist',
     image: '/profiles/ashik.webp',
     blurb: 'UI/UX design implementation, client-side performance, responsive web applications, interactive user interfaces.',
@@ -59,12 +59,12 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-8 lg:mb-12 flex flex-col items-center gap-5 sm:gap-6 text-center"
+          className="flex flex-col items-center gap-5 mb-8 text-center lg:mb-12 sm:gap-6"
         >
           <h2 className="max-w-3xl text-3xl font-bold sm:text-4xl lg:text-5xl tracking-wider leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
             Four engineers, each a specialist in their lane
           </h2>
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg leading-relaxed">
+          <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             KompileX designs, builds, and ships full products end to end — frontend &amp; mobile,
             backend &amp; systems, integrations, and AI — with no hand-offs.
           </p>
@@ -102,7 +102,7 @@ export default function AboutSection() {
             <motion.div key={member.name} variants={itemVariants}>
               <Card className="h-full transition-all duration-300 group hover:shadow-lg bg-card/60 backdrop-blur-sm">
                 <CardContent className="flex flex-col gap-5 p-6">
-                  <div className="relative h-56 w-full overflow-hidden rounded-2xl border border-border/60">
+                  <div className="relative w-full h-56 overflow-hidden border rounded-2xl border-border/60">
                     <Image
                       src={member.image}
                       alt={member.name}

@@ -79,12 +79,12 @@ export default function HeroSection() {
 
           {/* Headline */}
           <h1 className={`text-center font-normal tracking-tight text-4xl md:text-6xl lg:text-7xl lg:leading-[1.05] ${isLight ? 'text-foreground' : 'text-white'}`}>
-            We Ship Software<br />That Works
+            Scale your software<br />without expanding your team.
           </h1>
 
           {/* Subtitle */}
-          <p className={`mx-auto mt-5 max-w-xl text-center text-lg md:text-xl ${isLight ? 'text-muted-foreground' : 'text-white/70'}`}>
-            KompileX is a four-person team designing, building, and shipping full-stack products for startups and teams who need to move fast.
+          <p className={`mx-auto mt-5 max-w-3xl text-center text-lg md:text-xl ${isLight ? 'text-muted-foreground' : 'text-white/70'}`}>
+            KompileX builds intelligent applications that automate daily operations—so you can launch faster, capture market edge, and grow revenue without technical debt.
           </p>
 
           {/* CTAs */}
@@ -145,7 +145,7 @@ export default function HeroSection() {
             >
               {[...TECH_STACK_ITEMS, ...TECH_STACK_ITEMS].map((item, i) => (
                 <div
-                  key={i}
+                  key={`${item.name}-${i}`}
                   className="flex items-center gap-3.5 rounded-2xl border border-border/70 bg-card/40 px-5 py-3 backdrop-blur-sm transition hover:border-primary/50 hover:bg-muted/30 group"
                 >
                   <img
@@ -154,6 +154,7 @@ export default function HeroSection() {
                     className={`size-7 object-contain transition-transform duration-300 group-hover:scale-110 ${item.invertInDark ? 'dark:invert' : ''
                       }`}
                     loading="lazy"
+                    decoding="async"
                   />
                   <span className="text-sm font-semibold text-foreground whitespace-nowrap">
                     {item.name}

@@ -68,6 +68,8 @@ function FloatingCard({ y, children }: { y: MotionValue<number>; children: React
   return <motion.div style={{ y, transformPerspective: 1200 }}>{children}</motion.div>
 }
 
+const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+
 export default function HowItWorksSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
@@ -80,7 +82,6 @@ export default function HowItWorksSection() {
   // of moving at a constant mechanical speed, which is what reads as fluid/water-like
   // rather than linear ("on rails"). Each card arrives, settles at 0, and exits on its
   // own schedule - different total distance AND a different settle window.
-  const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
   const y1 = useTransform(scrollYProgress, [0, 0.4, 0.55, 1], [270, 0, 0, -270], { ease: easeInOutCubic })
   const y2 = useTransform(scrollYProgress, [0, 0.5, 0.65, 1], [510, 0, 0, -510], { ease: easeInOutCubic })
   const y3 = useTransform(scrollYProgress, [0, 0.45, 0.6, 1], [390, 0, 0, -390], { ease: easeInOutCubic })

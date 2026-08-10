@@ -3,6 +3,7 @@
 import { useState, FormEvent } from 'react'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
+import emailjs from '@emailjs/browser'
 import { Mail, MapPin, Phone, Send, Github, Twitter, Linkedin } from 'lucide-react'
 
 const CONTACT_EMAIL = 'contact@kompilex.com'
@@ -14,8 +15,9 @@ export default function ContactSection() {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [isSending, setIsSending] = useState(false)
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (!name.trim() || !email.trim() || !message.trim()) {
       toast.warning('Please fill in required fields.')
@@ -223,9 +225,10 @@ export default function ContactSection() {
               {/* Submit CTA */}
               <button
                 type="submit"
-                className="mt-1 flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#190d2e] via-[#37166a] to-[#4a208a] px-6 py-3 text-sm font-semibold text-white shadow-[0px_0px_16px_rgba(140,69,255,0.6)] transition-all hover:scale-[1.01] hover:shadow-[0px_0px_22px_rgba(140,69,255,0.85)] active:scale-[0.99]"
+                disabled={isSending}
+                className="mt-1 flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#190d2e] via-[#37166a] to-[#4a208a] px-6 py-3 text-sm font-semibold text-white shadow-[0px_0px_16px_rgba(140,69,255,0.6)] transition-all hover:scale-[1.01] hover:shadow-[0px_0px_22px_rgba(140,69,255,0.85)] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span>Send Message</span>
+                <span>{isSending ? 'Sending...' : 'Send Message'}</span>
                 <Send className="size-4" strokeWidth={2} />
               </button>
             </form>

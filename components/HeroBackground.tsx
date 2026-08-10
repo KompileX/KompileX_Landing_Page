@@ -63,6 +63,7 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
   }, [])
 
   useEffect(() => {
+    const timeouts = new Set<NodeJS.Timeout>()
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!pointerOkRef.current) return
@@ -86,22 +87,23 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
 
         setTrail((prev) => [...prev, { id, x, y, techIndex }])
 
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           setTrail((prev) => prev.filter((item) => item.id !== id))
+          timeouts.delete(timer)
         }, TRAIL_ICON_LIFETIME_MS)
+        timeouts.add(timer)
       }
     }
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      timeouts.forEach((timer) => clearTimeout(timer))
     }
   }, [])
 
   const lineStroke = isLight ? 'rgba(139,92,246,0.35)' : 'rgba(184,148,255,0.4)'
   const dotFill = isLight ? '#a78bfa' : '#b894ff'
-
-  const particles = useMemo(() => PARTICLES, [])
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden">
@@ -172,7 +174,7 @@ export default function HeroBackground({ isLight, parallaxY }: HeroBackgroundPro
 
         {/* Ambient particles */}
         <div className="absolute inset-0 hidden sm:block">
-          {particles.map((p) => (
+          {PARTICLES.map((p) => (
             <span
               key={p.id}
               className="hero-particle absolute rounded-full"

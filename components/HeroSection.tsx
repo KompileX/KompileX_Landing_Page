@@ -145,7 +145,7 @@ export default function HeroSection() {
             >
               {[...TECH_STACK_ITEMS, ...TECH_STACK_ITEMS].map((item, i) => (
                 <div
-                  key={i}
+                  key={`${item.name}-${i}`}
                   className="flex items-center gap-3.5 rounded-2xl border border-border/70 bg-card/40 px-5 py-3 backdrop-blur-sm transition hover:border-primary/50 hover:bg-muted/30 group"
                 >
                   <img
@@ -154,6 +154,7 @@ export default function HeroSection() {
                     className={`size-7 object-contain transition-transform duration-300 group-hover:scale-110 ${item.invertInDark ? 'dark:invert' : ''
                       }`}
                     loading="lazy"
+                    decoding="async"
                   />
                   <span className="text-sm font-semibold text-foreground whitespace-nowrap">
                     {item.name}

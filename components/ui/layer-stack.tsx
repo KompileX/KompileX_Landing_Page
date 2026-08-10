@@ -11,7 +11,6 @@ import {
   type MotionValue,
 } from 'motion/react';
 import { cn } from '@/lib/utils';
-import { Progress } from '@/components/ui/progress';
 
 interface LayerStackProps {
   children: React.ReactNode;

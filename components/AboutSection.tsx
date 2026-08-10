@@ -13,7 +13,7 @@ const stats = [
 
 const team = [
   {
-    name: 'Ashikuzzaman',
+    name: 'Asaduzzaman Ashik',
     role: 'Frontend & Mobile Application Specialist',
     image: '/profiles/ashik.webp',
     blurb: 'UI/UX design implementation, client-side performance, responsive web applications, interactive user interfaces.',

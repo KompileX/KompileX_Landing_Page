@@ -6,11 +6,9 @@ import HowItWorksSection from '@/components/WhyChooseUs'
 import CaseStudiesSection from '@/components/CaseStudiesSection'
 import ContactSection from '@/components/ContactSection'
 import Footer from '@/components/Footer'
-import { ToastProvider } from '@/components/Toast'
-
 export default function HomePage() {
   return (
-    <ToastProvider>
+    <>
       {/* Curtain: this block scrolls away over the fixed footer below it. */}
       <div className="relative z-10 bg-background">
         <Navbar />
@@ -24,6 +22,6 @@ export default function HomePage() {
         </main>
       </div>
       <Footer />
-    </ToastProvider>
+    </>
   )
 }

@@ -1,18 +1,10 @@
 'use client'
 
-import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useMotionTemplate } from 'motion/react'
-import {
-  Globe,
-  Smartphone,
-  ArrowUpRight,
-  X,
-  CheckCircle2,
-} from 'lucide-react'
+import { motion } from 'motion/react'
+import { Globe, Smartphone, ArrowUpRight } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { LayerStack, Card } from '@/components/ui/layer-stack'
 
 interface CaseStudy {

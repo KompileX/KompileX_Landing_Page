@@ -150,21 +150,35 @@ export default function ParticleTextCanvas({ text, className = '' }: ParticleTex
     const resizeObserver = new ResizeObserver(handleResize)
     resizeObserver.observe(container)
 
+    let isIntersectingRef = false
+
     // Trigger assembly once when wordmark canvas section scrolls into view
     const intersectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimatedInRef.current) {
-            hasAnimatedInRef.current = true
+          isIntersectingRef = entry.isIntersecting
+          if (entry.isIntersecting) {
+            if (!hasAnimatedInRef.current) {
+              hasAnimatedInRef.current = true
+            }
+            // Resume rendering when entering viewport
+            if (!animationFrameId) {
+              render()
+            }
           }
         })
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     )
     intersectionObserver.observe(container)
 
     // Physics animation loop
     const render = () => {
+      if (!isIntersectingRef) {
+        animationFrameId = 0
+        return
+      }
+
       const margin = 150
       ctx.clearRect(0, 0, width + margin * 2, height + margin * 2)
 

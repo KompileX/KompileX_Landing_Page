@@ -79,12 +79,12 @@ export default function HeroSection() {
 
           {/* Headline */}
           <h1 className={`text-center font-normal tracking-tight text-4xl md:text-6xl lg:text-7xl lg:leading-[1.05] ${isLight ? 'text-foreground' : 'text-white'}`}>
-            We Ship Software<br />That Works
+            Scale your software<br />without expanding your team.
           </h1>
 
           {/* Subtitle */}
-          <p className={`mx-auto mt-5 max-w-xl text-center text-lg md:text-xl ${isLight ? 'text-muted-foreground' : 'text-white/70'}`}>
-            KompileX is a four-person team designing, building, and shipping full-stack products for startups and teams who need to move fast.
+          <p className={`mx-auto mt-5 max-w-3xl text-center text-lg md:text-xl ${isLight ? 'text-muted-foreground' : 'text-white/70'}`}>
+            KompileX builds intelligent applications that automate daily operations—so you can launch faster, capture market edge, and grow revenue without technical debt.
           </p>
 
           {/* CTAs */}

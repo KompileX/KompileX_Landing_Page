@@ -17,9 +17,8 @@ export default function ContactSection() {
   const [message, setMessage] = useState('')
   const [isSending, setIsSending] = useState(false)
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-
     if (!name.trim() || !email.trim() || !message.trim()) {
       toast.warning('Please fill in required fields.')
       return
@@ -76,37 +75,28 @@ export default function ContactSection() {
       </div>
 
       {/* Main card matching screenshot layout */}
-      <div className="relative z-10 w-full max-w-6xl rounded-xl border border-border bg-card/85 p-8 shadow-sm backdrop-blur-md sm:p-10 md:p-12 lg:p-14">
+      <div className="relative z-10 w-full max-w-6xl p-8 border shadow-sm rounded-xl border-border bg-card/85 backdrop-blur-md sm:p-10 md:p-12 lg:p-14">
         <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-12 lg:gap-16">
-
-          {/* Left Column */}
+          {/* Left Column: Heading, Info & Socials */}
           <div className="flex flex-col justify-between gap-8">
             <div className="flex flex-col gap-5 sm:gap-6">
               <h2 className="text-3xl font-bold tracking-wider sm:text-4xl lg:text-5xl leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
                 Contact Us
               </h2>
-              <p className="text-base text-muted-foreground sm:text-lg leading-relaxed">
+              <p className="text-base leading-relaxed text-muted-foreground sm:text-lg">
                 Have a project idea, need dedicated engineering talent, or want to consult on system architecture? Reach out directly.
               </p>
             </div>
 
             {/* Contact details */}
             <div className="flex flex-col gap-5">
-
               <div className="flex items-center gap-4">
                 <div className="flex items-center justify-center transition-colors border rounded-full size-11 shrink-0 border-border bg-muted/60 text-foreground hover:border-primary">
                   <Mail className="size-4" strokeWidth={1.75} />
                 </div>
-
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
-                    EMAIL
-                  </span>
-
-                  <a
-                    href={`mailto:${CONTACT_EMAIL}`}
-                    className="text-sm font-semibold text-foreground hover:underline"
-                  >
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">EMAIL</span>
+                  <a href={`mailto:${CONTACT_EMAIL}`} className="text-sm font-semibold text-foreground hover:underline">
                     {CONTACT_EMAIL}
                   </a>
                 </div>
@@ -116,15 +106,9 @@ export default function ContactSection() {
                 <div className="flex items-center justify-center transition-colors border rounded-full size-11 shrink-0 border-border bg-muted/60 text-foreground hover:border-primary">
                   <MapPin className="size-4" strokeWidth={1.75} />
                 </div>
-
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
-                    LOCATION
-                  </span>
-
-                  <span className="text-sm font-semibold text-foreground">
-                    {LOCATION}
-                  </span>
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">LOCATION</span>
+                  <span className="text-sm font-semibold text-foreground">{LOCATION}</span>
                 </div>
               </div>
 
@@ -132,29 +116,18 @@ export default function ContactSection() {
                 <div className="flex items-center justify-center transition-colors border rounded-full size-11 shrink-0 border-border bg-muted/60 text-foreground hover:border-primary">
                   <Phone className="size-4" strokeWidth={1.75} />
                 </div>
-
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
-                    WHATSAPP / PHONE
-                  </span>
-
-                  <a
-                    href={`tel:${CONTACT_PHONE.replace(/\s+/g, '')}`}
-                    className="text-sm font-semibold text-foreground hover:underline"
-                  >
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">WHATSAPP / PHONE</span>
+                  <a href={`tel:${CONTACT_PHONE.replace(/\s+/g, '')}`} className="text-sm font-semibold text-foreground hover:underline">
                     {CONTACT_PHONE}
                   </a>
                 </div>
               </div>
-
             </div>
 
             {/* Social links */}
             <div className="flex flex-col gap-3 pt-2">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground/80">
-                FIND ME ON
-              </span>
-
+              <span className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground/80">FIND ME ON</span>
               <div className="flex items-center gap-2.5">
                 <a
                   href="https://linkedin.com"
@@ -165,7 +138,6 @@ export default function ContactSection() {
                 >
                   <Linkedin className="size-4" />
                 </a>
-
                 <a
                   href="https://github.com"
                   target="_blank"
@@ -175,7 +147,6 @@ export default function ContactSection() {
                 >
                   <Github className="size-4" />
                 </a>
-
                 <a
                   href="https://x.com"
                   target="_blank"
@@ -187,20 +158,16 @@ export default function ContactSection() {
                 </a>
               </div>
             </div>
-
           </div>
 
-          {/* Right Column: Form */}
+          {/* Right Column: Form Container */}
           <div className="rounded-2xl border border-border/60 bg-muted/30 p-5 sm:p-6.5 flex flex-col justify-center">
-
             <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
-
               {/* Name */}
               <div className="flex flex-col gap-1">
                 <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-medium">
                   NAME
                 </label>
-
                 <input
                   type="text"
                   value={name}
@@ -216,7 +183,6 @@ export default function ContactSection() {
                 <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-medium">
                   CONTACT NUMBER
                 </label>
-
                 <input
                   type="tel"
                   value={phone}
@@ -231,7 +197,6 @@ export default function ContactSection() {
                 <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-medium">
                   EMAIL
                 </label>
-
                 <input
                   type="email"
                   value={email}
@@ -247,7 +212,6 @@ export default function ContactSection() {
                 <label className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground font-medium">
                   MESSAGE
                 </label>
-
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
@@ -258,23 +222,16 @@ export default function ContactSection() {
                 />
               </div>
 
-              {/* Submit */}
+              {/* Submit CTA */}
               <button
                 type="submit"
                 disabled={isSending}
-                className="mt-1 flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#190d2e] via-[#37166a] to-[#4a208a] px-6 py-3 text-sm font-semibold text-white shadow-[0px_0px_16px_rgba(140,69,255,0.6)] transition-all hover:scale-[1.01] hover:shadow-[0px_0px_22px_rgba(140,69,255,0.85)] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-1 flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-[#190d2e] via-[#37166a] to-[#4a208a] px-6 py-3 text-sm font-semibold text-white shadow-[0px_0px_16px_rgba(140,69,255,0.6)] transition-all hover:scale-[1.01] hover:shadow-[0px_0px_22px_rgba(140,69,255,0.85)] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span>
-                  {isSending ? 'Sending...' : 'Send Message'}
-                </span>
-
-                {!isSending && (
-                  <Send className="size-4" strokeWidth={2} />
-                )}
+                <span>{isSending ? 'Sending...' : 'Send Message'}</span>
+                <Send className="size-4" strokeWidth={2} />
               </button>
-
             </form>
-
           </div>
         </div>
       </div>

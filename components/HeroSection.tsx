@@ -79,7 +79,7 @@ export default function HeroSection() {
 
           {/* Headline */}
           <h1 className={`text-center font-normal tracking-tight text-4xl md:text-6xl lg:text-7xl lg:leading-[1.05] ${isLight ? 'text-foreground' : 'text-white'}`}>
-            Scale your software<br />without expanding your team.
+            We Ship Software<br />That Works
           </h1>
 
           {/* Subtitle */}

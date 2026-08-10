@@ -1,9 +1,8 @@
 'use client'
 
 import { motion } from 'motion/react'
+import Image from 'next/image'
 import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Compass, Code2, Server, Palette } from 'lucide-react'
 
 const stats = [
   { value: '4', label: 'People on the team' },
@@ -14,36 +13,28 @@ const stats = [
 
 const team = [
   {
-    name: 'Alex Rivera',
-    role: 'Product & Strategy',
-    blurb: 'Turns fuzzy ideas into shippable roadmaps and keeps every project scoped to what actually matters.',
-    Icon: Compass,
-    bg: 'linear-gradient(145deg, #b9a6ff 0%, #8c6bff 100%)',
-    fg: '#140630',
+    name: 'Ashikuzzaman',
+    role: 'Frontend & Mobile Application Specialist',
+    image: '/profiles/ashik.webp',
+    blurb: 'UI/UX design implementation, client-side performance, responsive web applications, interactive user interfaces.',
   },
   {
-    name: 'Jordan Lee',
-    role: 'Frontend Engineering',
-    blurb: 'Builds the interfaces users touch every day, fast, accessible, and polished down to the last pixel.',
-    Icon: Code2,
-    bg: 'linear-gradient(145deg, #7fe3e0 0%, #35b6c9 100%)',
-    fg: '#052224',
+    name: 'Md. Hridoy Mia',
+    role: 'Lead Backend & Systems Architect',
+    image: '/profiles/hridoy.webp',
+    blurb: 'Core application architecture (DDD/CQRS), real-time streaming, background processing, scalable API design, high-performance database layer.',
   },
   {
-    name: 'Sam Patel',
-    role: 'Backend Engineering',
-    blurb: 'Designs the systems underneath: APIs, databases, and infrastructure that hold up under real traffic.',
-    Icon: Server,
-    bg: 'linear-gradient(145deg, #ffd684 0%, #ffb24d 100%)',
-    fg: '#301a02',
+    name: 'Md Mostafizur Rahman',
+    role: 'Integrations & Workflow Automation Lead',
+    image: '/profiles/mustafiz.webp',
+    blurb: 'Third-party API ecosystems, SaaS/CRM integrations, multi-tenant workflows, messaging automation, MCP tool execution.',
   },
   {
-    name: 'Morgan Chen',
-    role: 'Product Design',
-    blurb: 'Shapes the look and feel of every product, from first wireframe to the details no one notices but everyone feels.',
-    Icon: Palette,
-    bg: 'linear-gradient(145deg, #ff9fc0 0%, #ff6f9c 100%)',
-    fg: '#33071a',
+    name: 'Md. Mostofa Hasib',
+    role: 'AI & Full-Stack Innovations Lead',
+    image: '/profiles/hasib.webp',
+    blurb: 'AI/ML application engineering, cross-platform product delivery (Web, Mobile, Desktop), published R&D solutions, end-to-end full-stack feature delivery.',
   },
 ]
 
@@ -60,7 +51,7 @@ const itemVariants = {
 export default function AboutSection() {
   return (
     <section id="about" className="w-full py-14 lg:py-20">
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+      <div className="max-w-screen-xl px-4 mx-auto md:px-8">
 
         {/* Header */}
         <motion.div
@@ -68,15 +59,14 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, type: 'spring', bounce: 0 }}
-          className="mb-14 lg:mb-20 flex flex-col items-center gap-5 sm:gap-6 text-center"
+          className="flex flex-col items-center gap-5 mb-8 text-center lg:mb-12 sm:gap-6"
         >
           <h2 className="max-w-3xl text-3xl font-bold sm:text-4xl lg:text-5xl tracking-wider leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-            Four engineers, one software company
+            Four engineers, each a specialist in their lane
           </h2>
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg leading-relaxed">
-            We&apos;re KompileX a software development company built by four engineers who design,
-            build, and ship full-stack products for our clients end to end. No hand-offs, no bloated
-            process, just a small team that owns every project from first line of code to production.
+          <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            KompileX designs, builds, and ships full products end to end — frontend &amp; mobile,
+            backend &amp; systems, integrations, and AI — with no hand-offs.
           </p>
         </motion.div>
 
@@ -86,13 +76,13 @@ export default function AboutSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="mb-10 grid grid-cols-2 gap-6 sm:grid-cols-4"
+          className="grid grid-cols-2 gap-6 mb-10 sm:grid-cols-4"
         >
           {stats.map((stat) => (
             <motion.div
               key={stat.label}
               variants={itemVariants}
-              className="flex flex-col items-center gap-1 rounded-2xl border border-border bg-card/60 py-6 text-center backdrop-blur-sm"
+              className="flex flex-col items-center gap-1 py-6 text-center border rounded-2xl border-border bg-card/60 backdrop-blur-sm"
             >
               <span className="text-2xl font-bold text-foreground sm:text-3xl">{stat.value}</span>
               <span className="text-xs text-muted-foreground sm:text-sm">{stat.label}</span>
@@ -108,30 +98,30 @@ export default function AboutSection() {
           viewport={{ once: true }}
           className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
         >
-          {team.map((member) => {
-            const { Icon } = member
-            return (
-              <motion.div key={member.name} variants={itemVariants}>
-                <Card className="group h-full hover:shadow-lg transition-all duration-300 bg-card/60 backdrop-blur-sm">
-                  <CardContent className="p-6 flex flex-col gap-5">
-                    <div
-                      className="flex h-14 w-14 items-center justify-center rounded-2xl"
-                      style={{ background: member.bg }}
-                    >
-                      <Icon className="h-6 w-6" strokeWidth={1.5} style={{ color: member.fg }} />
-                    </div>
+          {team.map((member) => (
+            <motion.div key={member.name} variants={itemVariants}>
+              <Card className="h-full transition-all duration-300 group hover:shadow-lg bg-card/60 backdrop-blur-sm">
+                <CardContent className="flex flex-col gap-5 p-6">
+                  <div className="relative w-full h-56 overflow-hidden border rounded-2xl border-border/60">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 25vw"
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
 
-                    <div>
-                      <h3 className="text-base font-semibold text-foreground">{member.name}</h3>
-                      <p className="text-sm font-medium text-muted-foreground">{member.role}</p>
-                    </div>
+                  <div>
+                    <h3 className="text-base font-semibold text-foreground">{member.name}</h3>
+                    <p className="text-sm font-medium text-muted-foreground">{member.role}</p>
+                  </div>
 
-                    <p className="text-sm leading-relaxed text-muted-foreground">{member.blurb}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )
-          })}
+                  <p className="text-sm leading-relaxed text-muted-foreground">{member.blurb}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>

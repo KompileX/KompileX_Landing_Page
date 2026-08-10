@@ -137,65 +137,10 @@ const caseStudies: CaseStudy[] = [
 ]
 
 function CaseStudyCard({ study }: { study: CaseStudy }) {
-  const cardRef = useRef<HTMLDivElement>(null)
-
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-
-  // Spring values for smooth tilt
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), { stiffness: 200, damping: 25 })
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), { stiffness: 200, damping: 25 })
-
-  // Glow position values (pixel coordinates relative to the card's top-left)
-  const glowX = useMotionValue(-999)
-  const glowY = useMotionValue(-999)
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = cardRef.current
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    
-    // Relative coordinates for tilt (-0.5 to 0.5)
-    x.set((e.clientX - rect.left) / rect.width - 0.5)
-    y.set((e.clientY - rect.top) / rect.height - 0.5)
-
-    // Pixel coordinates for glow
-    glowX.set(e.clientX - rect.left)
-    glowY.set(e.clientY - rect.top)
-  }
-
-  const handleMouseLeave = () => {
-    x.set(0)
-    y.set(0)
-    glowX.set(-999)
-    glowY.set(-999)
-  }
-
-  const transform = useMotionTemplate`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-  const glowBg = useMotionTemplate`radial-gradient(300px circle at ${glowX}px ${glowY}px, rgba(140, 69, 255, 0.15), transparent 80%)`
-
   return (
-    <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform,
-        transformStyle: 'preserve-3d',
-      }}
-      className="group flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-card/70 shadow-sm backdrop-blur-sm transition-colors duration-300 hover:border-primary/50 hover:shadow-2xl cursor-pointer relative size-full"
-    >
-      {/* Dynamic Radial Glow Background */}
-      <motion.div
-        className="pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: glowBg }}
-      />
-
+    <div className="group flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:shadow-2xl cursor-pointer relative size-full">
       {/* Top 70% Height Image Banner Area */}
-      <div 
-        className="relative h-60 w-full overflow-hidden bg-muted"
-        style={{ transform: 'translateZ(20px)', transformStyle: 'preserve-3d' }}
-      >
+      <div className="relative h-60 w-full overflow-hidden bg-muted">
         <Image
           src={study.image}
           alt={study.title}
@@ -205,10 +150,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
         {/* Overlaid Badges */}
-        <div 
-          className="absolute top-3 left-3 z-10"
-          style={{ transform: 'translateZ(30px)' }}
-        >
+        <div className="absolute top-3 left-3 z-10">
           <Badge variant="outline" className="flex items-center gap-1.5 border-white/20 bg-black/60 backdrop-blur-md text-white text-[11px] font-medium px-2.5 py-1">
             {study.category === 'web' ? (
               <Globe className="size-3 text-sky-400" />
@@ -220,10 +162,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         </div>
 
         {/* Overlaid Title on Image Bottom */}
-        <div 
-          className="absolute bottom-3 left-4 right-4 z-10"
-          style={{ transform: 'translateZ(35px)' }}
-        >
+        <div className="absolute bottom-3 left-4 right-4 z-10">
           <h3 className="text-xl font-bold text-white transition-colors group-hover:text-primary">
             {study.title}
           </h3>
@@ -232,19 +171,13 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
       </div>
 
       {/* Bottom Content Area */}
-      <div 
-        className="flex flex-col justify-between gap-4 p-5"
-        style={{ transform: 'translateZ(25px)', transformStyle: 'preserve-3d' }}
-      >
+      <div className="flex flex-col justify-between gap-4 p-5">
         <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
           {study.description}
         </p>
 
         {/* Tech stack chips */}
-        <div 
-          className="flex flex-wrap gap-1.5 pt-1"
-          style={{ transform: 'translateZ(30px)' }}
-        >
+        <div className="flex flex-wrap gap-1.5 pt-1">
           {study.techStack.slice(0, 4).map((tech) => (
             <span
               key={tech}
@@ -261,10 +194,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         </div>
 
         {/* Details Button */}
-        <div 
-          className="pt-2"
-          style={{ transform: 'translateZ(35px)' }}
-        >
+        <div className="pt-2">
           <Link
             href={`/case-studies/${study.id}`}
             className="inline-flex w-full items-center justify-between rounded-xl border border-border/70 bg-background px-4 py-2.5 text-xs font-semibold text-foreground transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground group/btn"
@@ -274,7 +204,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 

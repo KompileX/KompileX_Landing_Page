@@ -65,7 +65,7 @@ export default function HeroSection() {
         <HeroBackground isLight={isLight} parallaxY={parallaxY} />
 
         {/* Center content */}
-        <div className="container mx-auto relative z-10 text-center">
+        <div className="container relative z-10 mx-auto text-center">
           {/* Badge */}
           <div className="flex justify-center mb-6">
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border ${isLight ? 'border-violet-200 bg-violet-50/80 backdrop-blur-sm' : 'border-white/10 bg-white/5'}`}>
@@ -78,17 +78,17 @@ export default function HeroSection() {
           </div>
 
           {/* Headline */}
-          <h1 className={`text-center font-normal tracking-wider text-4xl md:text-6xl lg:text-7xl lg:leading-[1.05] ${isLight ? 'text-foreground' : 'text-white'}`}>
+          <h1 className={`text-center font-normal tracking-tight text-4xl md:text-6xl lg:text-7xl lg:leading-[1.05] ${isLight ? 'text-foreground' : 'text-white'}`}>
             We Ship Software<br />That Works
           </h1>
 
           {/* Subtitle */}
-          <p className={`mx-auto mt-5 max-w-xl text-center text-lg md:text-xl ${isLight ? 'text-muted-foreground' : 'text-white/70'}`}>
-            KompileX is a four-person team designing, building, and shipping full-stack products for startups and teams who need to move fast.
+          <p className={`mx-auto mt-5 max-w-3xl text-center text-lg md:text-xl ${isLight ? 'text-muted-foreground' : 'text-white/70'}`}>
+            KompileX builds intelligent applications that automate daily operations—so you can launch faster, capture market edge, and grow revenue without technical debt.
           </p>
 
           {/* CTAs */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col items-center justify-center gap-4 mt-8 sm:flex-row">
             <a
               href="#contact"
               className="relative cursor-pointer rounded-lg bg-gradient-to-b from-[#190d2e] to-[#4a208a] px-4 py-2.5 text-sm font-medium text-white shadow-[0px_0px_12px_#8c45ff]"
@@ -135,7 +135,7 @@ export default function HeroSection() {
 
       {/* ── Tech ticker ── */}
       <div className="w-full py-8">
-        <div className="max-w-screen-xl mx-auto px-4 md:px-8">
+        <div className="max-w-screen-xl px-4 mx-auto md:px-8">
           <div className="w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <motion.div
               initial={{ x: 0 }}

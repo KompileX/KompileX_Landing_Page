@@ -11,8 +11,8 @@ import { Moon, Sun, Menu, X } from 'lucide-react'
 const navItems = [
   { label: 'About', href: '/#about' },
   { label: 'Services', href: '/#services' },
-  { label: 'Work', href: '/#case-studies' },
   { label: 'Why Us', href: '/#process' },
+  { label: 'Work', href: '/#case-studies' },
   { label: 'Contact', href: '/#contact' },
 ]
 
@@ -57,16 +57,16 @@ export default function Navbar() {
   return (
     <header
       className={`sticky top-0 z-50 max-lg:border-b max-lg:border-border max-lg:backdrop-blur-sm max-lg:bg-background/90 transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${scrolled
-          ? 'py-2 lg:bg-transparent lg:border-transparent'
-          : 'py-4 lg:bg-transparent lg:border-transparent'
+        ? 'py-2 lg:bg-transparent lg:border-transparent'
+        : 'py-4 lg:bg-transparent lg:border-transparent'
         }`}
     >
       <div className="mx-auto w-full max-w-7xl px-4">
         {/* Floating pill for desktop / header bar */}
         <div
           className={`mx-auto flex w-full items-center justify-between border border-transparent lg:backdrop-blur-md transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${scrolled
-              ? 'lg:max-w-3xl lg:mt-3 lg:rounded-2xl lg:border-border lg:bg-background/90 lg:p-2.5 lg:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.18)]'
-              : 'lg:max-w-7xl lg:mt-0 lg:rounded-none lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none'
+            ? 'lg:max-w-3xl lg:mt-3 lg:rounded-2xl lg:border-border lg:bg-background/90 lg:p-2.5 lg:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.18)]'
+            : 'lg:max-w-7xl lg:mt-0 lg:rounded-none lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none'
             } ${theme === 'light' && scrolled ? 'lg:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.1)]' : ''}`}
         >
           {/* Logo */}

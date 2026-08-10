@@ -11,9 +11,9 @@ import { Moon, Sun, Menu, X } from 'lucide-react'
 const navItems = [
   { label: 'About', href: '/#about' },
   { label: 'Services', href: '/#services' },
-  { label: 'Work', href: '/#work' },
-  { label: 'Process', href: '/#process' },
-  { label: 'FAQ', href: '/#faq' },
+  { label: 'Work', href: '/#case-studies' },
+  { label: 'Why Us', href: '/#process' },
+  { label: 'Contact', href: '/#contact' },
 ]
 
 export default function Navbar() {
@@ -56,20 +56,18 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 max-lg:border-b max-lg:border-border max-lg:backdrop-blur-sm max-lg:bg-background/90 transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${
-        scrolled
+      className={`sticky top-0 z-50 max-lg:border-b max-lg:border-border max-lg:backdrop-blur-sm max-lg:bg-background/90 transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${scrolled
           ? 'py-2 lg:bg-transparent lg:border-transparent'
           : 'py-4 lg:bg-transparent lg:border-transparent'
-      }`}
+        }`}
     >
       <div className="mx-auto w-full max-w-7xl px-4">
         {/* Floating pill for desktop / header bar */}
         <div
-          className={`mx-auto flex w-full items-center justify-between border border-transparent lg:backdrop-blur-md transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${
-            scrolled
+          className={`mx-auto flex w-full items-center justify-between border border-transparent lg:backdrop-blur-md transition-all duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] ${scrolled
               ? 'lg:max-w-3xl lg:mt-3 lg:rounded-2xl lg:border-border lg:bg-background/90 lg:p-2.5 lg:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.18)]'
               : 'lg:max-w-7xl lg:mt-0 lg:rounded-none lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none'
-          } ${theme === 'light' && scrolled ? 'lg:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.1)]' : ''}`}
+            } ${theme === 'light' && scrolled ? 'lg:shadow-[0_10px_30px_-8px_rgba(0,0,0,0.1)]' : ''}`}
         >
           {/* Logo */}
           <Link href="/" className="transition hover:opacity-80">
@@ -138,9 +136,8 @@ export default function Navbar() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: '-100%', opacity: 0 }}
             transition={{ duration: 0.38, ease: [0.32, 0.72, 0, 1] }}
-            className={`fixed inset-x-0 top-[65px] z-40 flex h-[calc(100vh-65px)] flex-col items-center justify-center overflow-y-auto backdrop-blur-2xl border-b border-border/40 shadow-2xl lg:hidden ${
-              theme === 'light' ? 'bg-white/95' : 'bg-[#131316]/95'
-            }`}
+            className={`fixed inset-x-0 top-[65px] z-40 flex h-[calc(100vh-65px)] flex-col items-center justify-center overflow-y-auto backdrop-blur-2xl border-b border-border/40 shadow-2xl lg:hidden ${theme === 'light' ? 'bg-white/95' : 'bg-[#131316]/95'
+              }`}
           >
             <div className="flex w-full flex-col items-center justify-center text-center px-6 py-8">
               <div className="flex flex-col items-center gap-6">

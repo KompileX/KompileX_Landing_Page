@@ -45,6 +45,7 @@ export default function AIChatWidget() {
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const pillInputRef = useRef<HTMLInputElement>(null)
   const replyIndex = useRef(0)
   const typingTimeout = useRef<number | null>(null)
 
@@ -132,7 +133,7 @@ export default function AIChatWidget() {
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ type: 'spring', bounce: 0.12, duration: 0.55 }}
             className={cn(
-              'fixed bottom-4 right-4 z-[60] flex w-[min(calc(100vw-2rem),400px)] flex-col overflow-hidden rounded-2xl border border-border bg-card/95 backdrop-blur-2xl',
+              'fixed bottom-4 right-4 z-[60] flex w-[min(calc(100vw-2rem),400px)] flex-col overflow-hidden rounded-2xl border border-border bg-card backdrop-blur-2xl',
               glowShadow
             )}
             style={{ height: 'min(calc(100dvh - 6rem), 600px)' }}
@@ -183,10 +184,10 @@ export default function AIChatWidget() {
                   )}
                   <div
                     className={cn(
-                      'max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed',
+                      'min-w-0 max-w-[85%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed',
                       m.role === 'user'
                         ? 'rounded-br-sm bg-gradient-to-b from-[#190d2e] to-[#4a208a] text-white shadow-[0px_0px_12px_rgba(140,69,255,0.35)]'
-                        : 'rounded-bl-sm border border-border bg-muted/60 text-foreground'
+                        : 'rounded-bl-sm border border-border bg-muted text-foreground'
                     )}
                   >
                     {m.content}
@@ -199,7 +200,7 @@ export default function AIChatWidget() {
                   <span className="flex size-6 shrink-0 items-center justify-center rounded-lg bg-gradient-to-b from-[#190d2e] to-[#4a208a] text-white shadow-[0px_0px_10px_rgba(140,69,255,0.4)]">
                     <Sparkles className="size-3" />
                   </span>
-                  <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm border border-border bg-muted/60 px-4 py-3">
+                  <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm border border-border bg-muted px-4 py-3">
                     {[0, 1, 2].map((i) => (
                       <span
                         key={i}
@@ -220,7 +221,7 @@ export default function AIChatWidget() {
                     key={s}
                     type="button"
                     onClick={() => sendPrompt(s)}
-                    className="rounded-full border border-border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground transition hover:border-primary/50 hover:text-foreground"
+                    className="rounded-full border border-border bg-muted px-3 py-1.5 text-xs text-muted-foreground transition hover:border-primary/50 hover:text-foreground"
                   >
                     {s}
                   </button>
@@ -230,7 +231,7 @@ export default function AIChatWidget() {
 
             {/* Composer */}
             <div className="border-t border-border p-3">
-              <div className="flex items-center gap-2 rounded-2xl border border-border bg-background px-3 py-2.5 transition focus-within:border-primary/60 focus-within:shadow-[0_0_0_3px_rgba(140,69,255,0.15)]">
+              <div className="flex items-center gap-2 rounded-2xl border border-border bg-background px-3 py-1.5">
                 <textarea
                   ref={textareaRef}
                   rows={1}
@@ -244,21 +245,18 @@ export default function AIChatWidget() {
                   }}
                   placeholder="Ask anything about KompileX…"
                   aria-label="Type your message"
-                  className="max-h-32 min-h-6 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="max-h-32 min-h-5 flex-1 resize-none bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
                 <button
                   type="button"
                   onClick={() => sendPrompt(draft)}
                   disabled={!draft.trim() || isTyping}
                   aria-label="Send message"
-                  className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-[#190d2e] to-[#4a208a] text-white shadow-[0px_0px_10px_rgba(140,69,255,0.5)] transition hover:brightness-125 disabled:opacity-40 disabled:shadow-none"
+                  className="flex size-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-[#190d2e] to-[#4a208a] text-white shadow-[0px_0px_10px_rgba(140,69,255,0.5)] transition hover:brightness-125 disabled:opacity-40 disabled:shadow-none"
                 >
                   <ArrowUp className="size-4" />
                 </button>
               </div>
-              <p className="mt-2 text-center font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">
-                AI chat · integration coming soon
-              </p>
             </div>
           </motion.div>
         ) : (
@@ -272,14 +270,16 @@ export default function AIChatWidget() {
               exit={{ opacity: 0, scale: 0.96 }}
               transition={{ type: 'spring', bounce: 0.12, duration: 0.55 }}
               className={cn(
-                'pointer-events-auto flex h-14 w-full max-w-[560px] items-center gap-3 rounded-full border border-border bg-background/85 px-3 backdrop-blur-xl transition-colors hover:border-primary/50',
+                'pointer-events-auto flex h-14 w-full max-w-[560px] cursor-text items-center gap-3 rounded-full border border-border bg-background px-3 backdrop-blur-xl transition-colors hover:border-primary/50',
                 glowShadow
               )}
+              onClick={() => pillInputRef.current?.focus()}
             >
               <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-[#190d2e] to-[#4a208a] text-white shadow-[0px_0px_12px_rgba(140,69,255,0.6)]">
                 <Sparkles className="size-4" />
               </span>
               <input
+                ref={pillInputRef}
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 onFocus={() => setOpen(true)}
@@ -294,7 +294,7 @@ export default function AIChatWidget() {
                 enterKeyHint="send"
                 className="min-w-0 flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
               />
-              <span className="hidden shrink-0 items-center gap-1.5 rounded-full border border-border bg-muted/60 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground sm:flex">
+              <span className="hidden shrink-0 items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground sm:flex">
                 KompileX AI
               </span>
               <button

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
-import { Sparkles, X, ArrowUp } from 'lucide-react'
+import { Sparkles, X, ArrowUp, Trash2 } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
 import { cn } from '@/lib/utils'
 
@@ -10,7 +10,10 @@ type Message = {
   id: string
   role: 'user' | 'assistant'
   content: string
+  isError?: boolean
 }
+
+
 
 const WELCOME_MESSAGE: Message = {
   id: 'welcome',
@@ -24,12 +27,6 @@ const SUGGESTIONS = [
   'How does the process work?',
   'What does it cost to build an app?',
   'Can you show me your work?',
-]
-
-const MOCK_REPLIES = [
-  "Got it — noted. The AI layer isn't wired up yet, so this is a placeholder reply. Once it's connected I'll answer from KompileX's own docs and team notes.",
-  "Thanks for asking! I'm running in demo mode right now. When the real AI is plugged in behind this chat, I'll answer with accurate details on services, process, and pricing.",
-  "Good question. This is a demo reply while we connect the AI. In the meantime you can reach a human at hello@kompilex.dev.",
 ]
 
 const uid = () => Math.random().toString(36).slice(2, 10)
@@ -46,15 +43,8 @@ export default function AIChatWidget() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const pillInputRef = useRef<HTMLInputElement>(null)
-  const replyIndex = useRef(0)
   const typingTimeout = useRef<number | null>(null)
 
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : 'unset'
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [open])
 
   useEffect(() => {
     if (!open) return
@@ -85,20 +75,109 @@ export default function AIChatWidget() {
     if (typingTimeout.current) window.clearTimeout(typingTimeout.current)
   }, [])
 
-  function sendPrompt(text: string) {
+  async function sendPrompt(text: string) {
     const clean = text.trim()
     if (!clean || isTyping) return
 
-    setMessages((m) => [...m, { id: uid(), role: 'user', content: clean }])
+    const userMessage: Message = { id: uid(), role: 'user', content: clean }
+    setMessages((m) => [...m, userMessage])
     setDraft('')
     setIsTyping(true)
 
-    typingTimeout.current = window.setTimeout(() => {
-      const reply = MOCK_REPLIES[replyIndex.current % MOCK_REPLIES.length]
-      replyIndex.current += 1
-      setMessages((m) => [...m, { id: uid(), role: 'assistant', content: reply }])
+    // Prepare message history for API format
+    const history = [...messages, userMessage].map((msg) => ({
+      role: msg.role,
+      content: msg.content,
+    }))
+
+    try {
+      // 1. Try local server-side API Handler
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages: history }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Server returned error status ${response.status}`)
+      }
+
+      const data = await response.json()
+      const botReply = data.choices?.[0]?.message?.content
+
+      if (!botReply) {
+        throw new Error('Received empty response from server.')
+      }
+
+      setMessages((m) => [...m, { id: uid(), role: 'assistant', content: botReply }])
+    } catch (serverError: any) {
+      console.error('Server endpoint /api/chat failed:', serverError)
+
+      setMessages((m) => [
+        ...m,
+        {
+          id: uid(),
+          role: 'assistant',
+          content: `⚠️ **Connection Error:** Unable to connect to the AI assistant server. Please ensure \`GROQ_API_KEY\` is configured in your environment variables.`,
+          isError: true,
+        },
+      ])
+    } finally {
       setIsTyping(false)
-    }, 900)
+    }
+  }
+
+  // Simple custom Markdown rendering for basic formatting (bold and lists)
+  const renderMessageContent = (content: string) => {
+    return content.split('\n').map((line, lineIdx) => {
+      let trimmed = line.trim()
+      
+      // Bullet point detection
+      if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        const text = trimmed.substring(2)
+        return (
+          <li key={lineIdx} className="ml-4 list-disc text-sm leading-relaxed mb-1 text-foreground/90">
+            {parseBoldText(text)}
+          </li>
+        )
+      }
+
+      // Heading detection
+      if (trimmed.startsWith('### ')) {
+        return (
+          <h4 key={lineIdx} className="text-sm font-semibold text-foreground mt-3 mb-1">
+            {parseBoldText(trimmed.substring(4))}
+          </h4>
+        )
+      }
+      if (trimmed.startsWith('## ')) {
+        return (
+          <h3 key={lineIdx} className="text-base font-bold text-foreground mt-4 mb-2">
+            {parseBoldText(trimmed.substring(3))}
+          </h3>
+        )
+      }
+
+      // Normal paragraph
+      return (
+        <p key={lineIdx} className="text-sm leading-relaxed mb-2 text-foreground/90 min-h-[1em]">
+          {parseBoldText(line)}
+        </p>
+      )
+    })
+  }
+
+  // Helper to convert **text** to <strong>text</strong> in React
+  const parseBoldText = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/g)
+    return parts.map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={index} className="font-semibold text-foreground">{part.slice(2, -2)}</strong>
+      }
+      return part
+    })
   }
 
   const glowShadow = isLight
@@ -107,20 +186,6 @@ export default function AIChatWidget() {
 
   return (
     <MotionConfig reducedMotion="user">
-      {/* Backdrop */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            key="chat-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={() => setOpen(false)}
-            className="fixed inset-0 z-[55] bg-black/40 backdrop-blur-[2px]"
-          />
-        )}
-      </AnimatePresence>
 
       <AnimatePresence initial={false}>
         {open ? (
@@ -159,9 +224,21 @@ export default function AIChatWidget() {
               </div>
               <button
                 type="button"
+                onClick={() => {
+                  setMessages([WELCOME_MESSAGE])
+                  setIsTyping(false)
+                }}
+                title="Clear history"
+                aria-label="Clear history"
+                className="ml-auto rounded-lg p-2 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+              >
+                <Trash2 className="size-4" />
+              </button>
+              <button
+                type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close chat"
-                className="ml-auto rounded-lg p-2 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+                className="rounded-lg p-2 text-muted-foreground transition hover:bg-muted hover:text-foreground"
               >
                 <X className="size-4" />
               </button>
@@ -184,13 +261,21 @@ export default function AIChatWidget() {
                   )}
                   <div
                     className={cn(
-                      'min-w-0 max-w-[85%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed',
+                      'min-w-0 max-w-[85%] break-words rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed',
                       m.role === 'user'
-                        ? 'rounded-br-sm bg-gradient-to-b from-[#190d2e] to-[#4a208a] text-white shadow-[0px_0px_12px_rgba(140,69,255,0.35)]'
-                        : 'rounded-bl-sm border border-border bg-muted text-foreground'
+                        ? 'rounded-br-sm bg-gradient-to-b from-[#190d2e] to-[#4a208a] text-white shadow-[0px_0px_12px_rgba(140,69,255,0.35)] whitespace-pre-wrap'
+                        : m.isError
+                          ? 'rounded-bl-sm border border-red-500/20 bg-red-500/10 text-red-200'
+                          : 'rounded-bl-sm border border-border bg-muted text-foreground'
                     )}
                   >
-                    {m.content}
+                    {m.role === 'assistant' ? (
+                      <div className="prose prose-xs select-text">
+                        {renderMessageContent(m.content)}
+                      </div>
+                    ) : (
+                      m.content
+                    )}
                   </div>
                 </motion.div>
               ))}

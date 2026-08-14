@@ -6,6 +6,7 @@ import HowItWorksSection from '@/components/WhyChooseUs'
 import CaseStudiesSection from '@/components/CaseStudiesSection'
 import ContactSection from '@/components/ContactSection'
 import Footer from '@/components/Footer'
+import AIChatWidget from '@/components/AIChatWidget'
 export default function HomePage() {
   return (
     <>
@@ -22,6 +23,8 @@ export default function HomePage() {
         </main>
       </div>
       <Footer />
+      <AIChatWidget />
     </>
   )
 }
+

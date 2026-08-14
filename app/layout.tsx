@@ -37,7 +37,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${laghino.variable} antialiased bg-background text-foreground`} suppressHydrationWarning>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
         <Toaster richColors position="top-right" />
       </body>
     </html>

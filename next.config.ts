@@ -4,7 +4,6 @@ const nextConfig: NextConfig = {
   // Comment out output: 'export' to enable SSR and dynamic API routes for the Groq AI assistant.
   // Uncomment if you strictly need a static-only HTML/CSS export.
   // output: 'export',
-  distDir: 'dist',
   images: {
     unoptimized: true,
   },

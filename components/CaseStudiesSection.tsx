@@ -130,7 +130,7 @@ const caseStudies: CaseStudy[] = [
 
 function CaseStudyCard({ study }: { study: CaseStudy }) {
   return (
-    <div className="group flex flex-col justify-start overflow-hidden rounded-xl border border-border bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:shadow-2xl cursor-pointer relative size-full">
+    <div className="group flex flex-col justify-start overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 hover:border-primary/50 hover:shadow-2xl cursor-pointer relative size-full">
       {/* Top 70% Height Image Banner Area */}
       <div className="relative h-60 w-full overflow-hidden bg-muted">
         <Image
@@ -163,7 +163,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
       </div>
 
       {/* Bottom Content Area */}
-      <div className="flex flex-col justify-between gap-4 p-5 bg-background/90 dark:bg-zinc-950/90 backdrop-blur-md border-t border-border/40 rounded-b-xl relative z-10 flex-grow">
+      <div className="flex flex-col justify-between gap-4 p-5 bg-card border-t border-border/40 rounded-b-xl relative z-10 flex-grow">
         <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
           {study.description}
         </p>
@@ -225,7 +225,7 @@ export default function CaseStudiesSection() {
         <div className="max-w-[1163px] mx-auto">
           <LayerStack cardWidth={355} cardGap={15} stageHeight={460}>
             {caseStudies.map((study) => (
-              <Card key={study.id} className="relative bg-card/70 border border-border rounded-xl">
+              <Card key={study.id} className="relative bg-card border border-border rounded-xl">
                 <CaseStudyCard study={study} />
               </Card>
             ))}

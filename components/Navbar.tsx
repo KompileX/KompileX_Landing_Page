@@ -71,8 +71,15 @@ export default function Navbar() {
         >
           {/* Logo */}
           <Link href="/" className="transition hover:opacity-80">
-            <div className="inline-flex size-10 items-center justify-center rounded-lg border border-border transition hover:border-primary">
-              <Image src="/images/kompilex.svg" alt="KompileX" width={32} height={32} className="w-11 h-8" />
+            <div className="inline-flex h-10 items-center justify-center rounded-lg border border-border px-2.5 transition hover:border-primary">
+              <Image
+                src={theme === 'dark' ? '/images/kompilex-dark.png' : '/images/kompilex-light.png'}
+                alt="KompileX"
+                width={120}
+                height={40}
+                className="h-8 w-auto object-contain"
+                priority
+              />
             </div>
           </Link>
 

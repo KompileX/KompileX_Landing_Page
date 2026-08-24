@@ -2,6 +2,8 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import { useTheme } from '@/context/ThemeContext'
 import {
   motion,
   useMotionValue,
@@ -199,6 +201,7 @@ function BackToTopButton({ onClick }: { onClick: () => void }) {
 }
 
 export default function Footer() {
+  const { theme } = useTheme()
   // useReducedMotion() reads the media query synchronously on the client's very
   // first render (even during hydration), while SSR has no window and always
   // yields false - a genuine mismatch if the device prefers reduced motion.
@@ -264,8 +267,16 @@ export default function Footer() {
             {/* ---------- Brand + link columns ---------- */}
             <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
               <div className="col-span-2 flex flex-col gap-4">
-                <Link href="/" className="w-fit text-lg font-bold tracking-tight transition hover:opacity-70">
-                  KompileX
+                <Link href="/" className="w-fit transition hover:opacity-70">
+                  <div className="inline-flex h-9 items-center justify-center rounded-lg border border-border px-2 transition hover:border-primary">
+                    <Image
+                      src={theme === 'dark' ? '/images/kompilex-dark.png' : '/images/kompilex-light.png'}
+                      alt="KompileX"
+                      width={100}
+                      height={32}
+                      className="h-7 w-auto object-contain"
+                    />
+                  </div>
                 </Link>
                 <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
                   A four-person software development studio designing, building, and shipping

@@ -25,38 +25,38 @@ interface CaseStudy {
 
 const caseStudies: CaseStudy[] = [
   {
-    id: 'pulse-analytics',
+    id: 'commerceos',
     category: 'web',
-    title: 'Pulse Analytics',
-    client: 'MetricsFlow Inc.',
-    tagline: 'Real-time telemetry dashboard & event streaming platform',
+    title: 'CommerceOS',
+    client: 'Internal Product / SaaS Platform',
+    tagline: 'Multi-tenant e-commerce CMS for agencies and solution providers',
     description:
-      'A scalable web analytics platform that turns millions of raw event logs into live interactive charts and instant anomaly alerts.',
-    highlight: '< 60ms Real-time Latency',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
-    techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'PostgreSQL'],
+      'You can sell commerce solutions to your customers without having to build the entire platform yourself.',
+    highlight: 'Multi-Tenant SaaS Platform',
+    image: '/images/case-studies/commerceos.png',
+    techStack: ['Next.js', '.NET', 'TypeScript', 'PostgreSQL', 'REST APIs', 'Multi-Tenant Architecture'],
     challenge:
-      'Handling high-throughput telemetry data streams from over 10,000 connected client apps without causing browser UI freezing.',
+      'Agencies and software companies needed a way to launch and manage customer commerce stores without investing in building and maintaining a full e-commerce platform from scratch.',
     solution:
-      'Engineered an event-driven WebSocket pipeline paired with offscreen HTML5 Canvas rendering and optimized state buffer caching.',
-    outcome: 'Reduced dashboard initial load time by 75% while maintaining smooth 60fps chart updates across 500,000+ daily events.',
+      'Built a multi-tenant e-commerce CMS with self-service store creation, complete product/inventory/order management, and modular APIs so partners can launch and manage stores from one centralized platform.',
+    outcome: 'Gave partners a scalable foundation that cuts development time, infrastructure overhead, and maintenance effort while staying extensible for fully custom solutions.',
   },
   {
-    id: 'nexus-mobility',
-    category: 'mobile',
-    title: 'Nexus Mobility',
-    client: 'FleetTech Global',
-    tagline: 'Cross-platform fleet management & driver dispatch mobile app',
+    id: 'social-engagement-platform',
+    category: 'web',
+    title: 'Social Engagement Platform',
+    client: 'Internal Product / SaaS Platform',
+    tagline: 'Omnichannel social engagement platform for agencies and technology providers',
     description:
-      'An intuitive iOS & Android application allowing dispatchers and fleet drivers to sync route updates and track shipments live.',
-    highlight: '4.9 ★ Rating on App Store',
-    image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
-    techStack: ['React Native', 'Expo', 'TypeScript', 'GraphQL', 'AWS Lambda'],
+      'A multi-tenant social engagement platform built for agencies and technology providers to offer unified social media management, customer communication, automation, and analytics to their clients—without building the entire platform from scratch.',
+    highlight: 'AI-Powered Social Engagement',
+    image: '/images/case-studies/social-media.png',
+    techStack: ['Next.js', '.NET', 'TypeScript', 'PostgreSQL', 'REST APIs', 'AI Automation'],
     challenge:
-      'Enabling seamless offline background location tracking and data synchronization across low-connectivity highway corridors.',
+      'Agencies and technology providers needed a single platform to manage social conversations, customer communication, and analytics for multiple clients without building separate infrastructure per client.',
     solution:
-      'Built custom native iOS/Android bridge modules with SQLite offline transaction queues and intelligent background sync.',
-    outcome: 'Streamlined fleet operations across 12 countries with 99.8% operational uptime.',
+      'Built a multi-tenant workspace platform with a unified social inbox, role-based team management, workflow automation, and AI-powered response assistance, isolated per tenant.',
+    outcome: 'Gave partners a reusable, extensible foundation to offer social media management and customer engagement across multiple customers and verticals from a single workspace.',
   },
   {
     id: 'vaultx-security',

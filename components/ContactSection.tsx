@@ -4,7 +4,7 @@ import { useState, FormEvent } from 'react'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
 import emailjs from '@emailjs/browser'
-import { Mail, MapPin, Phone, Send, Github, Twitter, Linkedin } from 'lucide-react'
+import { Mail, MapPin, Phone, Send, Linkedin, Facebook } from 'lucide-react'
 
 const CONTACT_EMAIL = 'contact@kompilex.com'
 const CONTACT_PHONE = '+880 1726522690'
@@ -127,10 +127,9 @@ export default function ContactSection() {
 
             {/* Social links */}
             <div className="flex flex-col gap-3 pt-2">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground/80">FIND ME ON</span>
               <div className="flex items-center gap-2.5">
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/company/kompilex/posts/?feedView=all"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center transition border rounded-full size-9 border-border bg-muted/40 text-muted-foreground hover:border-foreground hover:text-foreground"
@@ -139,22 +138,13 @@ export default function ContactSection() {
                   <Linkedin className="size-4" />
                 </a>
                 <a
-                  href="https://github.com"
+                  href="https://www.facebook.com/profile.php?id=61593039449116"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center transition border rounded-full size-9 border-border bg-muted/40 text-muted-foreground hover:border-foreground hover:text-foreground"
-                  aria-label="GitHub"
+                  aria-label="Facebook"
                 >
-                  <Github className="size-4" />
-                </a>
-                <a
-                  href="https://x.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center transition border rounded-full size-9 border-border bg-muted/40 text-muted-foreground hover:border-foreground hover:text-foreground"
-                  aria-label="Twitter / X"
-                >
-                  <Twitter className="size-4" />
+                  <Facebook className="size-4" />
                 </a>
               </div>
             </div>

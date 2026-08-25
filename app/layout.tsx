@@ -25,7 +25,11 @@ export const metadata: Metadata = {
     images: ['/images/og-image.png'],
   },
   icons: {
-    icon: '/images/kompilex.svg',
+    icon: [
+      { url: '/images/kompilex-light.png', type: 'image/png' },
+    ],
+    shortcut: '/images/kompilex-light.png',
+    apple: '/images/kompilex-light.png',
   },
 }
 

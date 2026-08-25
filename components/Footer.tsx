@@ -39,9 +39,8 @@ const linkGroups = [
   {
     title: 'Connect',
     links: [
-      { label: 'GitHub', href: 'https://github.com', external: true },
-      { label: 'X / Twitter', href: 'https://x.com', external: true },
-      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/kompilex-technology-ab9423428/', external: true },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/company/kompilex/posts/?feedView=all', external: true },
+      { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61593039449116', external: true },
       { label: 'Email us', href: `mailto:${CONTACT_EMAIL}` },
     ],
   },

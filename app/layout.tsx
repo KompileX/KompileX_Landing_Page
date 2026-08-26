@@ -26,10 +26,37 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/images/kompilex-light.png', type: 'image/png' },
+      {
+        url: '/images/kompilex-light.png',
+        media: '(prefers-color-scheme: light)',
+        type: 'image/png',
+      },
+      {
+        url: '/images/kompilex-dark.png',
+        media: '(prefers-color-scheme: dark)',
+        type: 'image/png',
+      },
     ],
-    shortcut: '/images/kompilex-light.png',
-    apple: '/images/kompilex-light.png',
+    shortcut: [
+      {
+        url: '/images/kompilex-light.png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/images/kompilex-dark.png',
+        media: '(prefers-color-scheme: dark)',
+      },
+    ],
+    apple: [
+      {
+        url: '/images/kompilex-light.png',
+        media: '(prefers-color-scheme: light)',
+      },
+      {
+        url: '/images/kompilex-dark.png',
+        media: '(prefers-color-scheme: dark)',
+      },
+    ],
   },
 }
 

@@ -24,16 +24,16 @@ const linkGroups = [
   {
     title: 'Studio',
     links: [
-      { label: 'Services', href: '#services' },
-      { label: 'Our Work', href: '#work' },
+      { label: 'Services', href: '/#services' },
+      { label: 'Our Work', href: '/#case-studies' },
     ],
   },
   {
     title: 'Company',
     links: [
-      { label: 'About', href: '#about' },
-      { label: 'Contact', href: '#contact' },
-      { label: 'Why Us', href: '#process' },
+      { label: 'About Us', href: '/about-us' },
+      { label: 'Contact', href: '/#contact' },
+      { label: 'Why Us', href: '/#process' },
     ],
   },
   {

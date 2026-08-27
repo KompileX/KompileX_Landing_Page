@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Moon, Sun, Menu, X } from 'lucide-react'
 
 const navItems = [
-  { label: 'About', href: '/#about' },
+  { label: 'About Us', href: '/about-us' },
   { label: 'Services', href: '/#services' },
   { label: 'Why Us', href: '/#process' },
   { label: 'Work', href: '/#case-studies' },

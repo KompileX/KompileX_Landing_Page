@@ -11,17 +11,17 @@ const laghino = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://kompilex.ai'),
-  title: 'KompileX | Elevate Every Conversation with AI-Powered Insights',
+  title: 'KompileX | Premium Web, Mobile & Backend Software Development Studio',
   description:
-    'Real-time transcription, intelligent analysis, and conversational mastery, all in one powerful desktop app. Analyze meetings, train with AI, detect persuasion techniques.',
+    'A boutique software engineering studio building high-performance web applications, native mobile apps, robust backend systems, and custom business automation.',
   keywords:
-    'AI transcription software, real-time conversation analysis, meeting transcription app, debate analysis tool, fact-checking software, sales call analyzer, AI communication coach',
+    'KompileX, software development studio, custom web engineering, mobile product engineering, backend systems engineering, social media automation, Next.js developer, React Native apps, Go backend development, software engineering agency, KompileX Dhaka, custom software development',
   openGraph: {
     type: 'website',
     url: 'https://kompilex.ai',
-    title: 'KompileX | Elevate Every Conversation with AI-Powered Insights',
+    title: 'KompileX | Premium Web, Mobile & Backend Software Development Studio',
     description:
-      'Real-time transcription, intelligent analysis, and conversational mastery, all in one powerful desktop app.',
+      'A boutique software engineering studio building high-performance web applications, native mobile apps, backend systems, and custom business automation.',
     images: ['/images/og-image.png'],
   },
   icons: {

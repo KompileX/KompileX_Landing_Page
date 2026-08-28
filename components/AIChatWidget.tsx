@@ -97,7 +97,10 @@ export default function AIChatWidget() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ messages: history }),
+        body: JSON.stringify({
+          messages: history,
+          clientDateTime: new Date().toISOString(),
+        }),
       })
 
       if (!response.ok) {

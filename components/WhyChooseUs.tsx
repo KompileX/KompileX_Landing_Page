@@ -14,23 +14,23 @@ interface Step {
 
 const steps: Step[] = [
   {
-    title: 'AI-Powered Development',
+    title: 'AI Assisted Speed',
     subtitle:
-      'We leverage cutting-edge AI tools and automation frameworks to accelerate delivery cycles, reduce bugs, and ship production-ready features faster.',
+      'We automate repetitive tasks and boilerplates using advanced AI tools. This lets us focus our energy on complex architecture, clean logic, and shipping features in days instead of months.',
     icon: Bot,
     gradient: 'linear-gradient(145deg, #b9a6ff 0%, #8c6bff 100%)',
   },
   {
-    title: '24/7 Support',
+    title: 'Continuous Systems Monitoring',
     subtitle:
-      'Our dedicated support team is available around the clock to monitor your systems, resolve incidents, and keep your platforms performant and available.',
+      'We don’t go offline when your site does. We set up active alerts to catch bugs, resolve server issues, and optimize database performance twenty four hours a day, seven days a week.',
     icon: Clock,
     gradient: 'linear-gradient(145deg, #7fe3e0 0%, #35b6c9 100%)',
   },
   {
-    title: 'Senior Engineering Excellence',
+    title: 'Pure Senior Engineering',
     subtitle:
-      'Work with senior engineers, solution architects, and AI specialists rigorously vetted through multi-stage technical benchmarks.',
+      'No junior developers learning on your budget. You work directly with veteran architects and integration specialists who have spent years building software that scales to millions of users.',
     icon: Award,
     gradient: 'linear-gradient(145deg, #ffd684 0%, #ffb24d 100%)',
   },
@@ -102,10 +102,10 @@ export default function HowItWorksSection() {
             className="why-choose-title flex flex-col gap-5 sm:gap-6 text-center md:mt-16 lg:mt-20 md:text-left"
           >
             <h2 className="text-3xl font-bold sm:text-4xl lg:text-5xl tracking-wider leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-              Why Leading Enterprises Choose Us
+              Why Ambitious Teams Partner With Us
             </h2>
             <p className="mx-auto max-w-xl text-base text-muted-foreground sm:text-lg leading-relaxed md:mx-0">
-              We combine AI velocity, 24/7 dedicated support, and senior engineering talent to deliver enterprise-grade software that scales.
+              We replace bloated development teams with elite engineering, smart AI integration, and round the clock systems monitoring to keep your software running smoothly.
             </p>
           </motion.div>
 

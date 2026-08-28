@@ -76,7 +76,10 @@ export default function AIAssistant() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ messages: chatHistory }),
+        body: JSON.stringify({
+          messages: chatHistory,
+          clientDateTime: new Date().toISOString(),
+        }),
       })
 
       if (!response.ok) {

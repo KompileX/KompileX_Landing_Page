@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useSpring, useTransform, type MotionValue } from 'motion/react'
-import { Globe, Smartphone, Server, Cloud, CheckIcon, type LucideIcon } from 'lucide-react'
+import { Globe, Smartphone, Server, MessageSquare, CheckIcon, type LucideIcon } from 'lucide-react'
 
 interface StackCardData {
   tag: string
@@ -17,16 +17,32 @@ interface StackCardData {
 
 const cards: StackCardData[] = [
   {
-    tag: 'Web',
-    title: 'Web Application Development',
+    tag: 'Automation',
+    title: 'Social Media Automation',
     description:
-      'From marketing sites to full SaaS products, we build responsive React & Next.js frontends with performance and accessibility built in.',
+      'We build custom automated engines that manage your social media presence, auto post content, sync client chats, and convert comments into leads automatically.',
+    Icon: MessageSquare,
+    points: [
+      'Automated content publishing and scheduling',
+      'Unified inbox and messaging sync',
+      'Automated comment replies and lead capture',
+      'AI conversation agents for customer inquiries',
+    ],
+    bg: 'linear-gradient(145deg, #bfdbfe 0%, #1e3a8a 100%)',
+    fg: '#091d5a',
+    chip: 'rgba(9,29,90,0.08)',
+  },
+  {
+    tag: 'Web',
+    title: 'Custom Web Engineering',
+    description:
+      'We build fast, secure, and visually stunning web applications. From complex SaaS systems to interactive frontends, we write clean React and Next.js code optimized for growth.',
     Icon: Globe,
     points: [
-      'Marketing sites to full SaaS products',
-      'React / Next.js frontends',
-      'Design systems & component libraries',
-      'Performance & accessibility built in',
+      'High converting marketing sites and SaaS platforms',
+      'Optimized React and Next.js codebases',
+      'Custom component design systems',
+      'Production ready SEO and accessibility',
     ],
     bg: 'linear-gradient(145deg, #b9a6ff 0%, #8c6bff 100%)',
     fg: '#140630',
@@ -34,15 +50,15 @@ const cards: StackCardData[] = [
   },
   {
     tag: 'Mobile',
-    title: 'Mobile App Development',
+    title: 'Mobile Product Engineering',
     description:
-      'iOS & Android applications built from one codebase using React Native & native modules, ready for App Store & Play Store launches.',
+      'Launch native apps for iOS and Android from a unified codebase. We build high performance React Native applications that feel native, load fast, and ship on time.',
     Icon: Smartphone,
     points: [
-      'iOS & Android from one codebase',
-      'React Native & native modules',
-      'App Store & Play Store launches',
-      'Offline-first & push notifications',
+      'Dual platform deployment from one codebase',
+      'Native grade performance and integrations',
+      'Complete App Store and Google Play publishing',
+      'Offline ready experience and push notifications',
     ],
     bg: 'linear-gradient(145deg, #7fe3e0 0%, #35b6c9 100%)',
     fg: '#052224',
@@ -50,35 +66,19 @@ const cards: StackCardData[] = [
   },
   {
     tag: 'Backend',
-    title: 'Backend & API Engineering',
+    title: 'Backend Systems Engineering',
     description:
-      'REST & GraphQL API design with Node.js, Go, and PostgreSQL. Built with secure authentication, billing, and scalable architecture.',
+      'Architecting secure database schemas and fast server layers with Go, Node.js, and PostgreSQL. We build API infrastructure ready to handle heavy traffic loads.',
     Icon: Server,
     points: [
-      'REST & GraphQL API design',
-      'Node.js, Go, and PostgreSQL',
-      'Auth, billing, and integrations',
-      'Built to scale with real traffic',
+      'Secure and performant server architectures',
+      'Microservices built with Go and Node.js',
+      'Custom Stripe billing and CRM integrations',
+      'Database design optimized for high concurrency',
     ],
     bg: 'linear-gradient(145deg, #ffd684 0%, #ffb24d 100%)',
     fg: '#301a02',
     chip: 'rgba(48,26,2,0.08)',
-  },
-  {
-    tag: 'Infra',
-    title: 'Cloud & DevOps',
-    description:
-      'Automated CI/CD pipelines, containerized deployments on AWS, Vercel, and Docker with real-time monitoring and cost-aware infrastructure.',
-    Icon: Cloud,
-    points: [
-      'CI/CD pipelines & automated testing',
-      'AWS, Vercel, and Docker deployments',
-      'Monitoring, logging, and alerting',
-      'Cost-aware, production-ready infra',
-    ],
-    bg: 'linear-gradient(145deg, #ff9fc0 0%, #ff6f9c 100%)',
-    fg: '#33071a',
-    chip: 'rgba(51,7,26,0.08)',
   },
 ]
 
@@ -186,10 +186,10 @@ export default function StackSection() {
         {/* Title and subtitle */}
         <div className="mb-14 lg:mb-20 w-full shrink-0 text-center flex flex-col gap-4 sm:gap-5">
           <h2 className="text-3xl font-bold tracking-wider sm:text-4xl lg:text-5xl leading-[1.15] bg-gradient-to-b from-foreground to-muted-foreground text-transparent bg-clip-text">
-            What We Build
+            What We Actually Build
           </h2>
           <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg leading-relaxed">
-            From first line of code to production, we cover the full stack: web, mobile, backend, and the infrastructure that keeps it all running.
+            We don’t do bloated agency pitches or sluggish development. We build clean, high-performance software that solves your business problems and scales without breaking the bank.
           </p>
         </div>
 

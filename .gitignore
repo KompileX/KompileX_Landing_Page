@@ -37,3 +37,7 @@ coverage/
 *.pem
 .vercel
 .env*
+
+# Reverse engineering dumps
+scripts/*.html
+scripts/raw_dump/

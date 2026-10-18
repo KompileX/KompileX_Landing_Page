@@ -1,28 +1,5 @@
-import Navbar from '@/components/Navbar'
-import HeroSection from '@/components/HeroSection'
-import StackSection from '@/components/StackSection'
-import HowItWorksSection from '@/components/WhyChooseUs'
-import CaseStudiesSection from '@/components/CaseStudiesSection'
-import ContactSection from '@/components/ContactSection'
-import Footer from '@/components/Footer'
-import AIChatWidget from '@/components/AIChatWidget'
-export default function HomePage() {
-  return (
-    <>
-      {/* Curtain: this block scrolls away over the fixed footer below it. */}
-      <div className="relative z-10 bg-background">
-        <Navbar />
-        <main>
-          <HeroSection />
-          <StackSection />
-          <HowItWorksSection />
-          <CaseStudiesSection />
-          <ContactSection />
-        </main>
-      </div>
-      <Footer />
-      <AIChatWidget />
-    </>
-  )
-}
+import ExactHome from '@/components/redesign/ExactHome';
 
+export default function HomePage() {
+  return <ExactHome />;
+}

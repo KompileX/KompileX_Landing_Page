@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { ThemeCustomizerProvider } from '@/context/ThemeCustomizerContext';
 import ThemeCustomizerFloating from '@/components/admin/ThemeCustomizerFloating';
 import { Toaster } from 'sonner';
+import { getPublishedTheme, themeToCss } from '@/lib/publishedTheme';
 import AIChatWidget from '@/components/chat/AIChatWidget';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -38,16 +39,22 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+// The published theme is read per request so admin changes go live immediately.
+export const dynamic = 'force-dynamic';
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const published = await getPublishedTheme();
+  const publishedCss = published ? themeToCss(published) : "";
   return (
     <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
       <body className="antialiased selection:bg-[#C8F53C] selection:text-[#0C1410]">
+        {publishedCss && <style id="kpx-published-theme" dangerouslySetInnerHTML={{ __html: publishedCss }} />}
         <ThemeProvider>
-          <ThemeCustomizerProvider>
+          <ThemeCustomizerProvider publishedTheme={published}>
             {children}
             <ThemeCustomizerFloating />
             <AIChatWidget />

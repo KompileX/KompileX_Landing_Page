@@ -36,8 +36,8 @@ and middleware are in use.
 
 - `/admin` and the floating theme studio are protected by `middleware.ts` + `lib/adminAuth.ts`
   (httpOnly signed cookie). Set `ADMIN_PASSWORD` (and optionally `ADMIN_SESSION_SECRET`) in env.
-- Theme edits are stored in the admin's browser (`localStorage`) via `context/ThemeCustomizerContext.tsx`;
-  visitors always see the defaults.
+- Theme edits are a draft in the admin's browser (`localStorage`); "Publish theme" saves them via `lib/publishedTheme.ts` and `app/layout.tsx` injects them for every visitor.
+  Jobs and the published theme use `lib/store.ts` (Upstash Redis on Vercel via `UPSTASH_REDIS_REST_*`/`KV_REST_API_*`, else `data/store.json`).
 - All colours come from `--kpx-*` CSS variables (`app/globals.css`, `lib/theme-config.ts`).
   shadcn-style tokens (`bg-card`, `text-foreground`…) are bridged to them at the bottom of `globals.css`.
 - `app/redesign-exact.css` holds the page styles (`.btn`, `.sec`, `.wrap`, `kx-*`). It still contains

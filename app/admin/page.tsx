@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { Check, ChevronDown, Copy, Download, Monitor, RotateCcw, Smartphone, Upload } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Check, ChevronDown, Copy, Download, Globe, Monitor, RotateCcw, Smartphone, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import AdminShell from '@/components/admin/AdminShell';
 import { useThemeCustomizer } from '@/context/ThemeCustomizerContext';
-import { THEME_PRESETS, DEFAULT_THEME_VARIABLES, type ThemeVariables } from '@/lib/theme-config';
+import { DEFAULT_THEME_VARIABLES, type ThemeVariables } from '@/lib/theme-config';
 
 type Field = { key: keyof ThemeVariables; label: string; hint?: string };
 type Group = { id: string; title: string; description: string; fields: Field[] };
@@ -159,13 +159,43 @@ function ColorRow({ field, value, def, onChange }: { field: Field; value: string
 }
 
 export default function AdminThemePage() {
-  const { variables, activePresetId, updateVariable, updateMultipleVariables, setPreset, resetToDefaults, exportJSON, importJSON } = useThemeCustomizer();
+  const { variables, activePresetId, updateVariable, updateMultipleVariables, resetToDefaults, revertToPublished, exportJSON, importJSON } = useThemeCustomizer();
   const [open, setOpen] = useState<string>('brand');
   const [page, setPage] = useState('/');
   const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
   const [importOpen, setImportOpen] = useState(false);
   const [importText, setImportText] = useState('');
   const frame = useRef<HTMLIFrameElement>(null);
+  const [published, setPublished] = useState<Partial<ThemeVariables> | null | undefined>(undefined);
+  const [publishing, setPublishing] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/admin/theme', { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((d) => setPublished(d.published ?? null))
+      .catch(() => setPublished(null));
+  }, []);
+
+  const liveVars: ThemeVariables = { ...DEFAULT_THEME_VARIABLES, ...(published || {}) };
+  const inSync = published !== undefined && JSON.stringify(liveVars) === JSON.stringify({ ...DEFAULT_THEME_VARIABLES, ...variables });
+
+  const publish = async () => {
+    setPublishing(true);
+    const res = await fetch('/api/admin/theme', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ variables }) });
+    setPublishing(false);
+    if (res.ok) {
+      setPublished({ ...variables });
+      toast.success('Published. Every visitor now sees this theme.');
+    } else toast.error((await res.json().catch(() => ({}))).error || 'Could not publish.');
+  };
+  const unpublish = async () => {
+    if (!confirm('Remove the published theme? Visitors will see the default colors.')) return;
+    const res = await fetch('/api/admin/theme', { method: 'DELETE' });
+    if (res.ok) {
+      setPublished(null);
+      toast.success('Unpublished. Visitors see the default theme.');
+    } else toast.error('Could not unpublish.');
+  };
 
   const copy = () => {
     navigator.clipboard.writeText(exportJSON());
@@ -196,39 +226,9 @@ export default function AdminThemePage() {
       <div className="grid gap-6 lg:grid-cols-[440px_minmax(0,1fr)]">
         {/* ───────── Controls ───────── */}
         <div className="flex flex-col gap-5">
-          <section className="rounded-3xl border border-[#E1E4DE] bg-white p-5">
-            <div className="flex items-baseline justify-between">
-              <h2 className="text-base font-bold">Start from a preset</h2>
-              <span className="text-xs text-[#6B746D]">{activePresetId === 'custom' ? 'Custom colors' : 'Preset applied'}</span>
-            </div>
-            <div className="mt-3 grid grid-cols-2 gap-2.5">
-              {THEME_PRESETS.map((p) => {
-                const active = activePresetId === p.id;
-                const v = p.variables;
-                return (
-                  <button
-                    key={p.id}
-                    onClick={() => setPreset(p.id)}
-                    className={`rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 ${active ? 'border-[#101612] ring-2 ring-[#101612]/15' : 'border-[#E1E4DE]'}`}
-                  >
-                    <div className="flex h-8 overflow-hidden rounded-lg border border-black/5">
-                      {[v.bgPage, v.textMain, v.accentEmerald, v.accentLime, v.surfaceTint].map((c, i) => (
-                        <span key={i} className="flex-1" style={{ background: c }} />
-                      ))}
-                    </div>
-                    <p className="mt-2 flex items-center gap-1 text-[13px] font-semibold leading-tight">
-                      {active && <Check className="size-3.5 text-emerald-600" />}
-                      {p.name.replace(/^Option [A-Z]: /, '')}
-                    </p>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
           <section className="rounded-3xl border border-[#E1E4DE] bg-white">
             <div className="px-5 pt-5">
-              <h2 className="text-base font-bold">Customize colors</h2>
+              <h2 className="text-base font-bold">Site colors</h2>
               <p className="mt-1 text-[13px] text-[#6B746D]">Click a swatch to pick a color, or type any hex value. The preview updates instantly.</p>
             </div>
             <div className="mt-3 divide-y divide-[#EDEFEA]">
@@ -264,9 +264,35 @@ export default function AdminThemePage() {
             </div>
           </section>
 
+          <section className="rounded-3xl border border-[#101612] bg-white p-5">
+            <div className="flex items-center gap-2">
+              <Globe className="size-4" />
+              <h2 className="text-base font-bold">Publish to live site</h2>
+              <span className={`ml-auto rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${published === undefined ? 'bg-[#EDEFEA]' : inSync ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                {published === undefined ? 'Checking…' : inSync ? 'Live = this draft' : 'Draft not live'}
+              </span>
+            </div>
+            <p className="mt-2 text-[13px] text-[#6B746D]">
+              Your edits are a <b>draft in this browser only</b>. Publish to make this theme the one every visitor sees. {published ? 'A custom theme is currently live.' : 'The default theme is currently live.'}
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2 text-sm font-semibold">
+              <button onClick={publish} disabled={publishing || inSync} className="rounded-full bg-[#101612] px-4 py-2 text-white disabled:opacity-40">
+                {publishing ? 'Publishing…' : 'Publish theme'}
+              </button>
+              <button onClick={() => { revertToPublished(); toast.info('Draft discarded. Showing the live theme.'); }} disabled={inSync} className="rounded-full border border-[#E1E4DE] px-4 py-2 hover:bg-[#EDEFEA] disabled:opacity-40">
+                Discard draft
+              </button>
+              {published && (
+                <button onClick={unpublish} className="rounded-full border border-red-200 px-4 py-2 text-red-600 hover:bg-red-50">
+                  Unpublish
+                </button>
+              )}
+            </div>
+          </section>
+
           <section className="rounded-3xl border border-[#E1E4DE] bg-white p-5">
-            <h2 className="text-base font-bold">Save & share</h2>
-            <p className="mt-1 text-[13px] text-[#6B746D]">Changes are saved automatically in this browser. Export to keep a backup or move it elsewhere.</p>
+            <h2 className="text-base font-bold">Backup & share</h2>
+            <p className="mt-1 text-[13px] text-[#6B746D]">Drafts auto-save in this browser. Export a file to keep a backup or move a theme to another machine.</p>
             <div className="mt-3 flex flex-wrap gap-2 text-sm font-semibold">
               <button onClick={copy} className="flex items-center gap-1.5 rounded-full border border-[#E1E4DE] px-3.5 py-2 hover:bg-[#EDEFEA]"><Copy className="size-3.5" /> Copy JSON</button>
               <button onClick={download} className="flex items-center gap-1.5 rounded-full border border-[#E1E4DE] px-3.5 py-2 hover:bg-[#EDEFEA]"><Download className="size-3.5" /> Download</button>

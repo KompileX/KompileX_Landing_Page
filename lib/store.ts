@@ -17,6 +17,12 @@ const FILE = path.join(process.cwd(), 'data', 'store.json');
 
 export const storeBackend = REST_URL && REST_TOKEN ? 'redis' : 'file';
 
+function assertWritableFileStore() {
+  if (process.env.VERCEL) {
+    throw new Error('Storage is not connected. In Vercel, connect the Upstash Redis database to this project (Storage tab) and redeploy.');
+  }
+}
+
 async function readFileStore(): Promise<Record<string, unknown>> {
   try {
     return JSON.parse(await fs.readFile(FILE, 'utf8'));
@@ -48,6 +54,7 @@ export async function storeSet(key: string, value: unknown): Promise<void> {
     if (!res.ok) throw new Error(`Store write failed (${res.status})`);
     return;
   }
+  assertWritableFileStore();
   const all = await readFileStore();
   all[key] = value;
   await fs.mkdir(path.dirname(FILE), { recursive: true });
@@ -62,6 +69,7 @@ export async function storeDelete(key: string): Promise<void> {
     });
     return;
   }
+  assertWritableFileStore();
   const all = await readFileStore();
   delete all[key];
   await fs.mkdir(path.dirname(FILE), { recursive: true });

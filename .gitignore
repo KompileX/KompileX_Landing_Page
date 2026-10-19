@@ -41,3 +41,4 @@ coverage/
 # Reverse engineering dumps
 scripts/*.html
 scripts/raw_dump/
+data/jobs.json

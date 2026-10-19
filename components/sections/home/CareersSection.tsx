@@ -11,7 +11,7 @@ export default function CareersSection() {
       <h2 className="disp" style={{ fontSize: 'clamp(26px,2.9vw,37px)', lineHeight: '1.02', fontWeight: '800', textWrap: 'balance' }}>Want to build with us?</h2>
       <p style={{ fontSize: '18px', lineHeight: '1.55', color: 'var(--kpx-text-muted, #4A5650)', textWrap: 'pretty' }}>We are remote-first. If you care about senior-level engineering, say hello. [ADD CAREERS EMAIL OR OPEN-ROLES LINK]</p>
     </div>
-    <a href="#" className="btn btn-ink">See open roles
+    <a href="/careers" className="btn btn-ink">See open roles
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
     </a>
   </div>

@@ -13,14 +13,6 @@ const NAV: Item[] = [
     label: 'Services',
     href: '/services',
     match: '/services',
-    children: [
-      { label: 'Web applications', href: '/services#svc-web', hint: 'React, Next.js, design systems' },
-      { label: 'Mobile apps', href: '/services#svc-mobile', hint: 'iOS & Android with React Native' },
-      { label: 'Backend & APIs', href: '/services#svc-backend', hint: 'Go, Node.js, .NET, PostgreSQL' },
-      { label: 'AI & automation', href: '/services#svc-ai', hint: 'LLM apps, agents, workflows' },
-      { label: 'DevOps & hosting', href: '/services#svc-devops', hint: 'CI/CD, servers, monitoring' },
-      { label: 'All services', href: '/services' },
-    ],
   },
   {
     label: 'Work',
@@ -40,7 +32,7 @@ const NAV: Item[] = [
       { label: 'About us', href: '/about-us', hint: 'Who we are and how we work' },
       { label: 'Our team', href: '/about-us#team' },
       { label: 'How we deliver', href: '/#process' },
-      { label: 'Careers', href: '/#careers' },
+      { label: 'Careers', href: '/careers', hint: 'Open roles' },
       { label: 'FAQ', href: '/#faq' },
       { label: 'Contact', href: '/#contact' },
     ],

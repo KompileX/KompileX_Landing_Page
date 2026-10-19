@@ -226,6 +226,32 @@ export default function AdminThemePage() {
       <div className="grid gap-6 lg:grid-cols-[440px_minmax(0,1fr)]">
         {/* ───────── Controls ───────── */}
         <div className="flex flex-col gap-5">
+          <section className="rounded-3xl border border-[#101612] bg-white p-5">
+            <div className="flex items-center gap-2">
+              <Globe className="size-4" />
+              <h2 className="text-base font-bold">Publish to live site</h2>
+              <span className={`ml-auto rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${published === undefined ? 'bg-[#EDEFEA]' : inSync ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
+                {published === undefined ? 'Checking…' : inSync ? 'Live = this draft' : 'Draft not live'}
+              </span>
+            </div>
+            <p className="mt-2 text-[13px] text-[#6B746D]">
+              Your edits are a <b>draft in this browser only</b>. Publish to make this theme the one every visitor sees. {published ? 'A custom theme is currently live.' : 'The default theme is currently live.'}
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2 text-sm font-semibold">
+              <button onClick={publish} disabled={publishing || inSync} className="rounded-full bg-[#101612] px-4 py-2 text-white disabled:opacity-40">
+                {publishing ? 'Publishing…' : 'Publish theme'}
+              </button>
+              <button onClick={() => { revertToPublished(); toast.info('Draft discarded. Showing the live theme.'); }} disabled={inSync} className="rounded-full border border-[#E1E4DE] px-4 py-2 hover:bg-[#EDEFEA] disabled:opacity-40">
+                Discard draft
+              </button>
+              {published && (
+                <button onClick={unpublish} className="rounded-full border border-red-200 px-4 py-2 text-red-600 hover:bg-red-50">
+                  Unpublish
+                </button>
+              )}
+            </div>
+          </section>
+
           <section className="rounded-3xl border border-[#E1E4DE] bg-white p-5">
             <div className="flex items-baseline justify-between">
               <h2 className="text-base font-bold">Color themes</h2>
@@ -287,32 +313,6 @@ export default function AdminThemePage() {
                   </div>
                 );
               })}
-            </div>
-          </section>
-
-          <section className="rounded-3xl border border-[#101612] bg-white p-5">
-            <div className="flex items-center gap-2">
-              <Globe className="size-4" />
-              <h2 className="text-base font-bold">Publish to live site</h2>
-              <span className={`ml-auto rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide ${published === undefined ? 'bg-[#EDEFEA]' : inSync ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                {published === undefined ? 'Checking…' : inSync ? 'Live = this draft' : 'Draft not live'}
-              </span>
-            </div>
-            <p className="mt-2 text-[13px] text-[#6B746D]">
-              Your edits are a <b>draft in this browser only</b>. Publish to make this theme the one every visitor sees. {published ? 'A custom theme is currently live.' : 'The default theme is currently live.'}
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2 text-sm font-semibold">
-              <button onClick={publish} disabled={publishing || inSync} className="rounded-full bg-[#101612] px-4 py-2 text-white disabled:opacity-40">
-                {publishing ? 'Publishing…' : 'Publish theme'}
-              </button>
-              <button onClick={() => { revertToPublished(); toast.info('Draft discarded. Showing the live theme.'); }} disabled={inSync} className="rounded-full border border-[#E1E4DE] px-4 py-2 hover:bg-[#EDEFEA] disabled:opacity-40">
-                Discard draft
-              </button>
-              {published && (
-                <button onClick={unpublish} className="rounded-full border border-red-200 px-4 py-2 text-red-600 hover:bg-red-50">
-                  Unpublish
-                </button>
-              )}
             </div>
           </section>
 

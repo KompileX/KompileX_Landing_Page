@@ -1,115 +1,48 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code when working in this repository.
 
 ## Commands
 
 ```bash
-npm run dev      # Next dev server (http://localhost:3000)
-npm run build    # Static export -> dist/
-npm run start    # Serve production build
-npm run lint     # next lint
-npx tsc --noEmit # Typecheck (build does this too; tsconfig is noEmit)
+npm run dev      # Next dev server
+npm run build    # Production build
+npm run start    # next start
+npx tsc --noEmit # Typecheck
 ```
 
-Both `bun.lock` and `package-lock.json` exist. There are no tests and no test runner.
+No tests. `npm run dev` and `.next/` can be shared by several running dev servers; to test
+without disturbing them, use another port and a separate `distDir`.
 
 ## Stack
 
-Next.js 15 App Router + React 18 + TypeScript (strict) + Tailwind 3. UI primitives are
-shadcn/ui-style local components on Radix (`components/ui/`). Animation is `motion`
-(Framer Motion v12, imported from `motion/react`). Icons: `lucide-react`. Toasts: `sonner`.
+Next.js 15 App Router, React 18, TypeScript, Tailwind 3, `motion` (motion/react), `lenis`
+(smooth scroll), `lucide-react`, `sonner`. **Server mode** (not a static export): route handlers
+and middleware are in use.
 
-`next.config.ts` sets `output: 'export'` + `distDir: 'dist'` + `images.unoptimized`.
-**Static export only** — no route handlers, no server actions, no dynamic rendering, no
-Next middleware. Anything needing a backend must be a client-side fetch or a `mailto:` link.
+## Layout
 
-## Architecture
+- `app/page.tsx` – the single-page site, an ordered list of sections wrapped in `Reveal`.
+- `components/layout/` – `Navbar` (sticky, scroll-spy, real logo), `Footer`.
+- `components/sections/home/` – one file per section (ids: `services`, `process`, `devops`, `work`,
+  `why`, `technologies`, `careers`, `faq`, `contact`). Keep navbar items in sync with these ids.
+- `components/effects/` – `AuroraBackground`, `ScrollProgress`, `Reveal`, `SmoothScroll`.
+- `components/chat/AIChatWidget.tsx` – bottom-right AI chat; backend is `app/api/chat/route.ts`
+  (needs `GROQ_API_KEY`; Google Calendar booking via `lib/googleCalendar.ts`).
+- `components/case-study/`, `components/CaseStudyDetailClient.tsx`, `lib/case-studies-data.ts` – case studies.
+- `lib/content/tech.ts` – tech marquee data; logos are SVGs in `public/tech/`.
 
-Single-page landing site. `app/page.tsx` is just an ordered list of section components; each
-section in `components/` is self-contained and owns its own copy, data, and layout. Content
-lives in typed `const` arrays at the top of each section file — there is no CMS or data layer.
+## Admin / theme
 
-Section anchors and the `navItems` array in [Navbar.tsx](components/Navbar.tsx) are the routing
-model: `#about`, `#services` (FeaturesSection), `#work` (StackSection), `#process`
-(HowItWorksSection), `#faq`, `#contact`. `TechStackSection` (`#tech-stack`) and
-`UseCasesSection` (`#industries`) render but are not linked from the navbar. Keep these in sync
-when adding or renaming a section.
+- `/admin` and the floating theme studio are protected by `middleware.ts` + `lib/adminAuth.ts`
+  (httpOnly signed cookie). Set `ADMIN_PASSWORD` (and optionally `ADMIN_SESSION_SECRET`) in env.
+- Theme edits are stored in the admin's browser (`localStorage`) via `context/ThemeCustomizerContext.tsx`;
+  visitors always see the defaults.
+- All colours come from `--kpx-*` CSS variables (`app/globals.css`, `lib/theme-config.ts`).
+  shadcn-style tokens (`bg-card`, `text-foreground`…) are bridged to them at the bottom of `globals.css`.
+- `app/redesign-exact.css` holds the page styles (`.btn`, `.sec`, `.wrap`, `kx-*`). It still contains
+  three pasted stylesheet copies that could be merged.
 
-Nearly every section is `'use client'` — they use `motion` scroll hooks, `useTheme`, or form
-state. Only `app/page.tsx` and `app/layout.tsx` are server components.
+## Content rules
 
-## Theming — read before touching styles
-
-Two coexisting token families, both defined in [app/globals.css](app/globals.css):
-
-1. **shadcn tokens** — `--background`, `--foreground`, `--card`, `--primary`, `--secondary`,
-   `--muted`, `--accent`, `--border`, `--input`, `--ring`, `--radius`, plus project extras
-   `--button-border` and `--light` (the blue used by the glow blobs). Exposed through
-   `tailwind.config.js` as `bg-background`, `text-muted-foreground`, `border-border`, etc.
-   **Use these for new work.**
-2. **Legacy KompileX tokens** — `--bg-primary`, `--text-primary/secondary/tertiary`,
-   `--border-primary`, `--accent-primary/secondary/blue`, `--input-*`, `--scrollbar-*`, and the
-   `.btn-primary-blue` / `.btn-outline` / `.btn-cta` / `.feature-card` / `.input-dark` component
-   classes. Still referenced by older sections. Don't extend; migrate opportunistically.
-
-Theme switching is **`data-theme="light"` on `<html>`**, set by
-[ThemeContext.tsx](context/ThemeContext.tsx) — *not* Tailwind's `dark:` variant and not a
-`.dark` class. Tailwind `dark:` classes will not respond to the toggle. Dark is the default
-(no attribute); light is the opt-in override block in `globals.css`.
-
-The Tailwind color values are raw `var(--x)` hex, not `<alpha-value>` templates, so Tailwind
-cannot inject alpha — treat modifiers like `bg-background/90` as approximate. For real
-translucency use the rgba-valued legacy vars or an explicit `rgba()`.
-
-`ThemeProvider` renders `children` *without* the context provider until mounted, so `useTheme()`
-returns the default `'dark'` on first paint. Both `<html>` and `<body>` set
-`suppressHydrationWarning` for this reason.
-
-## Section conventions
-
-Match these when adding or editing a section:
-
-- Wrapper: `<section id="…" className="w-full py-14 lg:py-20">`, inner container
-  `max-w-screen-xl mx-auto px-4 md:px-8` (some use `max-w-7xl`). Vertical rhythm is
-  deliberately tight — `py-14 lg:py-20` everywhere.
-- Entry animation: `motion.section` / `motion.div` with
-  `initial={{ y: 20, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }}`
-  and a spring transition with `bounce: 0`.
-- Heading: pill badge (`rounded-full border text-xs text-muted-foreground` + pulsing dot), then
-  `h2` with `bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text text-transparent`.
-- Ambient blue glow: absolutely positioned `bg-light blur-[70px]` rotated bar, `pointer-events-none`.
-- `cn()` from [lib/utils.ts](lib/utils.ts) for class merging; `cva` variants for anything reusable.
-
-## Toasts
-
-Two systems are wired up. Use **`toast` from `sonner`** (the `<Toaster richColors />` in
-[layout.tsx](app/layout.tsx)) for new code. [components/Toast.tsx](components/Toast.tsx) is a
-hand-rolled `ToastProvider`/`useToast` backed by the `.gooey-toast*` CSS in `globals.css`; it
-still wraps the page but nothing calls it. Prefer sonner rather than adding to it.
-
-## Stale artifacts — do not trust
-
-The repo was migrated from a Vite + vanilla-TS site and the old files were left in place:
-
-- **`README.md` describes the pre-migration Vite stack** (port 5173, `bun run preview`,
-  `src/scripts/main.ts`, waitlist API). It is wrong about the current build; prefer this file.
-- `src/`, `vite.config.ts`, `.gitignore.web` — dead. `tsconfig.json` explicitly excludes `src`
-  and `vite.config.ts`.
-- `.env.example` / `VITE_API_BASE_URL` (passed through in `next.config.ts`) is left over from the
-  waitlist API. Nothing reads it — `ContactSection` opens a `mailto:` to `hello@kompilex.dev`.
-- `docker-compose.yml` (Postgres + Redis) belongs to the backend, not this static site.
-- `claudePlan.md` / `webPlan.md` are historical plans for the *old* AI-transcription-product
-  positioning. The live copy has since been rewritten toward a dev-studio/portfolio framing
-  (see `StackSection`, `AboutSection`), so treat those docs as outdated content specs.
-- `public/images/screenshots/` are product screenshots from that earlier positioning; most are
-  now unreferenced.
-
-Metadata in `app/layout.tsx` still carries the old AI-transcription SEO copy while the page body
-sells a studio — flag rather than silently rewrite, since which one is canonical is a content call.
-
-## Design skill
-
-A `frontend-design` skill is vendored per-agent-tool (`.claude/`, `.cursor/`, `.agent/`,
-`.agents/`, `.windsurf/` — all identical copies). Consult
-[.claude/skills/frontend-design/SKILL.md](.claude/skills/frontend-design/SKILL.md) for UI work.
+Do not describe the company as Dhaka-based on the public site (legal pages may keep the address).

@@ -15,6 +15,7 @@ interface ThemeCustomizerContextType {
   updateMultipleVariables: (updates: Partial<ThemeVariables>) => void;
   setPreset: (presetId: string) => void;
   resetToDefaults: () => void;
+  revertToPublished: () => void;
   exportJSON: () => string;
   importJSON: (jsonStr: string) => boolean;
   isCustomizerOpen: boolean;
@@ -27,8 +28,10 @@ const PRESET_KEY = 'kompilex_dynamic_preset_v2';
 
 const ThemeCustomizerContext = createContext<ThemeCustomizerContextType | null>(null);
 
-export function ThemeCustomizerProvider({ children }: { children: React.ReactNode }) {
-  const [variables, setVariables] = useState<ThemeVariables>(DEFAULT_THEME_VARIABLES);
+export function ThemeCustomizerProvider({ children, publishedTheme }: { children: React.ReactNode; publishedTheme?: Partial<ThemeVariables> | null }) {
+  // What visitors see: defaults overlaid with the theme the admin published.
+  const base: ThemeVariables = { ...DEFAULT_THEME_VARIABLES, ...(publishedTheme || {}) };
+  const [variables, setVariables] = useState<ThemeVariables>(base);
   const [activePresetId, setActivePresetId] = useState<string | null>('default');
   const [isCustomizerOpen, setIsCustomizerOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -58,10 +61,10 @@ export function ThemeCustomizerProvider({ children }: { children: React.ReactNod
         applyVariablesToDom(merged);
         if (storedPreset) setActivePresetId(storedPreset);
       } else {
-        applyVariablesToDom(DEFAULT_THEME_VARIABLES);
+        applyVariablesToDom(base);
       }
     } catch {
-      applyVariablesToDom(DEFAULT_THEME_VARIABLES);
+      applyVariablesToDom(base);
     }
     setMounted(true);
   }, []);
@@ -72,7 +75,7 @@ export function ThemeCustomizerProvider({ children }: { children: React.ReactNod
       if (e.key !== STORAGE_KEY && e.key !== PRESET_KEY && e.key !== null) return;
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
-        const next = stored ? { ...DEFAULT_THEME_VARIABLES, ...JSON.parse(stored) } : DEFAULT_THEME_VARIABLES;
+        const next = stored ? { ...DEFAULT_THEME_VARIABLES, ...JSON.parse(stored) } : base;
         setVariables(next);
         applyVariablesToDom(next);
         setActivePresetId(localStorage.getItem(PRESET_KEY) || (stored ? 'custom' : 'default'));
@@ -153,6 +156,21 @@ export function ThemeCustomizerProvider({ children }: { children: React.ReactNod
     });
   };
 
+  // Drop this browser's draft and go back to what visitors see
+  const revertToPublished = () => {
+    startTransition(() => {
+      setVariables(base);
+      setActivePresetId(publishedTheme ? 'custom' : 'default');
+      applyVariablesToDom(base);
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(PRESET_KEY);
+      } catch {
+        // ignore
+      }
+    });
+  };
+
   // Export JSON string
   const exportJSON = () => {
     return JSON.stringify(
@@ -192,6 +210,7 @@ export function ThemeCustomizerProvider({ children }: { children: React.ReactNod
         updateMultipleVariables,
         setPreset,
         resetToDefaults,
+        revertToPublished,
         exportJSON,
         importJSON,
         isCustomizerOpen,

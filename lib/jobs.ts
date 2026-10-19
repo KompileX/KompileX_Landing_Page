@@ -1,5 +1,4 @@
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
+import { storeGet, storeSet } from './store';
 
 export type JobStatus = 'open' | 'closed';
 
@@ -23,21 +22,14 @@ export type Job = {
 
 export type JobInput = Omit<Job, 'id' | 'slug' | 'createdAt' | 'updatedAt'>;
 
-// Jobs live in a JSON file. This works on a VPS / local machine. On read-only
-// serverless hosts (e.g. Vercel) swap readAll/writeAll for a KV or database.
-const FILE = path.join(process.cwd(), 'data', 'jobs.json');
+const KEY = 'jobs';
 
 async function readAll(): Promise<Job[]> {
-  try {
-    return JSON.parse(await fs.readFile(FILE, 'utf8')) as Job[];
-  } catch {
-    return [];
-  }
+  return (await storeGet<Job[]>(KEY)) ?? [];
 }
 
 async function writeAll(jobs: Job[]) {
-  await fs.mkdir(path.dirname(FILE), { recursive: true });
-  await fs.writeFile(FILE, JSON.stringify(jobs, null, 2), 'utf8');
+  await storeSet(KEY, jobs);
 }
 
 const slugify = (s: string) =>

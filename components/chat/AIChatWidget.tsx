@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { AnimatePresence, MotionConfig, motion } from 'motion/react'
 import { Sparkles, X, ArrowUp, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -31,6 +32,7 @@ const SUGGESTIONS = [
 const uid = () => Math.random().toString(36).slice(2, 10)
 
 export default function AIChatWidget() {
+  const pathname = usePathname()
 
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState('')
@@ -178,6 +180,8 @@ export default function AIChatWidget() {
       return part
     })
   }
+
+  if (pathname.startsWith('/admin')) return null
 
   const glowShadow = 'shadow-[0_24px_60px_-24px_rgba(12,20,16,0.45)]'
 

@@ -1,1032 +1,327 @@
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useThemeCustomizer } from '@/context/ThemeCustomizerContext';
-import { THEME_PRESETS, ThemeVariables } from '@/lib/theme-config';
-import {
-  Paintbrush,
-  Sliders,
-  RotateCcw,
-  Copy,
-  Download,
-  Upload,
-  ArrowLeft,
-  LogOut,
-  Sparkles,
-  Check,
-  Eye,
-  Layers,
-  Cpu,
-  Palette,
-  Terminal,
-  Activity,
-  Maximize2,
-} from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Check, ChevronDown, Copy, Download, Monitor, RotateCcw, Smartphone, Upload } from 'lucide-react';
 import { toast } from 'sonner';
+import AdminShell from '@/components/admin/AdminShell';
+import { useThemeCustomizer } from '@/context/ThemeCustomizerContext';
+import { THEME_PRESETS, DEFAULT_THEME_VARIABLES, type ThemeVariables } from '@/lib/theme-config';
 
-export default function AdminThemePage() {
-  const router = useRouter();
-  const handleLogout = async () => {
-    await fetch('/api/admin/logout', { method: 'POST' });
-    router.replace('/admin/login');
-    router.refresh();
-  };
+type Field = { key: keyof ThemeVariables; label: string; hint?: string };
+type Group = { id: string; title: string; description: string; fields: Field[] };
 
-  const {
-    variables,
-    activePresetId,
-    updateVariable,
-    updateMultipleVariables,
-    setPreset,
-    resetToDefaults,
-    exportJSON,
-    importJSON,
-  } = useThemeCustomizer();
+const GROUPS: Group[] = [
+  {
+    id: 'brand',
+    title: 'Brand colors',
+    description: 'The main accent colors used for highlights, links and markers.',
+    fields: [
+      { key: 'accentEmerald', label: 'Primary accent', hint: 'Links, eyebrow labels, active states' },
+      { key: 'accentLime', label: 'Highlight accent', hint: 'Badges, icons, call-outs' },
+      { key: 'highlightMarker', label: 'Text highlighter', hint: 'Underline behind key words in headings' },
+      { key: 'accentLimeHover', label: 'Highlight hover' },
+    ],
+  },
+  {
+    id: 'page',
+    title: 'Page & text',
+    description: 'Background, cards, text and borders.',
+    fields: [
+      { key: 'bgPage', label: 'Page background' },
+      { key: 'textMain', label: 'Main text' },
+      { key: 'textMuted', label: 'Secondary text' },
+      { key: 'surface', label: 'Card background' },
+      { key: 'surfaceTint', label: 'Tinted surface' },
+      { key: 'surfaceSoft', label: 'Chips & tags' },
+      { key: 'borderMain', label: 'Border' },
+      { key: 'borderLight', label: 'Strong border' },
+    ],
+  },
+  {
+    id: 'buttons',
+    title: 'Buttons',
+    description: 'Dark, lime and outline button styles.',
+    fields: [
+      { key: 'btnInkBg', label: 'Dark button' },
+      { key: 'btnInkText', label: 'Dark button text' },
+      { key: 'btnInkHoverBg', label: 'Dark button hover' },
+      { key: 'btnLimeBg', label: 'Lime button' },
+      { key: 'btnLimeText', label: 'Lime button text' },
+      { key: 'btnLimeHoverBg', label: 'Lime button hover' },
+      { key: 'btnLineBorder', label: 'Outline border' },
+      { key: 'btnLineText', label: 'Outline text' },
+      { key: 'btnLineHoverBg', label: 'Outline hover' },
+      { key: 'btnLineHoverText', label: 'Outline hover text' },
+    ],
+  },
+  {
+    id: 'dark',
+    title: 'Dark sections & footer',
+    description: 'The DevOps block and the footer.',
+    fields: [
+      { key: 'darkBg', label: 'Background' },
+      { key: 'darkText', label: 'Text' },
+      { key: 'darkMuted', label: 'Muted text' },
+      { key: 'darkBorder', label: 'Dividers' },
+      { key: 'darkAccent', label: 'Accent' },
+    ],
+  },
+  {
+    id: 'visuals',
+    title: 'Illustrations & details',
+    description: 'Hero dashboard, server rack, ticker and card icons.',
+    fields: [
+      { key: 'stageBg', label: 'Hero stage background' },
+      { key: 'stageWinBg', label: 'Dashboard window' },
+      { key: 'stageWinHeader', label: 'Window header' },
+      { key: 'stagePulseDot', label: 'Live status dot' },
+      { key: 'stageBarsDefault', label: 'Chart bars' },
+      { key: 'stageBarsHighlight', label: 'Chart peak bar' },
+      { key: 'stageCardFloat', label: 'Floating card' },
+      { key: 'rackBg', label: 'Server rack' },
+      { key: 'rackUnitBg', label: 'Rack unit' },
+      { key: 'rackLedGreen', label: 'Green LED' },
+      { key: 'rackLedLime', label: 'Lime LED' },
+      { key: 'rackLedAmber', label: 'Amber LED' },
+      { key: 'rackCables', label: 'Cables' },
+      { key: 'marqueeText', label: 'Ticker text' },
+      { key: 'marqueeStar', label: 'Ticker marker' },
+      { key: 'marqueeDarkStar', label: 'Ticker marker (dark)' },
+      { key: 'cardHoverBorder', label: 'Card hover border' },
+      { key: 'cardIconBg', label: 'Card icon background' },
+      { key: 'cardIconHoverBg', label: 'Card icon hover' },
+      { key: 'cardIconStroke', label: 'Card icon stroke' },
+      { key: 'cardIconHoverStroke', label: 'Card icon hover stroke' },
+    ],
+  },
+];
 
-  const [activeSection, setActiveSection] = useState<'presets' | 'base' | 'accents' | 'buttons' | 'particles' | 'dark' | 'raw'>('presets');
-  const [importText, setImportText] = useState('');
-  const [showImportModal, setShowImportModal] = useState(false);
+const PAGES = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/technologies', label: 'Technologies' },
+  { href: '/about-us', label: 'About' },
+  { href: '/careers', label: 'Careers' },
+  { href: '/privacy-policy', label: 'Legal' },
+];
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(exportJSON());
-    toast.success('Theme JSON copied to clipboard!');
-  };
+const HEX6 = /^#[0-9a-fA-F]{6}$/;
 
-  const handleDownload = () => {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(exportJSON());
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `kompilex-theme-${activePresetId || 'custom'}.json`);
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
-    toast.success('Theme JSON downloaded!');
-  };
-
-  const handleImportSubmit = () => {
-    const ok = importJSON(importText);
-    if (ok) {
-      toast.success('Theme imported and applied successfully!');
-      setShowImportModal(false);
-      setImportText('');
-    } else {
-      toast.error('Invalid JSON format. Please verify and try again.');
-    }
-  };
-
+function ColorRow({ field, value, def, onChange }: { field: Field; value: string; def: string; onChange: (v: string) => void }) {
+  const [text, setText] = useState<string | null>(null);
+  const shown = text ?? value;
+  const changed = value.toLowerCase() !== def.toLowerCase();
   return (
-    <div
-      className="min-h-screen flex flex-col font-sans transition-colors duration-200"
-      style={{
-        background: 'var(--kpx-bg-page)',
-        color: 'var(--kpx-text-main)',
-      }}
-    >
-      {/* Top Admin Navigation Bar */}
-      <header
-        className="sticky top-0 z-50 px-6 py-4 border-b flex flex-wrap items-center justify-between gap-4 backdrop-blur-md"
-        style={{
-          background: 'rgba(255, 255, 255, 0.85)',
-          borderColor: 'var(--kpx-border)',
-        }}
-      >
-        <div className="flex items-center gap-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold transition-all hover:scale-105"
-            style={{
-              borderColor: 'var(--kpx-border)',
-              background: 'var(--kpx-surface)',
-            }}
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>View Landing Page</span>
-          </Link>
-
-          <div className="flex items-center gap-2">
-            <span
-              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
-              style={{
-                background: 'var(--kpx-btn-ink-bg)',
-                color: 'var(--kpx-accent-lime)',
-              }}
-            >
-              KX
-            </span>
-            <div>
-              <h1 className="text-base font-bold leading-tight flex items-center gap-2">
-                <span>KompileX Admin Panel</span>
-                <span
-                  className="text-[11px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider"
-                  style={{
-                    background: 'var(--kpx-accent-lime)',
-                    color: 'var(--kpx-text-main)',
-                  }}
-                >
-                  Live Controller
-                </span>
-              </h1>
-              <p className="text-xs opacity-60">Full Dynamic Theme, Color, Particle & Shading Studio</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Global Action Buttons */}
-        <div className="flex items-center flex-wrap gap-2 text-xs">
-          <Link href="/admin/jobs" className="px-3.5 py-2 rounded-xl font-semibold border flex items-center gap-1.5 transition-colors hover:bg-black/5" style={{ borderColor: 'var(--kpx-border)' }}>Careers</Link>
-          <Link
-            href="/admin/jobs"
-            className="px-3.5 py-2 rounded-xl font-semibold border flex items-center gap-1.5 transition-colors hover:bg-black/5"
-            style={{ borderColor: 'var(--kpx-border)' }}
-          >
-            Careers
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="px-3.5 py-2 rounded-xl font-semibold border flex items-center gap-1.5 transition-colors hover:bg-black/5"
-            style={{ borderColor: 'var(--kpx-border)' }}
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span>Log out</span>
-          </button>
-          <button
-            onClick={() => setShowImportModal(true)}
-            className="px-3.5 py-2 rounded-xl font-semibold border flex items-center gap-1.5 transition-colors hover:bg-black/5"
-            style={{ borderColor: 'var(--kpx-border)' }}
-          >
-            <Upload className="w-3.5 h-3.5" />
-            <span>Import</span>
-          </button>
-
-          <button
-            onClick={handleDownload}
-            className="px-3.5 py-2 rounded-xl font-semibold border flex items-center gap-1.5 transition-colors hover:bg-black/5"
-            style={{ borderColor: 'var(--kpx-border)' }}
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Download</span>
-          </button>
-
-          <button
-            onClick={handleCopy}
-            className="px-3.5 py-2 rounded-xl font-semibold border flex items-center gap-1.5 transition-colors hover:bg-black/5"
-            style={{ borderColor: 'var(--kpx-border)' }}
-          >
-            <Copy className="w-3.5 h-3.5" />
-            <span>Copy JSON</span>
-          </button>
-
-          <button
-            onClick={() => {
-              resetToDefaults();
-              toast.info('Reset to official Redesign defaults');
-            }}
-            className="px-3.5 py-2 rounded-xl font-semibold border flex items-center gap-1.5 transition-colors hover:bg-red-50 text-red-600 border-red-200"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset Defaults</span>
-          </button>
-        </div>
-      </header>
-
-      {/* Main Studio Body */}
-      <div className="flex-1 max-w-[1600px] w-full mx-auto p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Navigation Sidebar */}
-        <div className="lg:col-span-3 space-y-4">
-          <div
-            className="p-3 rounded-2xl border flex flex-col gap-1.5"
-            style={{
-              borderColor: 'var(--kpx-border)',
-              background: 'var(--kpx-surface)',
-            }}
-          >
-            <span className="px-3 py-1 text-[11px] font-bold uppercase tracking-wider opacity-60">
-              Studio Categories
-            </span>
-
-            {[
-              { id: 'presets', label: '1-Click Presets', icon: Sparkles, desc: 'Official Redesign color directions' },
-              { id: 'base', label: 'Base & Typography', icon: Palette, desc: 'Canvas ground, main text, surfaces' },
-              { id: 'accents', label: 'Accents & Markers', icon: Activity, desc: 'Emerald, acid lime, highlights' },
-              { id: 'buttons', label: 'Buttons & Controls', icon: Sliders, desc: 'Dark, lime, line, hover states' },
-              { id: 'particles', label: 'Particles & Segments', icon: Cpu, desc: 'Stage charts, rack LEDs, cables' },
-              { id: 'dark', label: 'Dark Blocks & Footer', icon: Layers, desc: 'DevOps & dark footer ground & text' },
-              { id: 'raw', label: 'Raw JSON Editor', icon: Terminal, desc: 'Direct code inspect & modify' },
-            ].map(item => {
-              const Icon = item.icon;
-              const isSelected = activeSection === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveSection(item.id as any)}
-                  className={`flex items-start gap-3 p-3 rounded-xl text-left transition-all ${
-                    isSelected
-                      ? 'shadow-sm font-semibold'
-                      : 'opacity-70 hover:opacity-100 hover:bg-black/5'
-                  }`}
-                  style={{
-                    background: isSelected ? 'var(--kpx-surface-tint)' : 'transparent',
-                    border: isSelected ? '1px solid var(--kpx-border)' : '1px solid transparent',
-                  }}
-                >
-                  <Icon
-                    className="w-5 h-5 shrink-0 mt-0.5"
-                    style={{
-                      color: isSelected ? 'var(--kpx-accent-emerald)' : 'inherit',
-                    }}
-                  />
-                  <div>
-                    <div className="text-sm font-bold leading-tight">{item.label}</div>
-                    <div className="text-[11px] opacity-70 leading-normal">{item.desc}</div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Quick Active Theme Summary Card */}
-          <div
-            className="p-5 rounded-2xl border space-y-3"
-            style={{
-              borderColor: 'var(--kpx-border)',
-              background: 'var(--kpx-surface)',
-            }}
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider opacity-60">
-                Active Theme
-              </span>
-              <span
-                className="text-xs px-2.5 py-0.5 rounded-full font-bold"
-                style={{
-                  background: 'var(--kpx-accent-lime)',
-                  color: 'var(--kpx-text-main)',
-                }}
-              >
-                {activePresetId ? activePresetId.toUpperCase() : 'CUSTOM'}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-5 gap-1.5 pt-1">
-              <span
-                className="h-9 rounded-lg border border-black/10 flex items-center justify-center text-[10px] font-mono"
-                style={{ background: variables.bgPage, color: variables.textMain }}
-                title="Page Ground"
-              >
-                BG
-              </span>
-              <span
-                className="h-9 rounded-lg border border-black/10 flex items-center justify-center text-[10px] font-mono"
-                style={{ background: variables.textMain, color: variables.bgPage }}
-                title="Main Text"
-              >
-                TXT
-              </span>
-              <span
-                className="h-9 rounded-lg border border-black/10 flex items-center justify-center text-[10px] font-mono text-white"
-                style={{ background: variables.accentEmerald }}
-                title="Accent Emerald"
-              >
-                EM
-              </span>
-              <span
-                className="h-9 rounded-lg border border-black/10 flex items-center justify-center text-[10px] font-mono text-black"
-                style={{ background: variables.accentLime }}
-                title="Highlight Lime"
-              >
-                LIME
-              </span>
-              <span
-                className="h-9 rounded-lg border border-black/10 flex items-center justify-center text-[10px] font-mono"
-                style={{ background: variables.surfaceTint, color: variables.textMain }}
-                title="Surface Tint"
-              >
-                TINT
-              </span>
-            </div>
-
-            <p className="text-xs opacity-70">
-              Any changes made here immediately propagate across all landing page sections and subpages in real-time.
-            </p>
-          </div>
-        </div>
-
-        {/* Center Column: Active Section Controls */}
-        <div className="lg:col-span-5 space-y-6">
-          {/* 1. PRESETS */}
-          {activeSection === 'presets' && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-bold">1-Click Designer Presets</h2>
-                  <p className="text-xs opacity-70">
-                    Switch between the 4 brand color options from the Redesign HTML, plus dark luxury & futuristic modes.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-3.5">
-                {THEME_PRESETS.map(preset => {
-                  const isSelected = activePresetId === preset.id;
-                  return (
-                    <div
-                      key={preset.id}
-                      onClick={() => {
-                        setPreset(preset.id);
-                        toast.success(`Activated ${preset.name}`);
-                      }}
-                      className={`p-4 rounded-2xl border cursor-pointer transition-all ${
-                        isSelected
-                          ? 'ring-2 ring-offset-2 shadow-lg'
-                          : 'hover:border-black/30'
-                      }`}
-                      style={{
-                        borderColor: isSelected ? 'var(--kpx-accent-emerald)' : 'var(--kpx-border)',
-                        background: isSelected ? 'var(--kpx-surface-tint)' : 'var(--kpx-surface)',
-                      }}
-                    >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="font-bold text-base">{preset.name}</span>
-                        <span
-                          className="text-[11px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider"
-                          style={{
-                            background: isSelected ? 'var(--kpx-text-main)' : 'var(--kpx-surface-soft)',
-                            color: isSelected ? 'var(--kpx-bg-page)' : 'var(--kpx-text-main)',
-                          }}
-                        >
-                          {preset.badge}
-                        </span>
-                      </div>
-
-                      <p className="text-xs opacity-75 mb-3">{preset.description}</p>
-
-                      <div className="flex items-center gap-2">
-                        <span
-                          className="w-7 h-7 rounded-lg border border-black/10"
-                          style={{ background: preset.variables.bgPage }}
-                          title="Background"
-                        />
-                        <span
-                          className="w-7 h-7 rounded-lg border border-black/10"
-                          style={{ background: preset.variables.textMain }}
-                          title="Main Text"
-                        />
-                        <span
-                          className="w-7 h-7 rounded-lg border border-black/10"
-                          style={{ background: preset.variables.accentEmerald }}
-                          title="Accent Emerald"
-                        />
-                        <span
-                          className="w-7 h-7 rounded-lg border border-black/10"
-                          style={{ background: preset.variables.accentLime }}
-                          title="Accent Lime"
-                        />
-                        <span
-                          className="w-7 h-7 rounded-lg border border-black/10"
-                          style={{ background: preset.variables.surfaceTint }}
-                          title="Tint"
-                        />
-                        <span
-                          className="w-7 h-7 rounded-lg border border-black/10"
-                          style={{ background: preset.variables.darkBg }}
-                          title="Dark Section"
-                        />
-
-                        {isSelected ? (
-                          <span className="ml-auto font-bold text-xs flex items-center gap-1 text-emerald-600">
-                            <Check className="w-4 h-4" /> Applied
-                          </span>
-                        ) : (
-                          <span className="ml-auto text-xs font-semibold opacity-60 hover:opacity-100">
-                            Click to Apply
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* 2. BASE & TYPOGRAPHY */}
-          {activeSection === 'base' && (
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-bold">Base Canvas & Surfaces</h2>
-                <p className="text-xs opacity-70">
-                  Adjust the base ground, body typography color, secondary text, and surface tints.
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <AdminColorRow
-                  name="bgPage"
-                  label="Base Ground Color (Page Background)"
-                  description="Default: #F4F6F1 chalk. Governs body, canvas and sections."
-                  value={variables.bgPage}
-                  onChange={v => updateVariable('bgPage', v)}
-                />
-                <AdminColorRow
-                  name="textMain"
-                  label="Base Text Color (Ink)"
-                  description="Default: #0C1410. Main headlines, titles, and body copy."
-                  value={variables.textMain}
-                  onChange={v => updateVariable('textMain', v)}
-                />
-                <AdminColorRow
-                  name="textMuted"
-                  label="Secondary / Muted Text (Slate)"
-                  description="Default: #4A5650. Descriptive paragraphs, labels, and tags."
-                  value={variables.textMuted}
-                  onChange={v => updateVariable('textMuted', v)}
-                />
-                <AdminColorRow
-                  name="surface"
-                  label="Surface Card Background"
-                  description="Default: #FFFFFF. White cards, input boxes, modal containers."
-                  value={variables.surface}
-                  onChange={v => updateVariable('surface', v)}
-                />
-                <AdminColorRow
-                  name="surfaceTint"
-                  label="Surface Tint (Sage)"
-                  description="Default: #E3EAD9. Hero stage, careers banner, engagement cards."
-                  value={variables.surfaceTint}
-                  onChange={v => updateVariable('surfaceTint', v)}
-                />
-                <AdminColorRow
-                  name="surfaceSoft"
-                  label="Surface Soft (Chip / Tag Background)"
-                  description="Default: #EEF1E8. Pills, technology badges, small chips."
-                  value={variables.surfaceSoft}
-                  onChange={v => updateVariable('surfaceSoft', v)}
-                />
-                <AdminColorRow
-                  name="borderMain"
-                  label="Primary Border & Dividing Line"
-                  description="Default: #D8DDD2. Section dividers, card borders, navbar outline."
-                  value={variables.borderMain}
-                  onChange={v => updateVariable('borderMain', v)}
-                />
-                <AdminColorRow
-                  name="borderLight"
-                  label="Secondary Light Border"
-                  description="Default: #CBD2C3. Inner grid lines, table borders, input outlines."
-                  value={variables.borderLight}
-                  onChange={v => updateVariable('borderLight', v)}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* 3. ACCENTS */}
-          {activeSection === 'accents' && (
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-bold">Brand Accents & Highlights</h2>
-                <p className="text-xs opacity-70">
-                  Control the primary brand emerald, the signature acid-lime highlighter, and hover states.
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <AdminColorRow
-                  name="accentEmerald"
-                  label="Primary Accent (Emerald Brand)"
-                  description="Default: #0A6B4A. Logo accent 'X', eyebrows, links, checkmarks."
-                  value={variables.accentEmerald}
-                  onChange={v => updateVariable('accentEmerald', v)}
-                />
-                <AdminColorRow
-                  name="accentLime"
-                  label="Highlight Accent (Acid Lime)"
-                  description="Default: #C8F53C. Text marker highlight, CTA button on dark, badges."
-                  value={variables.accentLime}
-                  onChange={v => updateVariable('accentLime', v)}
-                />
-                <AdminColorRow
-                  name="highlightMarker"
-                  label="Text Marker Under-Highlight"
-                  description="Default: #C8F53C. Underline stripe beneath 'without expanding'."
-                  value={variables.highlightMarker}
-                  onChange={v => updateVariable('highlightMarker', v)}
-                />
-                <AdminColorRow
-                  name="accentLimeHover"
-                  label="Lime Hover Accent"
-                  description="Default: #FFFFFF. Hover background on lime elements."
-                  value={variables.accentLimeHover}
-                  onChange={v => updateVariable('accentLimeHover', v)}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* 4. BUTTONS & CONTROLS */}
-          {activeSection === 'buttons' && (
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-bold">Buttons & Interactive Controls</h2>
-                <p className="text-xs opacity-70">
-                  Customize background, text, border, and hover colors for all button varieties.
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <AdminColorRow
-                  name="btnInkBg"
-                  label="Dark Ink Button (Background)"
-                  description="Default: #0C1410. 'Start a Project', 'Contact Us' buttons."
-                  value={variables.btnInkBg}
-                  onChange={v => updateVariable('btnInkBg', v)}
-                />
-                <AdminColorRow
-                  name="btnInkText"
-                  label="Dark Ink Button (Text Color)"
-                  description="Default: #F4F6F1. Text inside dark ink buttons."
-                  value={variables.btnInkText}
-                  onChange={v => updateVariable('btnInkText', v)}
-                />
-                <AdminColorRow
-                  name="btnInkHoverBg"
-                  label="Dark Ink Button (Hover Background)"
-                  description="Default: #0A6B4A emerald. Color when hovering dark ink buttons."
-                  value={variables.btnInkHoverBg}
-                  onChange={v => updateVariable('btnInkHoverBg', v)}
-                />
-                <AdminColorRow
-                  name="btnLimeBg"
-                  label="Lime Button (Background)"
-                  description="Default: #C8F53C. High-energy call to action button."
-                  value={variables.btnLimeBg}
-                  onChange={v => updateVariable('btnLimeBg', v)}
-                />
-                <AdminColorRow
-                  name="btnLimeText"
-                  label="Lime Button (Text Color)"
-                  description="Default: #0C1410. Text inside lime button."
-                  value={variables.btnLimeText}
-                  onChange={v => updateVariable('btnLimeText', v)}
-                />
-                <AdminColorRow
-                  name="btnLineBorder"
-                  label="Outline Button (Border Color)"
-                  description="Default: #0C1410. 'See Our Work' button border."
-                  value={variables.btnLineBorder}
-                  onChange={v => updateVariable('btnLineBorder', v)}
-                />
-                <AdminColorRow
-                  name="btnLineText"
-                  label="Outline Button (Text Color)"
-                  description="Default: #0C1410. 'See Our Work' button text."
-                  value={variables.btnLineText}
-                  onChange={v => updateVariable('btnLineText', v)}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* 5. PARTICLES & SEGMENTS */}
-          {activeSection === 'particles' && (
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-bold">Particles & Micro-Segments</h2>
-                <p className="text-xs opacity-70">
-                  Granular control over live stage elements, charts, server rack LEDs, patch cables, and marquees.
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <div className="font-bold text-xs uppercase tracking-wider opacity-60 pt-2">
-                  Hero Stage & Charts
-                </div>
-                <AdminColorRow
-                  name="stageBg"
-                  label="Stage Canvas Background"
-                  description="Default: #E3EAD9. The sage canvas housing the browser mockup."
-                  value={variables.stageBg}
-                  onChange={v => updateVariable('stageBg', v)}
-                />
-                <AdminColorRow
-                  name="stagePulseDot"
-                  label="Status Pulse Dot (Green)"
-                  description="Default: #1FB36B. The live animated pulsing radar dot."
-                  value={variables.stagePulseDot}
-                  onChange={v => updateVariable('stagePulseDot', v)}
-                />
-                <AdminColorRow
-                  name="stageBarsDefault"
-                  label="Analytics Chart Normal Bars"
-                  description="Default: #0C1410. Standard growth bars in dashboard."
-                  value={variables.stageBarsDefault}
-                  onChange={v => updateVariable('stageBarsDefault', v)}
-                />
-                <AdminColorRow
-                  name="stageBarsHighlight"
-                  label="Analytics Chart Peak Bar"
-                  description="Default: #C8F53C. Highlight peak metric bar in dashboard."
-                  value={variables.stageBarsHighlight}
-                  onChange={v => updateVariable('stageBarsHighlight', v)}
-                />
-
-                <div className="font-bold text-xs uppercase tracking-wider opacity-60 pt-4">
-                  DevOps Server Rack & LEDs
-                </div>
-                <AdminColorRow
-                  name="rackBg"
-                  label="Server Rack Body"
-                  description="Default: #0C1410. Main server rack chassis ground."
-                  value={variables.rackBg}
-                  onChange={v => updateVariable('rackBg', v)}
-                />
-                <AdminColorRow
-                  name="rackLedGreen"
-                  label="Server Green LED (Healthy)"
-                  description="Default: #1FB36B. Green heartbeat telemetry LED."
-                  value={variables.rackLedGreen}
-                  onChange={v => updateVariable('rackLedGreen', v)}
-                />
-                <AdminColorRow
-                  name="rackLedLime"
-                  label="Server Lime LED (Active)"
-                  description="Default: #C8F53C. Active traffic blinking LED."
-                  value={variables.rackLedLime}
-                  onChange={v => updateVariable('rackLedLime', v)}
-                />
-                <AdminColorRow
-                  name="rackCables"
-                  label="Server Fiber Patch Cables"
-                  description="Default: #C8F53C. Glowing patch cable connections."
-                  value={variables.rackCables}
-                  onChange={v => updateVariable('rackCables', v)}
-                />
-
-                <div className="font-bold text-xs uppercase tracking-wider opacity-60 pt-4">
-                  Marquee & Badges
-                </div>
-                <AdminColorRow
-                  name="marqueeText"
-                  label="Marquee Ticker Text"
-                  description="Default: #2C3830. Technology names scrolling horizontally."
-                  value={variables.marqueeText}
-                  onChange={v => updateVariable('marqueeText', v)}
-                />
-                <AdminColorRow
-                  name="marqueeStar"
-                  label="Marquee Star Sparkle"
-                  description="Default: #C8F53C. Emblems between ticker items."
-                  value={variables.marqueeStar}
-                  onChange={v => {
-                    updateVariable('marqueeStar', v);
-                    updateVariable('marqueeDarkStar', v);
-                  }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* 6. DARK BLOCKS & FOOTER */}
-          {activeSection === 'dark' && (
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-bold">Dark Sections & Footer</h2>
-                <p className="text-xs opacity-70">
-                  Control the dark DevOps section and the large footer at the bottom of the page.
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                <AdminColorRow
-                  name="darkBg"
-                  label="Dark Section Canvas (Footer & DevOps)"
-                  description="Default: #0C1410. Deep green-black ink background."
-                  value={variables.darkBg}
-                  onChange={v => updateVariable('darkBg', v)}
-                />
-                <AdminColorRow
-                  name="darkText"
-                  label="Dark Section Primary Text"
-                  description="Default: #F4F6F1. Headlines and active links on dark."
-                  value={variables.darkText}
-                  onChange={v => updateVariable('darkText', v)}
-                />
-                <AdminColorRow
-                  name="darkMuted"
-                  label="Dark Section Muted Text"
-                  description="Default: #A9B6AE. Secondary descriptions and copyright."
-                  value={variables.darkMuted}
-                  onChange={v => updateVariable('darkMuted', v)}
-                />
-                <AdminColorRow
-                  name="darkBorder"
-                  label="Dark Section Dividers"
-                  description="Default: #24332B. Dividing rules and outline borders on dark."
-                  value={variables.darkBorder}
-                  onChange={v => updateVariable('darkBorder', v)}
-                />
-                <AdminColorRow
-                  name="darkAccent"
-                  label="Dark Section Highlight Accent"
-                  description="Default: #C8F53C. Floating icon, link hover state, footer CTA."
-                  value={variables.darkAccent}
-                  onChange={v => updateVariable('darkAccent', v)}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* 7. RAW JSON */}
-          {activeSection === 'raw' && (
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-bold">Raw JSON Theme Data</h2>
-                <p className="text-xs opacity-70">
-                  Directly inspect, copy, or edit the active theme configuration payload.
-                </p>
-              </div>
-
-              <textarea
-                readOnly
-                value={exportJSON()}
-                className="w-full h-[450px] p-4 rounded-2xl font-mono text-xs border leading-relaxed"
-                style={{
-                  background: 'var(--kpx-surface)',
-                  color: 'var(--kpx-text-main)',
-                  borderColor: 'var(--kpx-border)',
-                }}
-              />
-            </div>
-          )}
-        </div>
-
-        {/* Right Column: Live Interactive Sandbox & Component Preview */}
-        <div className="lg:col-span-4 sticky top-24 space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="font-bold text-sm flex items-center gap-2">
-              <Eye className="w-4 h-4 text-emerald-600" />
-              <span>Real-Time Component Sandbox</span>
-            </span>
-            <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">
-              ● Live Dynamic
-            </span>
-          </div>
-
-          {/* Sandbox Box */}
-          <div
-            className="p-6 rounded-3xl border shadow-xl space-y-6 overflow-hidden"
-            style={{
-              background: 'var(--kpx-bg-page)',
-              color: 'var(--kpx-text-main)',
-              borderColor: 'var(--kpx-border)',
-            }}
-          >
-            {/* 1. Mini Navbar */}
-            <div
-              className="flex items-center justify-between p-2.5 px-4 rounded-full border shadow-sm"
-              style={{
-                background: 'var(--kpx-surface)',
-                borderColor: 'var(--kpx-border)',
-              }}
-            >
-              <div className="flex items-center gap-2 font-bold text-sm">
-                <span
-                  className="w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs"
-                  style={{
-                    background: 'var(--kpx-btn-ink-bg)',
-                    color: 'var(--kpx-accent-lime)',
-                  }}
-                >
-                  KX
-                </span>
-                <span>
-                  Kompile<span style={{ color: 'var(--kpx-accent-emerald)' }}>X</span>
-                </span>
-              </div>
-              <span
-                className="text-[11px] font-bold px-3 py-1 rounded-full cursor-pointer transition-all hover:scale-105"
-                style={{
-                  background: 'var(--kpx-btn-ink-bg)',
-                  color: 'var(--kpx-btn-ink-text)',
-                }}
-              >
-                Contact
-              </span>
-            </div>
-
-            {/* 2. Hero Snippet */}
-            <div className="space-y-3">
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[11px] font-semibold"
-                style={{
-                  background: 'var(--kpx-surface)',
-                  borderColor: 'var(--kpx-border)',
-                }}
-              >
-                <span className="dot" />
-                <span>Available for new projects</span>
-              </div>
-
-              <h3 className="text-xl font-bold leading-tight">
-                Scale your software <span className="hl">without expanding</span> your team.
-              </h3>
-
-              <p className="text-xs leading-relaxed" style={{ color: 'var(--kpx-text-muted)' }}>
-                Engineering studio building high-performance web, mobile & cloud systems.
-              </p>
-
-              <div className="flex items-center gap-2 pt-1">
-                <button className="btn btn-ink text-xs h-9 px-4">
-                  Start Project
-                </button>
-                <button className="btn btn-line text-xs h-9 px-4">
-                  See Work
-                </button>
-              </div>
-            </div>
-
-            {/* 3. Hero Stage Mockup Preview */}
-            <div
-              className="p-4 rounded-2xl relative overflow-hidden"
-              style={{
-                background: 'var(--kpx-stage-bg)',
-              }}
-            >
-              <div
-                className="p-3 rounded-xl border shadow-sm space-y-3"
-                style={{
-                  background: 'var(--kpx-stage-win-bg)',
-                  borderColor: 'var(--kpx-border-light)',
-                }}
-              >
-                <div className="flex items-center justify-between text-[10px] pb-1 border-b" style={{ borderColor: 'var(--kpx-border-light)' }}>
-                  <div className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-red-400" />
-                    <span className="w-2 h-2 rounded-full bg-yellow-400" />
-                    <span className="w-2 h-2 rounded-full bg-green-400" />
-                  </div>
-                  <span className="font-mono opacity-60">telemetry / metrics</span>
-                </div>
-
-                {/* Animated Chart Bars */}
-                <div className="h-16 flex items-end gap-1.5 pt-2">
-                  {[40, 65, 50, 85, 70, 95, 60, 100, 75].map((h, i) => {
-                    const isPeak = i === 7;
-                    return (
-                      <div
-                        key={i}
-                        className="flex-1 rounded-t-sm transition-all duration-300"
-                        style={{
-                          height: `${h}%`,
-                          background: isPeak
-                            ? 'var(--kpx-stage-bars-highlight)'
-                            : 'var(--kpx-stage-bars-default)',
-                        }}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Mini Server Unit */}
-              <div
-                className="mt-3 p-2.5 rounded-xl flex items-center justify-between"
-                style={{
-                  background: 'var(--kpx-rack-bg)',
-                  color: '#FFFFFF',
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className="w-2 h-2 rounded-full led"
-                    style={{ background: 'var(--kpx-rack-led-lime)' }}
-                  />
-                  <span
-                    className="w-2 h-2 rounded-full led"
-                    style={{ background: 'var(--kpx-rack-led-green)', animationDelay: '0.4s' }}
-                  />
-                  <span className="text-[10px] font-mono opacity-80">server-prod-01</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="w-4 h-1 rounded" style={{ background: 'var(--kpx-rack-cables)' }} />
-                  <span className="w-3 h-1 rounded" style={{ background: 'var(--kpx-rack-cables)' }} />
-                </div>
-              </div>
-            </div>
-
-            {/* 4. Mini Footer Preview */}
-            <div
-              className="p-4 rounded-2xl dark text-xs space-y-2.5"
-              style={{
-                background: 'var(--kpx-dark-bg)',
-                color: 'var(--kpx-dark-text)',
-              }}
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-sm">Your next product starts here.</span>
-                <button className="btn btn-lime text-[11px] h-7 px-3">
-                  Get started
-                </button>
-              </div>
-              <p className="text-[11px]" style={{ color: 'var(--kpx-dark-muted)' }}>
-                Built remotely, shipped worldwide · ©2026 KompileX
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="flex items-center gap-3 py-2">
+      <label className="relative size-9 shrink-0 cursor-pointer overflow-hidden rounded-lg border border-[#D5D9D2] shadow-sm" style={{ background: value }} title="Pick a color">
+        <input
+          type="color"
+          value={HEX6.test(value) ? value : '#000000'}
+          onChange={(e) => {
+            setText(null);
+            onChange(e.target.value);
+          }}
+          className="absolute inset-0 size-full cursor-pointer opacity-0"
+          aria-label={field.label}
+        />
+      </label>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-[13.5px] font-semibold leading-tight">{field.label}</p>
+        {field.hint && <p className="truncate text-[11.5px] text-[#6B746D]">{field.hint}</p>}
       </div>
-
-      {/* Import JSON Modal */}
-      {showImportModal && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/50 p-4">
-          <div
-            className="w-full max-w-lg p-6 rounded-3xl border shadow-2xl space-y-4 animate-in fade-in zoom-in-95"
-            style={{
-              background: 'var(--kpx-surface)',
-              color: 'var(--kpx-text-main)',
-              borderColor: 'var(--kpx-border)',
-            }}
-          >
-            <h3 className="text-lg font-bold">Import Theme JSON</h3>
-            <p className="text-xs opacity-75">
-              Paste a valid KompileX Theme JSON configuration below to apply it immediately.
-            </p>
-
-            <textarea
-              value={importText}
-              onChange={e => setImportText(e.target.value)}
-              placeholder='{ "preset": "custom", "variables": { "bgPage": "#F4F6F1", ... } }'
-              className="w-full h-48 p-3 rounded-xl font-mono text-xs border"
-              style={{
-                borderColor: 'var(--kpx-border)',
-                background: 'var(--kpx-surface-tint)',
-              }}
-            />
-
-            <div className="flex items-center justify-end gap-2 pt-2">
-              <button
-                onClick={() => setShowImportModal(false)}
-                className="px-4 py-2 rounded-xl text-xs font-semibold hover:bg-black/10"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleImportSubmit}
-                className="px-5 py-2 rounded-xl text-xs font-bold shadow-sm"
-                style={{
-                  background: 'var(--kpx-accent-lime)',
-                  color: 'var(--kpx-text-main)',
-                }}
-              >
-                Apply & Save Theme
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <input
+        value={shown}
+        spellCheck={false}
+        onChange={(e) => {
+          setText(e.target.value);
+          if (HEX6.test(e.target.value)) onChange(e.target.value);
+        }}
+        onBlur={() => {
+          if (text !== null && text.trim() && text !== value) onChange(text.trim());
+          setText(null);
+        }}
+        className="w-[104px] rounded-lg border border-[#D5D9D2] bg-white px-2.5 py-1.5 font-mono text-xs uppercase outline-none focus:border-[#101612]"
+      />
+      <button
+        type="button"
+        disabled={!changed}
+        onClick={() => {
+          setText(null);
+          onChange(def);
+        }}
+        title="Reset to default"
+        className="grid size-7 place-items-center rounded-md text-[#6B746D] transition hover:bg-[#EDEFEA] disabled:opacity-20"
+      >
+        <RotateCcw className="size-3.5" />
+      </button>
     </div>
   );
 }
 
-function AdminColorRow({
-  name,
-  label,
-  description,
-  value,
-  onChange,
-}: {
-  name: string;
-  label: string;
-  description: string;
-  value: string;
-  onChange: (val: string) => void;
-}) {
-  return (
-    <div
-      className="p-3.5 rounded-2xl border flex items-center justify-between gap-4 transition-colors hover:border-black/30"
-      style={{
-        borderColor: 'var(--kpx-border)',
-        background: 'var(--kpx-surface)',
-      }}
-    >
-      <div className="min-w-0 flex-1">
-        <label className="text-xs font-bold block">{label}</label>
-        <span className="text-[11px] opacity-60 block truncate">{description}</span>
-      </div>
+export default function AdminThemePage() {
+  const { variables, activePresetId, updateVariable, updateMultipleVariables, setPreset, resetToDefaults, exportJSON, importJSON } = useThemeCustomizer();
+  const [open, setOpen] = useState<string>('brand');
+  const [page, setPage] = useState('/');
+  const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
+  const [importOpen, setImportOpen] = useState(false);
+  const [importText, setImportText] = useState('');
+  const frame = useRef<HTMLIFrameElement>(null);
 
-      <div className="flex items-center gap-2 shrink-0">
-        <span className="font-mono text-xs opacity-80 uppercase">{value}</span>
-        <div className="relative w-8 h-8 rounded-xl overflow-hidden border border-black/20 shadow-sm cursor-pointer">
-          <input
-            type="color"
-            value={value.startsWith('#') && value.length === 7 ? value : '#000000'}
-            onChange={e => onChange(e.target.value)}
-            className="absolute -inset-2 w-12 h-12 cursor-pointer border-0 p-0"
-          />
+  const copy = () => {
+    navigator.clipboard.writeText(exportJSON());
+    toast.success('Theme copied to clipboard');
+  };
+  const download = () => {
+    const a = document.createElement('a');
+    a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(exportJSON());
+    a.download = `kompilex-theme-${activePresetId || 'custom'}.json`;
+    a.click();
+  };
+  const doImport = () => {
+    if (importJSON(importText)) {
+      toast.success('Theme imported');
+      setImportOpen(false);
+      setImportText('');
+    } else toast.error('That is not a valid theme JSON.');
+  };
+  const resetGroup = (g: Group) => {
+    const patch: Partial<ThemeVariables> = {};
+    g.fields.forEach((f) => ((patch as Record<string, string>)[f.key] = DEFAULT_THEME_VARIABLES[f.key]));
+    updateMultipleVariables(patch);
+    toast.success(`${g.title} reset`);
+  };
+
+  return (
+    <AdminShell wide>
+      <div className="grid gap-6 lg:grid-cols-[440px_minmax(0,1fr)]">
+        {/* ───────── Controls ───────── */}
+        <div className="flex flex-col gap-5">
+          <section className="rounded-3xl border border-[#E1E4DE] bg-white p-5">
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-base font-bold">Start from a preset</h2>
+              <span className="text-xs text-[#6B746D]">{activePresetId === 'custom' ? 'Custom colors' : 'Preset applied'}</span>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-2.5">
+              {THEME_PRESETS.map((p) => {
+                const active = activePresetId === p.id;
+                const v = p.variables;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => setPreset(p.id)}
+                    className={`rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 ${active ? 'border-[#101612] ring-2 ring-[#101612]/15' : 'border-[#E1E4DE]'}`}
+                  >
+                    <div className="flex h-8 overflow-hidden rounded-lg border border-black/5">
+                      {[v.bgPage, v.textMain, v.accentEmerald, v.accentLime, v.surfaceTint].map((c, i) => (
+                        <span key={i} className="flex-1" style={{ background: c }} />
+                      ))}
+                    </div>
+                    <p className="mt-2 flex items-center gap-1 text-[13px] font-semibold leading-tight">
+                      {active && <Check className="size-3.5 text-emerald-600" />}
+                      {p.name.replace(/^Option [A-Z]: /, '')}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-[#E1E4DE] bg-white">
+            <div className="px-5 pt-5">
+              <h2 className="text-base font-bold">Customize colors</h2>
+              <p className="mt-1 text-[13px] text-[#6B746D]">Click a swatch to pick a color, or type any hex value. The preview updates instantly.</p>
+            </div>
+            <div className="mt-3 divide-y divide-[#EDEFEA]">
+              {GROUPS.map((g) => {
+                const isOpen = open === g.id;
+                return (
+                  <div key={g.id}>
+                    <button onClick={() => setOpen(isOpen ? '' : g.id)} className="flex w-full items-center gap-3 px-5 py-3.5 text-left hover:bg-[#FAFBF9]">
+                      <div className="flex -space-x-1.5">
+                        {g.fields.slice(0, 4).map((f) => (
+                          <span key={f.key} className="size-5 rounded-full border-2 border-white" style={{ background: variables[f.key] }} />
+                        ))}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-bold leading-tight">{g.title}</p>
+                        <p className="text-[12px] text-[#6B746D]">{g.description}</p>
+                      </div>
+                      <ChevronDown className={`size-4 text-[#6B746D] transition ${isOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {isOpen && (
+                      <div className="px-5 pb-4">
+                        {g.fields.map((f) => (
+                          <ColorRow key={f.key} field={f} value={variables[f.key]} def={DEFAULT_THEME_VARIABLES[f.key]} onChange={(v) => updateVariable(f.key, v)} />
+                        ))}
+                        <button onClick={() => resetGroup(g)} className="mt-2 text-xs font-semibold text-[#6B746D] underline underline-offset-4 hover:text-[#101612]">
+                          Reset this group to default
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="rounded-3xl border border-[#E1E4DE] bg-white p-5">
+            <h2 className="text-base font-bold">Save & share</h2>
+            <p className="mt-1 text-[13px] text-[#6B746D]">Changes are saved automatically in this browser. Export to keep a backup or move it elsewhere.</p>
+            <div className="mt-3 flex flex-wrap gap-2 text-sm font-semibold">
+              <button onClick={copy} className="flex items-center gap-1.5 rounded-full border border-[#E1E4DE] px-3.5 py-2 hover:bg-[#EDEFEA]"><Copy className="size-3.5" /> Copy JSON</button>
+              <button onClick={download} className="flex items-center gap-1.5 rounded-full border border-[#E1E4DE] px-3.5 py-2 hover:bg-[#EDEFEA]"><Download className="size-3.5" /> Download</button>
+              <button onClick={() => setImportOpen((v) => !v)} className="flex items-center gap-1.5 rounded-full border border-[#E1E4DE] px-3.5 py-2 hover:bg-[#EDEFEA]"><Upload className="size-3.5" /> Import</button>
+              <button
+                onClick={() => {
+                  resetToDefaults();
+                  toast.info('Theme reset to defaults');
+                }}
+                className="ml-auto flex items-center gap-1.5 rounded-full border border-red-200 px-3.5 py-2 text-red-600 hover:bg-red-50"
+              >
+                <RotateCcw className="size-3.5" /> Reset all
+              </button>
+            </div>
+            {importOpen && (
+              <div className="mt-3 flex flex-col gap-2">
+                <textarea value={importText} onChange={(e) => setImportText(e.target.value)} rows={6} placeholder="Paste theme JSON here" className="w-full rounded-xl border border-[#D5D9D2] p-3 font-mono text-xs outline-none focus:border-[#101612]" />
+                <button onClick={doImport} disabled={!importText.trim()} className="self-start rounded-full bg-[#101612] px-4 py-2 text-sm font-semibold text-white disabled:opacity-40">Apply theme</button>
+              </div>
+            )}
+          </section>
+        </div>
+
+        {/* ───────── Live preview ───────── */}
+        <div className="lg:sticky lg:top-[88px] lg:h-[calc(100vh-112px)]">
+          <div className="flex h-full min-h-[560px] flex-col overflow-hidden rounded-3xl border border-[#E1E4DE] bg-white">
+            <div className="flex flex-wrap items-center gap-2 border-b border-[#EDEFEA] px-4 py-3">
+              <span className="mr-1 flex items-center gap-1.5 text-sm font-bold">
+                <span className="size-2 animate-pulse rounded-full bg-emerald-500" /> Live preview
+              </span>
+              <div className="flex flex-wrap gap-1">
+                {PAGES.map((p) => (
+                  <button key={p.href} onClick={() => setPage(p.href)} className={`rounded-full px-3 py-1 text-[12.5px] font-semibold transition ${page === p.href ? 'bg-[#101612] text-white' : 'text-[#4A534C] hover:bg-[#EDEFEA]'}`}>
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+              <div className="ml-auto flex gap-1 rounded-full bg-[#EDEFEA] p-1">
+                <button onClick={() => setDevice('desktop')} aria-label="Desktop" className={`grid size-7 place-items-center rounded-full ${device === 'desktop' ? 'bg-white shadow' : ''}`}><Monitor className="size-3.5" /></button>
+                <button onClick={() => setDevice('mobile')} aria-label="Mobile" className={`grid size-7 place-items-center rounded-full ${device === 'mobile' ? 'bg-white shadow' : ''}`}><Smartphone className="size-3.5" /></button>
+              </div>
+            </div>
+            <div className="flex flex-1 justify-center overflow-hidden bg-[#E9ECE6] p-3">
+              <iframe
+                ref={frame}
+                key={page}
+                src={page}
+                title="Site preview"
+                className="h-full rounded-xl border border-[#D5D9D2] bg-white transition-all"
+                style={{ width: device === 'mobile' ? 390 : '100%' }}
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </AdminShell>
   );
 }

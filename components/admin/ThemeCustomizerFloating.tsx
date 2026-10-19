@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useThemeCustomizer } from '@/context/ThemeCustomizerContext';
 import { THEME_PRESETS, ThemeVariables } from '@/lib/theme-config';
 import {
@@ -34,6 +35,7 @@ export default function ThemeCustomizerFloating() {
   const [activeTab, setActiveTab] = useState<'presets' | 'base' | 'particles' | 'buttons'>('presets');
   const [collapsed, setCollapsed] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const pathname = usePathname();
 
   // Only a logged-in admin gets the floating theme studio.
   useEffect(() => {
@@ -53,7 +55,8 @@ export default function ThemeCustomizerFloating() {
     toast.info('Theme reset to official Redesign defaults');
   };
 
-  if (!isAdmin) return null;
+  // Hidden inside the admin live-preview iframe
+  if (!isAdmin || pathname.startsWith('/admin') || (typeof window !== 'undefined' && window.self !== window.top)) return null;
 
   return (
     <>

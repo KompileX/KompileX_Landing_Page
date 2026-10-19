@@ -66,6 +66,24 @@ export function ThemeCustomizerProvider({ children }: { children: React.ReactNod
     setMounted(true);
   }, []);
 
+  // Keep other tabs / the admin preview iframe in sync when the theme changes
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== STORAGE_KEY && e.key !== PRESET_KEY && e.key !== null) return;
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        const next = stored ? { ...DEFAULT_THEME_VARIABLES, ...JSON.parse(stored) } : DEFAULT_THEME_VARIABLES;
+        setVariables(next);
+        applyVariablesToDom(next);
+        setActivePresetId(localStorage.getItem(PRESET_KEY) || (stored ? 'custom' : 'default'));
+      } catch {
+        // ignore
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   // Update a single variable
   const updateVariable = (key: keyof ThemeVariables, value: string) => {
     startTransition(() => {

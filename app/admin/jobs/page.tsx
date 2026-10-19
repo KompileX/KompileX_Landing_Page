@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
-import { ArrowLeft, Plus, Trash2, Pencil, Eye, EyeOff } from 'lucide-react';
+import AdminShell from '@/components/admin/AdminShell';
+import { Plus, Trash2, Pencil, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Job } from '@/lib/jobs';
 
@@ -126,19 +126,15 @@ export default function AdminJobsPage() {
   const label = 'block text-[13px] font-semibold mb-1.5';
 
   return (
-    <div className="min-h-screen px-5 py-8" style={{ background: 'var(--kpx-bg-page)', color: 'var(--kpx-text-main)' }}>
-      <div className="mx-auto max-w-5xl flex flex-col gap-8">
-        <header className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Link href="/admin" className="flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold" style={{ borderColor: 'var(--kpx-border)', background: 'var(--kpx-surface)' }}>
-              <ArrowLeft className="size-3.5" /> Theme admin
-            </Link>
-            <h1 className="text-xl font-bold">Careers · Job postings</h1>
+    <AdminShell>
+      <div className="flex flex-col gap-6">
+        <div className="flex items-end justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">Careers</h1>
+            <p className="text-sm text-[#6B746D]">Post, edit and close job openings. Open roles appear on the public Careers page.</p>
           </div>
-          <Link href="/careers" target="_blank" className="text-sm font-semibold underline underline-offset-4">
-            View public careers page
-          </Link>
-        </header>
+          <a href="/careers" target="_blank" rel="noreferrer" className="text-sm font-semibold underline underline-offset-4">View public page</a>
+        </div>
 
         <form onSubmit={save} className="rounded-3xl border p-6 grid gap-4 sm:grid-cols-2" style={{ background: 'var(--kpx-surface)', borderColor: 'var(--kpx-border)' }}>
           <div className="sm:col-span-2 flex items-center justify-between">
@@ -236,6 +232,6 @@ export default function AdminJobsPage() {
           ))}
         </section>
       </div>
-    </div>
+    </AdminShell>
   );
 }

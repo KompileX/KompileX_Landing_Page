@@ -184,15 +184,15 @@ export default function AIChatWidget() {
   return (
     <MotionConfig reducedMotion="user">
 
-      <AnimatePresence initial={false} mode="wait">
+      <AnimatePresence initial={false}>
         {open ? (
           /* ── Expanded chat panel (bottom-right) ── */
           <motion.div
             key="chat-panel"
-            initial={{ opacity: 0, scale: 0.9, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 12 }}
-            transition={{ duration: 0.25, ease: [0.2, 0.7, 0.2, 1] }}
+            initial={{ opacity: 0, y: 28, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.98, transition: { duration: 0.18, ease: "easeIn" } }}
+            transition={{ type: "spring", bounce: 0, duration: 0.4 }}
             style={{ transformOrigin: "100% 100%", height: "min(calc(100dvh - 6rem), 600px)" }}
             className={cn(
               'fixed bottom-4 right-4 z-[60] flex w-[min(calc(100vw-2rem),400px)] flex-col overflow-hidden rounded-[28px] border border-border bg-card',
@@ -347,8 +347,8 @@ export default function AIChatWidget() {
             type="button"
             initial={{ opacity: 0, scale: 0.85, y: 8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.85, y: 8 }}
-            transition={{ duration: 0.22, ease: [0.2, 0.7, 0.2, 1] }}
+            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.12 } }}
+            transition={{ duration: 0.25, delay: 0.1, ease: [0.2, 0.7, 0.2, 1] }}
             onClick={() => setOpen(true)}
             aria-label="Open KompileX AI chat"
             className={cn(

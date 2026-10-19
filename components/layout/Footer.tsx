@@ -10,7 +10,7 @@ export default function Footer() {
         <p className="eyebrow">Start a project</p>
         <h2 className="disp" style={{ marginTop: '16px', fontSize: 'clamp(29px,4.3vw,63px)', lineHeight: '.98', fontWeight: '700', textWrap: 'balance' }}>Your next product starts here.</h2>
         <div style={{ marginTop: '36px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '20px' }}>
-          <a href="#contact" className="btn btn-lime">Get started
+          <a href="/#contact" className="btn btn-lime">Get started
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
           </a>
           <a href="mailto:contact@kompilex.com" style={{ fontSize: '18px', color: 'var(--kpx-dark-muted, #A9B6AE)', borderBottom: '1px solid #3A4A41', paddingBottom: '2px' }}>contact@kompilex.com</a>
@@ -34,8 +34,8 @@ export default function Footer() {
         </div>
         <p style={{ fontSize: '16px', lineHeight: '1.55', color: 'var(--kpx-dark-muted, #A9B6AE)' }}>A software company designing, building, shipping and running full-stack products end to end.</p>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}><span className="mono" style={{ fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--kpx-accent-lime, #C8F53C)' }}>Studio</span><a className="flink" href="/#services">Services</a><a className="flink" href="/#stack">Technologies</a><a className="flink" href="#work">Our Work</a></div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}><span className="mono" style={{ fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--kpx-accent-lime, #C8F53C)' }}>Company</span><a className="flink" href="/#team">Our Team</a><a className="flink" href="#contact">Contact</a><a className="flink" href="#why">Why Us</a></div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}><span className="mono" style={{ fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--kpx-accent-lime, #C8F53C)' }}>Studio</span><a className="flink" href="/services">Services</a><a className="flink" href="/technologies">Technologies</a><a className="flink" href="/#work">Our Work</a></div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}><span className="mono" style={{ fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--kpx-accent-lime, #C8F53C)' }}>Company</span><a className="flink" href="/about-us#team">Our Team</a><a className="flink" href="/#contact">Contact</a><a className="flink" href="/about-us">Why Us</a></div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}><span className="mono" style={{ fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--kpx-accent-lime, #C8F53C)' }}>Connect</span><a className="flink" href="#">LinkedIn</a><a className="flink" href="#">Facebook</a><a className="flink" href="mailto:contact@kompilex.com">Email us</a></div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}><span className="mono" style={{ fontSize: '12px', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--kpx-accent-lime, #C8F53C)' }}>Legal</span><a className="flink" href="/privacy-policy">Privacy Policy</a><a className="flink" href="/terms-of-service">Terms of Service</a></div>
     </div>

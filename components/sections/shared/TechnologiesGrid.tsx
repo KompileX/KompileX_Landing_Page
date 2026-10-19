@@ -3,17 +3,17 @@
 import React, { useState } from 'react';
 import { CATEGORIES, TOOLS, type Category } from '@/lib/content/technologies';
 
-export default function TechnologiesSection() {
+export default function TechnologiesGrid({ bare = false }: { bare?: boolean }) {
   const [cat, setCat] = useState<Category | 'All'>('All');
   const list = TOOLS.filter((t) => cat === 'All' || t.cat === cat);
   const count = (c: Category) => TOOLS.filter((t) => t.cat === c).length;
 
   return (
-    <section id="stack" className="sec">
+    <section id="stack" className={bare ? "" : "sec"} style={bare ? { padding: "0 40px 96px" } : undefined}>
       <div className="wrap">
-        <p className="eyebrow">Technologies</p>
-        <h2 className="h2" style={{ marginTop: 16, maxWidth: 820 }}>The tools we build and run with.</h2>
-        <div className="kx-chips" role="group" aria-label="Filter technologies">
+        {!bare && <p className="eyebrow">Technologies</p>}
+        {!bare && <h2 className="h2" style={{ marginTop: 16, maxWidth: 820 }}>The tools we build and run with.</h2>}
+        <div className="kx-chips" style={bare ? { marginTop: 0 } : undefined} role="group" aria-label="Filter technologies">
           {(['All', ...CATEGORIES] as const).map((c) => (
             <button key={c} type="button" className={`chip${cat === c ? ' on' : ''}`} aria-pressed={cat === c} onClick={() => setCat(c)}>
               {c}

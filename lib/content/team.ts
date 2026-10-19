@@ -20,12 +20,6 @@ export const TEAM: Member[] = [
     points: ['AI/ML application engineering', 'Cross-platform delivery (Web, Mobile, Desktop)', 'Published R&D solutions', 'End-to-end full-stack feature delivery'],
   },
   {
-    name: 'Asaduzzaman Ashik',
-    role: 'Frontend & Mobile Specialist',
-    photo: '/profiles/ashik.webp',
-    points: ['UI/UX implementation', 'Client-side performance', 'Responsive web apps', 'React Native modules', 'Interactive interfaces'],
-  },
-  {
     name: 'Tareq Bin Bashar',
     role: 'Business Consultant',
     points: ['Business analysis and requirements', 'Project scoping and planning', 'Client success and delivery coordination', 'Partnership and growth strategy'],

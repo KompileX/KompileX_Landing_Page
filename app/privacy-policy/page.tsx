@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Navbar from '@/components/layout/Navbar'
+import SiteShell from '@/components/layout/SiteShell'
 import LegalPage, { type LegalSection } from '@/components/LegalPage'
 
 export const metadata: Metadata = {
@@ -133,9 +133,7 @@ const sections: LegalSection[] = [
 export default function PrivacyPolicyPage() {
   return (
     <>
-      <div className="relative z-10 bg-background">
-        <Navbar />
-        <main>
+      <SiteShell>
           <LegalPage
             eyebrow="/ Legal · Privacy Policy"
             title="Privacy Policy"
@@ -146,8 +144,7 @@ export default function PrivacyPolicyPage() {
             sections={sections}
             email={CONTACT_EMAIL}
           />
-        </main>
-      </div>
+        </SiteShell>
     </>
   )
 }

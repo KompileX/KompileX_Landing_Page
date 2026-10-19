@@ -5,7 +5,7 @@ function initials(n: string) {
   return n.replace(/^Md\.?\s*/i, '').split(' ').map((p) => p[0]).slice(0, 2).join('');
 }
 
-export default function TeamSection() {
+export default function TeamGrid() {
   return (
     <section id="team" className="sec">
       <div className="wrap">

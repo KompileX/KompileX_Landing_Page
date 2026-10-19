@@ -638,3 +638,25 @@
     transition: none !important;
   }
 }
+
+/* Bridge: shadcn/Tailwind tokens (bg-card, text-foreground, border-border…) follow the
+   dynamic --kpx-* theme, so chat/ui components respect the admin theme editor. */
+:root {
+  --background: var(--kpx-bg-page);
+  --foreground: var(--kpx-text-main);
+  --card: var(--kpx-surface);
+  --card-foreground: var(--kpx-text-main);
+  --primary: var(--kpx-btn-ink-bg);
+  --primary-foreground: var(--kpx-btn-ink-text);
+  --secondary: var(--kpx-surface-soft);
+  --secondary-foreground: var(--kpx-text-main);
+  --muted: var(--kpx-surface-soft);
+  --muted-foreground: var(--kpx-text-muted);
+  --accent: var(--kpx-accent-lime);
+  --accent-foreground: var(--kpx-text-main);
+  --border: var(--kpx-border);
+  --input: var(--kpx-border-light);
+  --ring: var(--kpx-accent-emerald);
+  --button-border: var(--kpx-border);
+  --light: var(--kpx-accent-lime);
+}

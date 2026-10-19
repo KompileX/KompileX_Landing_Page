@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useThemeCustomizer } from '@/context/ThemeCustomizerContext';
 import { THEME_PRESETS, ThemeVariables } from '@/lib/theme-config';
@@ -33,6 +33,15 @@ export default function ThemeCustomizerFloating() {
 
   const [activeTab, setActiveTab] = useState<'presets' | 'base' | 'particles' | 'buttons'>('presets');
   const [collapsed, setCollapsed] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Only a logged-in admin gets the floating theme studio.
+  useEffect(() => {
+    fetch('/api/admin/session', { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((d) => setIsAdmin(!!d.authed))
+      .catch(() => setIsAdmin(false));
+  }, []);
 
   const handleCopyConfig = () => {
     navigator.clipboard.writeText(exportJSON());
@@ -44,10 +53,12 @@ export default function ThemeCustomizerFloating() {
     toast.info('Theme reset to official Redesign defaults');
   };
 
+  if (!isAdmin) return null;
+
   return (
     <>
       {/* Floating Toggle Button */}
-      <div className="fixed bottom-6 right-6 z-[9999] flex items-center gap-2">
+      <div className="fixed bottom-6 left-6 z-[9999] flex items-center gap-2">
         <button
           onClick={toggleCustomizer}
           aria-label="Open Theme Customizer Admin Panel"

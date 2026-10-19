@@ -1,5 +1,5 @@
-import ExactCaseStudy from '@/components/redesign/ExactCaseStudy';
+import CommerceOSCaseStudy from '@/components/case-study/CommerceOSCaseStudy';
 
 export default function Page() {
-  return <ExactCaseStudy />;
+  return <CommerceOSCaseStudy />;
 }

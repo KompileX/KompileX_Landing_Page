@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useThemeCustomizer } from '@/context/ThemeCustomizerContext';
 import { THEME_PRESETS, ThemeVariables } from '@/lib/theme-config';
 import {
@@ -12,6 +13,7 @@ import {
   Download,
   Upload,
   ArrowLeft,
+  LogOut,
   Sparkles,
   Check,
   Eye,
@@ -25,6 +27,13 @@ import {
 import { toast } from 'sonner';
 
 export default function AdminThemePage() {
+  const router = useRouter();
+  const handleLogout = async () => {
+    await fetch('/api/admin/logout', { method: 'POST' });
+    router.replace('/admin/login');
+    router.refresh();
+  };
+
   const {
     variables,
     activePresetId,
@@ -126,6 +135,14 @@ export default function AdminThemePage() {
 
         {/* Global Action Buttons */}
         <div className="flex items-center flex-wrap gap-2 text-xs">
+          <button
+            onClick={handleLogout}
+            className="px-3.5 py-2 rounded-xl font-semibold border flex items-center gap-1.5 transition-colors hover:bg-black/5"
+            style={{ borderColor: 'var(--kpx-border)' }}
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Log out</span>
+          </button>
           <button
             onClick={() => setShowImportModal(true)}
             className="px-3.5 py-2 rounded-xl font-semibold border flex items-center gap-1.5 transition-colors hover:bg-black/5"
@@ -801,7 +818,7 @@ export default function AdminThemePage() {
                 }}
               >
                 <span className="dot" />
-                <span>Available for work · Dhaka</span>
+                <span>Available for new projects</span>
               </div>
 
               <h3 className="text-xl font-bold leading-tight">
@@ -809,7 +826,7 @@ export default function AdminThemePage() {
               </h3>
 
               <p className="text-xs leading-relaxed" style={{ color: 'var(--kpx-text-muted)' }}>
-                Dhaka-based engineering studio building high-performance web, mobile & cloud systems.
+                Engineering studio building high-performance web, mobile & cloud systems.
               </p>
 
               <div className="flex items-center gap-2 pt-1">
@@ -882,7 +899,7 @@ export default function AdminThemePage() {
                     className="w-2 h-2 rounded-full led"
                     style={{ background: 'var(--kpx-rack-led-green)', animationDelay: '0.4s' }}
                   />
-                  <span className="text-[10px] font-mono opacity-80">server-dhaka-01</span>
+                  <span className="text-[10px] font-mono opacity-80">server-prod-01</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <span className="w-4 h-1 rounded" style={{ background: 'var(--kpx-rack-cables)' }} />
@@ -906,7 +923,7 @@ export default function AdminThemePage() {
                 </button>
               </div>
               <p className="text-[11px]" style={{ color: 'var(--kpx-dark-muted)' }}>
-                Built in Dhaka, shipped worldwide · ©2026 KompileX
+                Built remotely, shipped worldwide · ©2026 KompileX
               </p>
             </div>
           </div>

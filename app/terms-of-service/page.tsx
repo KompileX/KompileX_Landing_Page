@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/layout/Navbar'
 import LegalPage, { type LegalSection } from '@/components/LegalPage'
 
 export const metadata: Metadata = {

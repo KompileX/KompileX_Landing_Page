@@ -5,8 +5,14 @@ import path from 'node:path';
 // - Production / Vercel: Upstash Redis over REST (set UPSTASH_REDIS_REST_URL/TOKEN
 //   or KV_REST_API_URL/TOKEN, which the Vercel Upstash integration adds for you).
 // - Local / VPS without Redis: a JSON file at data/store.json.
-const REST_URL = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
-const REST_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
+// Vercel's Upstash integration may add a custom prefix (e.g. STORAGE_KV_REST_API_URL),
+// so look for any variable that ends with the known suffix.
+const envEnding = (...suffixes: string[]) => {
+  const key = Object.keys(process.env).find((k) => suffixes.some((s) => k === s || k.endsWith('_' + s)));
+  return key ? process.env[key] : undefined;
+};
+const REST_URL = envEnding('UPSTASH_REDIS_REST_URL', 'KV_REST_API_URL');
+const REST_TOKEN = envEnding('UPSTASH_REDIS_REST_TOKEN', 'KV_REST_API_TOKEN');
 const FILE = path.join(process.cwd(), 'data', 'store.json');
 
 export const storeBackend = REST_URL && REST_TOKEN ? 'redis' : 'file';

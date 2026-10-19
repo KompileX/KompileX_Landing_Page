@@ -5,7 +5,7 @@ import { Check, ChevronDown, Copy, Download, Globe, Monitor, RotateCcw, Smartpho
 import { toast } from 'sonner';
 import AdminShell from '@/components/admin/AdminShell';
 import { useThemeCustomizer } from '@/context/ThemeCustomizerContext';
-import { THEME_PRESETS, DEFAULT_THEME_VARIABLES, type ThemeVariables } from '@/lib/theme-config';
+import { DEFAULT_THEME_VARIABLES, type ThemeVariables } from '@/lib/theme-config';
 
 type Field = { key: keyof ThemeVariables; label: string; hint?: string };
 type Group = { id: string; title: string; description: string; fields: Field[] };
@@ -159,7 +159,7 @@ function ColorRow({ field, value, def, onChange }: { field: Field; value: string
 }
 
 export default function AdminThemePage() {
-  const { variables, activePresetId, updateVariable, updateMultipleVariables, setPreset, resetToDefaults, revertToPublished, exportJSON, importJSON } = useThemeCustomizer();
+  const { variables, activePresetId, updateVariable, updateMultipleVariables, resetToDefaults, revertToPublished, exportJSON, importJSON } = useThemeCustomizer();
   const [open, setOpen] = useState<string>('brand');
   const [page, setPage] = useState('/');
   const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
@@ -226,39 +226,9 @@ export default function AdminThemePage() {
       <div className="grid gap-6 lg:grid-cols-[440px_minmax(0,1fr)]">
         {/* ───────── Controls ───────── */}
         <div className="flex flex-col gap-5">
-          <section className="rounded-3xl border border-[#E1E4DE] bg-white p-5">
-            <div className="flex items-baseline justify-between">
-              <h2 className="text-base font-bold">Start from a preset</h2>
-              <span className="text-xs text-[#6B746D]">{activePresetId === 'custom' ? 'Custom colors' : 'Preset applied'}</span>
-            </div>
-            <div className="mt-3 grid grid-cols-2 gap-2.5">
-              {THEME_PRESETS.map((p) => {
-                const active = activePresetId === p.id;
-                const v = p.variables;
-                return (
-                  <button
-                    key={p.id}
-                    onClick={() => setPreset(p.id)}
-                    className={`rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 ${active ? 'border-[#101612] ring-2 ring-[#101612]/15' : 'border-[#E1E4DE]'}`}
-                  >
-                    <div className="flex h-8 overflow-hidden rounded-lg border border-black/5">
-                      {[v.bgPage, v.textMain, v.accentEmerald, v.accentLime, v.surfaceTint].map((c, i) => (
-                        <span key={i} className="flex-1" style={{ background: c }} />
-                      ))}
-                    </div>
-                    <p className="mt-2 flex items-center gap-1 text-[13px] font-semibold leading-tight">
-                      {active && <Check className="size-3.5 text-emerald-600" />}
-                      {p.name.replace(/^Option [A-Z]: /, '')}
-                    </p>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
           <section className="rounded-3xl border border-[#E1E4DE] bg-white">
             <div className="px-5 pt-5">
-              <h2 className="text-base font-bold">Customize colors</h2>
+              <h2 className="text-base font-bold">Site colors</h2>
               <p className="mt-1 text-[13px] text-[#6B746D]">Click a swatch to pick a color, or type any hex value. The preview updates instantly.</p>
             </div>
             <div className="mt-3 divide-y divide-[#EDEFEA]">

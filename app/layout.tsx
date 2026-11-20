@@ -7,7 +7,7 @@ import { ThemeCustomizerProvider } from '@/context/ThemeCustomizerContext';
 import ThemeCustomizerFloating from '@/components/admin/ThemeCustomizerFloating';
 import { Toaster } from 'sonner';
 import { getPublishedTheme, themeToCss } from '@/lib/publishedTheme';
-import AIChatWidget from '@/components/chat/AIChatWidget';
+// import AIChatWidget from '@/components/chat/AIChatWidget';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -57,7 +57,7 @@ export default async function RootLayout({
           <ThemeCustomizerProvider publishedTheme={published}>
             {children}
             <ThemeCustomizerFloating />
-            <AIChatWidget />
+            {/* <AIChatWidget /> */}
             <Toaster richColors position="top-right" />
           </ThemeCustomizerProvider>
         </ThemeProvider>

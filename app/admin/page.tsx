@@ -100,7 +100,7 @@ const PAGES = [
   { href: '/', label: 'Home' },
   { href: '/services', label: 'Services' },
   { href: '/technologies', label: 'Technologies' },
-  { href: '/about-us', label: 'About' },
+  // { href: '/about-us', label: 'About' },
   { href: '/careers', label: 'Careers' },
   { href: '/privacy-policy', label: 'Legal' },
 ];

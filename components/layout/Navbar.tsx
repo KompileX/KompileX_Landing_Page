@@ -26,11 +26,11 @@ const NAV: Item[] = [
   { label: 'Technologies', href: '/technologies', match: '/technologies' },
   {
     label: 'Company',
-    href: '/about-us',
+    href: '/#process', // was '/about-us' (About page disabled)
     match: '/about-us',
     children: [
-      { label: 'About us', href: '/about-us', hint: 'Who we are and how we work' },
-      { label: 'Our team', href: '/about-us#team' },
+      // { label: 'About us', href: '/about-us', hint: 'Who we are and how we work' },
+      // { label: 'Our team', href: '/about-us#team' },
       { label: 'How we deliver', href: '/#process' },
       { label: 'Careers', href: '/careers', hint: 'Open roles' },
       { label: 'FAQ', href: '/#faq' },
